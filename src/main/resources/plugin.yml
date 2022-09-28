@@ -1,0 +1,15 @@
+name: StorageMechanics
+version: '${project.version}'
+main: wuason.storagemechanics.Storage
+api-version: 1.16
+depend:
+  - ItemsAdder
+authors: [ Wuason ]
+description: none
+website: techmc.es
+load: STARTUP
+commands:
+  editor:
+    aliases:
+      - editor_mode
+    permission: storage.admin
