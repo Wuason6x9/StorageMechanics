@@ -1,6 +1,6 @@
 package wuason.storagemechanics.Events;
 
-import dev.lone.itemsadder.api.CustomBlock;
+import dev.lone.itemsadder.api.Events.CustomBlockInteractEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.block.Block;
@@ -9,15 +9,12 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
-import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.metadata.FixedMetadataValue;
-import org.bukkit.metadata.MetadataValue;
-import org.bukkit.metadata.Metadatable;
+import wuason.storagemechanics.BlockGestor.Gestor;
+import wuason.storagemechanics.Editor.PlayerEditorMode;
 import wuason.storagemechanics.Storage;
 import wuason.storagemechanics.Storages.StorageManager;
 
-import java.util.List;
-import java.util.UUID;
+import java.io.FileNotFoundException;
 
 public class OnClick implements Listener {
 
@@ -27,33 +24,133 @@ public class OnClick implements Listener {
     public OnClick(Storage plugin){
         this.core = plugin;
         this.SM = plugin.getStorageManager();
-        Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "" + SM);
     }
 
-
     @EventHandler(priority = EventPriority.NORMAL)
-    public void OnClickEvent(PlayerInteractEvent event){
+    public void OnCustomBlockClick(CustomBlockInteractEvent event) throws FileNotFoundException {
         Player player = event.getPlayer();
-        if (event.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
-            Block block = event.getClickedBlock();
-            CustomBlock customblock = CustomBlock.byAlreadyPlaced(block);
-            if (customblock != null) {
-                if(!block.hasMetadata("storageblock_id")){
-                    event.getPlayer().sendMessage(customblock.getNamespacedID());
-                    String uuid = "" + UUID.randomUUID();
-                    SM.CreateStorage(event.getPlayer(),customblock.getNamespacedID(),uuid,"Titulo de prueba", (byte)54);
-                    block.setMetadata("storageblock_id", new FixedMetadataValue(core, customblock.getNamespacedID()));
-                    block.setMetadata("storageblock_uuid", new FixedMetadataValue(core, uuid));
-                    block.setMetadata("storageblock_owner", new FixedMetadataValue(core, player));
-                    SM.OpenStorage(uuid,player,customblock.getNamespacedID(),player);
+        String NamespacedID = event.getNamespacedID();
+        if(event.getAction().equals(Action.RIGHT_CLICK_BLOCK)){
+            if(core.getEditorMode().isinEditorMode(player)){
+
+                event.setCancelled(true);
+                Block block = event.getBlockClicked();
+
+                if(player.isSneaking()){
+
+                    if(core.getBlockManager().existNameSpaceID(NamespacedID)){
+                        //DELETE
+                        PlayerEditorMode editor = core.getEditorMode().getPlayerEditorMode(player);
+
+                        core.getBlockManager().removeNameSpaceID(NamespacedID);
+                        core.getStorageUtils().removedBlock(editor, NamespacedID);
+
+                        String id = core.getStorageUtils().getLocationStorageID(block.getLocation());
+
+                        core.getStorageManager().RemoveStorage(id);
+
+
+                    }
+                    else {
+                        //Si el bloque no esta en la lista
+
+                        player.sendMessage(ChatColor.translateAlternateColorCodes('&', core.getConfig().getString("NotInList") + NamespacedID));
+
+                    }
+
                 }
-                else{
-                    String uuid = block.getMetadata("storageblock_uuid").get(0).asString();
-                    String id = block.getMetadata("storageblock_id").get(0).asString();
-                    Player owner = (Player) block.getMetadata("storageblock_owner").get(0).value();
-                    SM.OpenStorage(uuid,player,id,owner);
+                else {
+
+                    if(!core.getBlockManager().existNameSpaceID(NamespacedID)){
+
+
+                        PlayerEditorMode editor = core.getEditorMode().getPlayerEditorMode(player);
+
+                        //ADD
+                        byte slots = editor.getSlots();
+                        String title = editor.getTitle();
+                        boolean isShulker = editor.isShulker();
+                        int pages = editor.getPages();
+
+                        core.getBlockManager().addNameSpaceID(NamespacedID,slots,title,isShulker, pages);
+                        core.getStorageUtils().AddedBlock(editor, NamespacedID);
+
+
+                    }
+                    else{
+
+                        player.sendMessage(ChatColor.translateAlternateColorCodes('&', core.getConfig().getString("AlreadyInList")));
+
+                    }
+
+                }
+
+
+            }
+            else {
+                if(core.getBlockManager().existNameSpaceID(NamespacedID)) {
+
+                    boolean succes = false;
+
+                    if (core.getHelperManager() == null) {
+
+                        succes = true;
+
+                    }
+                    if (core.getHelperManager() != null) {
+
+                        succes = core.getRegionManagerStorage().hasPermission(event.getBlockClicked().getLocation(), event.getPlayer());
+
+                    }
+                    if(event.getPlayer().hasPermission("storage.all")){
+
+                        succes = true;
+
+                    }
+
+                    if (succes) {
+
+                        if (!player.isSneaking()) {
+                            event.setCancelled(true);
+                            Block block = event.getBlockClicked();
+                            Gestor blockManager = core.getBlockManager();
+
+                            byte slots = blockManager.getSlots(NamespacedID);
+                            String title = blockManager.getTitle(NamespacedID);
+                            boolean isShulker = blockManager.isShulker(NamespacedID);
+                            String id = core.getStorageUtils().getLocationStorageID(block.getLocation());
+                            int pag = blockManager.getPags(NamespacedID);
+
+                            if (core.getStorageManager().existStorageByID(id)) {  //SI existe el inventario
+                                core.getStorageManager().OpenStorage(player, id, 0);
+                                //abrir inventario
+
+                            } else {
+
+                                if (core.getStorageManager().existStorageJson(id)) {
+
+                                    core.getStorageManager().OpenStorage(player, id, 0);
+
+                                } else {
+
+                                    core.getStorageManager().CreateStorage(player, id, title, slots, isShulker, NamespacedID, pag);
+                                    //Crear el inventario
+                                    Bukkit.getScheduler().runTaskLater(core, () -> {
+                                        try {
+                                            core.getStorageManager().OpenStorage(player, id, 0);
+                                        } catch (FileNotFoundException e) {
+                                            throw new RuntimeException(e);
+                                        }
+                                    }, 1L);
+
+                                }
+
+                            }
+                        }
+                    }
                 }
             }
         }
     }
+
 }

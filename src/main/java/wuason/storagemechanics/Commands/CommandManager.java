@@ -12,7 +12,7 @@ public class CommandManager {
 
     }
     public void register(){
-        core.getCommand("editor").setExecutor(new EditorCommand(core));
-        core.getCommand("editor").setTabCompleter(new Tab(core));
+        core.getCommand("storagemechanics").setTabCompleter(new Tab(core));
+        core.getCommand("storagemechanics").setExecutor(new StorageCommand(core));
     }
 }

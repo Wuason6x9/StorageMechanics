@@ -10,21 +10,55 @@ import java.util.ArrayList;
 public class StorageFile {
 
     private String id;
-    private String totalid;
-    private String uuid;
-    private String player;
     private String title;
     private byte slots;
+    private String uuidOwner;
+    private boolean shulker;
+    private String NameSpaceID;
 
-    private ArrayList<String> items;
+    private ArrayList<ArrayList<String>> items;
 
-    public StorageFile(String p, String ID, ArrayList<String> itemStack, String UUID, String tid, byte Slots, String TITLE){
-        this.player = p;
+    public StorageFile(String ID, ArrayList<ArrayList<String>> itemStack, byte Slots, String TITLE,String uuidowner, boolean isShulker,String namespaceid){
         this.id = ID;
-        this.uuid = UUID;
-        this.totalid = tid;
         this.slots = Slots;
         this.title = TITLE;
         this.items = itemStack;
+        this.uuidOwner = uuidowner;
+        this.shulker = isShulker;
+        this.NameSpaceID = namespaceid;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public byte getSlots() {
+        return slots;
+    }
+
+    public ArrayList<ArrayList<String>> getItems() {
+        return items;
+    }
+
+    public String getUuidOwner() {
+        return uuidOwner;
+    }
+
+    public boolean isShulker() {
+        return shulker;
+    }
+
+    public String getNameSpaceID() {
+        return NameSpaceID;
+    }
+
+    public int getPages(){
+
+        return items.size();
+
     }
 }
