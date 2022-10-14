@@ -6,8 +6,9 @@ depend:
   - ItemsAdder
 softdepend:
   - WorldGuard
+  - ChestSort
 authors: [ Wuason ]
-description: none
+description: Adds storage at blocks or furnitures
 website: techmc.es
 load: STARTUP
 commands:

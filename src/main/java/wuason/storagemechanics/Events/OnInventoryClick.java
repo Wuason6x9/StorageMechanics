@@ -5,8 +5,10 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import wuason.storagemechanics.Storage;
+import wuason.storagemechanics.Storages.StorageMemory;
 
 import java.io.FileNotFoundException;
 
@@ -55,6 +57,24 @@ public class OnInventoryClick implements Listener {
                         throw new RuntimeException(e);
                     }
 
+
+                }
+                else if (core.getStorageUtils().isSortItem(slotItem)){
+
+                    StorageMemory storageMemory = core.getStorageManager().getStorageMemory(player.getMetadata("storageid").get(0).asString());
+
+                    Inventory inventory = (Inventory) player.getMetadata("storageinventory").get(0).value();
+
+                    if(storageMemory.getPages()>1){
+
+                        de.jeff_media.chestsort.api.ChestSortAPI.sortInventory(inventory,0,(inventory.getSize() - 10));
+
+                    }
+                    else {
+
+                        de.jeff_media.chestsort.api.ChestSortAPI.sortInventory(inventory,0,(inventory.getSize() - 2));
+
+                    }
 
                 }
 

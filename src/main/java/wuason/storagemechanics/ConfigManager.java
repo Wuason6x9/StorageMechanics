@@ -28,6 +28,10 @@ public class ConfigManager {
             config.addDefault("BossbarText", "Editor mode");
             Bukkit.getScheduler().runTaskLater(core,() -> core.saveConfig(), 10);
         }
+        if(!config.contains("Bossbarpages")){
+            config.addDefault("Bossbarpages", "Pages: ");
+            Bukkit.getScheduler().runTaskLater(core,() -> core.saveConfig(), 10);
+        }
         if(!config.contains("Bossbarslots")){
             config.addDefault("Bossbarslots", "Slots:");
             Bukkit.getScheduler().runTaskLater(core,() -> core.saveConfig(), 10);
@@ -49,7 +53,7 @@ public class ConfigManager {
             Bukkit.getScheduler().runTaskLater(core,() -> core.saveConfig(), 10);
         }
         if(!config.contains("CorrectUsage")){
-            config.addDefault("CorrectUsage", "&8[&6StorageMechanics&8] -> &cCorrect usage: &b/editor_mode &a[Rows (max 6)] &9[Shulker mode (true or false)] &e[Title]");
+            config.addDefault("CorrectUsage", "&8[&6StorageMechanics&8] -> &cError command");
             Bukkit.getScheduler().runTaskLater(core,() -> core.saveConfig(), 10);
         }
         if(!config.contains("InEditorMode")){
@@ -85,7 +89,7 @@ public class ConfigManager {
             Bukkit.getScheduler().runTaskLater(core,() -> core.saveConfig(), 10);
         }
         if(!config.contains("timetosavestorageinMINUTES")){
-            config.addDefault("timetosavestorageinMINUTES", 1L);
+            config.addDefault("timetosavestorageinMINUTES", 60L);
             Bukkit.getScheduler().runTaskLater(core,() -> core.saveConfig(), 10);
         }
         if(!config.contains("InventoryPanelInfo")){
@@ -118,6 +122,10 @@ public class ConfigManager {
         }
         if(!config.contains("BackPageItem")){
             config.addDefault("BackPageItem", "mcicons:icon_back_orange");
+            Bukkit.getScheduler().runTaskLater(core,() -> core.saveConfig(), 10);
+        }
+        if(!config.contains("ChestSortItem")){
+            config.addDefault("ChestSortItem", "mcicons:icon_arrow_chest");
             Bukkit.getScheduler().runTaskLater(core,() -> core.saveConfig(), 10);
         }
         config.options().copyDefaults(true);

@@ -24,8 +24,15 @@ public class EditorMode {
         if(title == ""){
             title = "Untitled";
         }
-        core.getBossBarManager().createBosbbar(player,core.getConfig().getString("BossbarText") + " " + core.getConfig().getString("Bossbarslots") + " " + slots, BarColor.valueOf(core.getConfig().getString("BarColor").toUpperCase()), BarStyle.valueOf(core.getConfig().getString("BarStyle").toUpperCase()),100D, "editormode");
-        System.out.println(pages + "EDITORMODE ");
+        if(pages==1){
+
+            core.getBossBarManager().createBosbbar(player,core.getConfig().getString("BossbarText") + " " + core.getConfig().getString("Bossbarslots") + " " + slots, BarColor.valueOf(core.getConfig().getString("BarColor").toUpperCase()), BarStyle.valueOf(core.getConfig().getString("BarStyle").toUpperCase()),100D, "editormode");
+
+        }
+        else {
+            core.getBossBarManager().createBosbbar(player,core.getConfig().getString("BossbarText") + " " + core.getConfig().getString("Bossbarpages") + " " + pages, BarColor.valueOf(core.getConfig().getString("BarColor").toUpperCase()), BarStyle.valueOf(core.getConfig().getString("BarStyle").toUpperCase()),100D, "editormode");
+        }
+
         ActivePlayersEditorMode.add(new PlayerEditorMode(player,(byte)slots, title,isShulker,pages));
     }
     public boolean isinEditorMode(Player player){

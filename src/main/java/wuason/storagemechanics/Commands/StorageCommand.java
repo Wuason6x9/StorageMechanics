@@ -56,6 +56,11 @@ public class StorageCommand implements CommandExecutor {
 
                 case "create":
 
+                    if(args[1] == null){
+                        player.sendMessage(ChatColor.translateAlternateColorCodes('&', core.getConfig().getString("CorrectUsage")));
+                        return false;
+
+                    }
                     switch (args[1]){
 
                         case "multipage":

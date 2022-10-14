@@ -13,10 +13,8 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.scheduler.BukkitTask;
-import sun.jvm.hotspot.tools.HeapSummary;
 import wuason.storagemechanics.Storage;
 import wuason.storagemechanics.StorageUtils;
-import wuason.storagemechanics.Storages.multipage.MultiPage;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -28,7 +26,6 @@ public class StorageManager {
     ArrayList<StorageMemory> storageMemories = new ArrayList<>();
     ArrayList<StorageFile> storageFiles = new ArrayList<>();
     private Gson gson;
-    private MultiPage multiPageManager;
     private Storage core;
     private StorageUtils storageUtils;
 
@@ -36,7 +33,6 @@ public class StorageManager {
         this.core = plugin;
         this.gson = new Gson();
         this.storageUtils = plugin.getStorageUtils();
-        this.multiPageManager = new MultiPage(plugin);
     }
 
     public boolean RemoveStorage(String id){
@@ -250,12 +246,10 @@ public class StorageManager {
 
                 ArrayList<Inventory> inventories = new ArrayList<>();
 
-                title.replaceAll("%pag_count%", "" + pag);
                 for(int i=0;i<(pag);i++){
 
-                    title.replaceAll("%actual_pag%", "" + (i + 1));
+                    Inventory inv = Bukkit.createInventory(player,(int)slots,ChatColor.translateAlternateColorCodes('&',title.replaceAll("%actual_pag%", "" + (i + 1)).replaceAll("%pag_count%", "" + pag).replaceAll("%owner%","" + Bukkit.getOfflinePlayer(UUID.fromString(storageMemory.getUuidOwner())).getName())));
 
-                    Inventory inv = Bukkit.createInventory(player,(int)slots,title);
 
                     if(pag>1){
 
@@ -281,6 +275,20 @@ public class StorageManager {
                             inv.setItem(46, core.getStorageUtils().getBackItem(CustomStack.getInstance(core.getConfig().getString("BackPageItem")).getItemStack()));
                             inv.setItem(52, itemBlackPanel);
                         }
+                    }
+
+                    if(Bukkit.getPluginManager().getPlugin("ChestSort") != null) {
+                        if(pag>1){
+
+                            inv.setItem((storageMemory.getSlots() - 5) ,core.getStorageUtils().getChestSortItem(CustomStack.getInstance(core.getConfig().getString("ChestSortItem")).getItemStack()));
+
+                        }
+                        else {
+
+                            inv.setItem(storageMemory.getSlots() - 1 ,core.getStorageUtils().getChestSortItem(CustomStack.getInstance(core.getConfig().getString("ChestSortItem")).getItemStack()));
+
+                        }
+                        //de.jeff_media.chestsort.api.ChestSortAPI.sortInventory(inv,0,45);
                     }
 
                     storageMemory.setItems(inv.getContents(), i);
@@ -527,12 +535,12 @@ public class StorageManager {
                 int pag = storageFile.getPages();
                 ArrayList<Inventory> inventories = new ArrayList<>();
 
-                title.replaceAll("%pag_count%", "" + pag);
 
                 for(int i=0;i<pag;i++){
 
-                    title.replaceAll("%actual_pag%", "" + (i + 1));
-                    inventories.add(Bukkit.createInventory(offlinePlayer.getPlayer(),storageFile.getSlots(),title));
+                    Inventory inventory =Bukkit.createInventory(offlinePlayer.getPlayer(),storageFile.getSlots(),title.replaceAll("%actual_pag%", "" + (i + 1)).replaceAll("%pag_count%", "" + pag).replaceAll("%owner%","" + Bukkit.getOfflinePlayer(UUID.fromString(storageMemory.getUuidOwner())).getName()));
+
+                    inventories.add(inventory);
 
                 }
 

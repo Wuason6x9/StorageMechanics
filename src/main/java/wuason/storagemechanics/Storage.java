@@ -69,6 +69,11 @@ public final class Storage extends JavaPlugin {
 
         Bukkit.getScheduler().runTaskLater(this,() -> {
 
+            if(Bukkit.getPluginManager().getPlugin("ChestSort") != null) {
+
+                Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&', "&8[&6StorageMechanics&8] -> &eChestSort [ready]"));
+
+            }
             if(Bukkit.getPluginManager().getPlugin("WorldGuard") != null){
 
                 this.helperManager = new Helper(this);
@@ -76,7 +81,7 @@ public final class Storage extends JavaPlugin {
                 Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&', "&8[&6StorageMechanics&8] -> &eWorldGuard [ready]"));
             }
 
-        }, 20L);
+        }, 1L);
 
         // Plugin startup logic
 

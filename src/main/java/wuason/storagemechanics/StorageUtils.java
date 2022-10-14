@@ -269,12 +269,39 @@ public class StorageUtils {
 
         return item;
     }
+    public ItemStack getChestSortItem(ItemStack item){
+
+        ItemMeta meta = item.getItemMeta();
+
+        meta.getPersistentDataContainer().set(new NamespacedKey(core,"chestsortItem"), PersistentDataType.STRING, "back");
+        meta.getPersistentDataContainer().set(new NamespacedKey(core, "itemBlocked"), PersistentDataType.STRING, "blocked");
+
+        item.setItemMeta(meta);
+
+        return item;
+    }
 
     public boolean isNextItem(ItemStack item){
 
         ItemMeta meta = item.getItemMeta();
 
         if(meta.getPersistentDataContainer().has(new NamespacedKey(core, "nextItem"), PersistentDataType.STRING)){
+
+            return true;
+
+        }
+        else {
+
+            return false;
+
+        }
+
+    }
+    public boolean isSortItem(ItemStack item){
+
+        ItemMeta meta = item.getItemMeta();
+
+        if(meta.getPersistentDataContainer().has(new NamespacedKey(core, "chestsortItem"), PersistentDataType.STRING)){
 
             return true;
 
