@@ -1,19 +1,24 @@
 package wuason.storagemechanics.Storages;
 
+import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import wuason.storagemechanics.Storages.chunk.ChunkStorage;
 
 import java.util.ArrayList;
+import java.util.UUID;
 
 public class StorageMemory {
     private String id;
     private String title;
     private ArrayList<ItemStack[]> allItems = new ArrayList<>();
     private byte slots;
-    private ArrayList<Inventory> inventories;
+    private ArrayList<Inventory> inventories = new ArrayList<>();
     private String uuidOwner;
     private boolean shulker;
     private String NameSpaceID;
+    private ChunkStorage chunkStorage;
 
     public StorageMemory(String ID, String TITLE, byte SLOTS, String uuidplayer, boolean isShulker, String namespaceid, int pag){
         this.id = ID;
@@ -27,6 +32,14 @@ public class StorageMemory {
             allItems.add(new ItemStack[SLOTS]);
 
         }
+
+        for(int i=0;i<pag;i++){
+
+            inventories.add(null);
+
+        }
+
+
     }
 
     public String getId() {
@@ -37,6 +50,13 @@ public class StorageMemory {
         this.id = id;
     }
 
+    public ChunkStorage getChunkStorage() {
+        return chunkStorage;
+    }
+
+    public void setChunkStorage(ChunkStorage chunkStorage) {
+        this.chunkStorage = chunkStorage;
+    }
 
     public ItemStack[] getItems(int page) {
         return allItems.get(page);
@@ -62,6 +82,12 @@ public class StorageMemory {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public OfflinePlayer getOfflinePlayerOwner(){
+
+        return Bukkit.getOfflinePlayer(UUID.fromString(uuidOwner));
+
     }
 
     public byte getSlots() {
@@ -99,6 +125,23 @@ public class StorageMemory {
     public Inventory setInventory(Inventory inv, int page){
 
         return inventories.set(page, inv);
+
+    }
+    public boolean existInventory(int page){
+
+        if(inventories.get(page) != null){
+
+            return true;
+
+        }
+
+        return false;
+
+    }
+
+    public void removeInventory(int page){
+
+        inventories.set(page, null);
 
     }
 

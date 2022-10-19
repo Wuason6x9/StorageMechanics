@@ -3,6 +3,8 @@ package wuason.storagemechanics.Events;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.PluginManager;
 import wuason.storagemechanics.Storage;
+import wuason.storagemechanics.panels.PanelClick;
+import wuason.storagemechanics.panels.PanelClose;
 import wuason.storagemechanics.panels.PanelInfo;
 
 public class EventsManager {
@@ -26,6 +28,10 @@ public class EventsManager {
         pm.registerEvents(new OnItemsAdderLoad(core), core);
         pm.registerEvents(new PanelInfo(core, null), core);
         pm.registerEvents(new OnInventoryClick(core), core);
+        pm.registerEvents(new OnUnLoadChunk(core), core);
+        pm.registerEvents(new PlayerSendMessageEvent(core), core);
+        pm.registerEvents(new PanelClick(core),core);
+        pm.registerEvents(new PanelClose(core), core);
 
     }
 }

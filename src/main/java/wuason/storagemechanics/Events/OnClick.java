@@ -54,7 +54,7 @@ public class OnClick implements Listener {
                     else {
                         //Si el bloque no esta en la lista
 
-                        player.sendMessage(ChatColor.translateAlternateColorCodes('&', core.getConfig().getString("NotInList") + NamespacedID));
+                        player.sendMessage(ChatColor.translateAlternateColorCodes('&', core.getConfig().getString("messages.NotInList") + NamespacedID));
 
                     }
 
@@ -79,7 +79,7 @@ public class OnClick implements Listener {
                     }
                     else{
 
-                        player.sendMessage(ChatColor.translateAlternateColorCodes('&', core.getConfig().getString("AlreadyInList")));
+                        player.sendMessage(ChatColor.translateAlternateColorCodes('&', core.getConfig().getString("messages.AlreadyInList")));
 
                     }
 
@@ -133,7 +133,7 @@ public class OnClick implements Listener {
 
                                 } else {
 
-                                    core.getStorageManager().CreateStorage(player, id, title, slots, isShulker, NamespacedID, pag);
+                                    core.getStorageManager().CreateStorage(player, id, title, slots, isShulker, NamespacedID, pag,block.getLocation());
                                     //Crear el inventario
                                     Bukkit.getScheduler().runTaskLater(core, () -> {
                                         try {
@@ -142,7 +142,6 @@ public class OnClick implements Listener {
                                             throw new RuntimeException(e);
                                         }
                                     }, 1L);
-
                                 }
 
                             }

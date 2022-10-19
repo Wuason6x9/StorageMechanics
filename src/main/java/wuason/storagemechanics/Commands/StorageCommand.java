@@ -6,12 +6,16 @@ import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import wuason.storagemechanics.Storage;
+import wuason.storagemechanics.Storages.itemmodify.ItemModifyManager;
+import wuason.storagemechanics.panels.Panel;
 import wuason.storagemechanics.panels.PanelInfo;
 
 import java.util.ArrayList;
@@ -38,26 +42,25 @@ public class StorageCommand implements CommandExecutor {
             return false;
         }
         //argumentos
-
         if(args.length>0){
 
             switch (args[0]){
 
                 case "exit":
                     if(core.getEditorMode().isinEditorMode(player)){
-                        player.sendMessage(ChatColor.translateAlternateColorCodes('&', core.getConfig().getString("EditorModeDesactivedMessage")));
+                        player.sendMessage(ChatColor.translateAlternateColorCodes('&', core.getConfig().getString("messages.EditorModeDesactivedMessage")));
                         core.getEditorMode().outEditorMode(player);
 
                     }
                     else {
-                        player.sendMessage(ChatColor.translateAlternateColorCodes('&', core.getConfig().getString("CorrectUsage")));
+                        player.sendMessage(ChatColor.translateAlternateColorCodes('&', core.getConfig().getString("messages.CorrectUsage")));
                     }
                     break;
 
                 case "create":
 
                     if(args[1] == null){
-                        player.sendMessage(ChatColor.translateAlternateColorCodes('&', core.getConfig().getString("CorrectUsage")));
+                        player.sendMessage(ChatColor.translateAlternateColorCodes('&', core.getConfig().getString("messages.CorrectUsage")));
                         return false;
 
                     }
@@ -67,7 +70,7 @@ public class StorageCommand implements CommandExecutor {
 
                             if(args[2] == null){
 
-                                player.sendMessage(ChatColor.translateAlternateColorCodes('&', core.getConfig().getString("CorrectUsage")));
+                                player.sendMessage(ChatColor.translateAlternateColorCodes('&', core.getConfig().getString("messages.CorrectUsage")));
 
                                 return false;
 
@@ -76,7 +79,7 @@ public class StorageCommand implements CommandExecutor {
                             int pages;
                             if(!core.getStorageUtils().isNumber(args[2])){
 
-                                player.sendMessage(ChatColor.translateAlternateColorCodes('&', core.getConfig().getString("CorrectUsage")));
+                                player.sendMessage(ChatColor.translateAlternateColorCodes('&', core.getConfig().getString("messages.CorrectUsage")));
 
                                 return false;
 
@@ -86,7 +89,7 @@ public class StorageCommand implements CommandExecutor {
 
                             if(pages < 2){
 
-                                player.sendMessage(ChatColor.translateAlternateColorCodes('&', core.getConfig().getString("CorrectUsage")));
+                                player.sendMessage(ChatColor.translateAlternateColorCodes('&', core.getConfig().getString("messages.CorrectUsage")));
 
                             }
 
@@ -94,7 +97,7 @@ public class StorageCommand implements CommandExecutor {
 
                             if(args[3] == null){
 
-                                player.sendMessage(ChatColor.translateAlternateColorCodes('&', core.getConfig().getString("CorrectUsage")));
+                                player.sendMessage(ChatColor.translateAlternateColorCodes('&', core.getConfig().getString("messages.CorrectUsage")));
 
                                 return false;
 
@@ -102,7 +105,7 @@ public class StorageCommand implements CommandExecutor {
 
                             if(!core.getStorageUtils().isBool(args[3])){
 
-                                player.sendMessage(ChatColor.translateAlternateColorCodes('&', core.getConfig().getString("CorrectUsage")));
+                                player.sendMessage(ChatColor.translateAlternateColorCodes('&', core.getConfig().getString("messages.CorrectUsage")));
                                 return false;
 
                             }
@@ -125,7 +128,7 @@ public class StorageCommand implements CommandExecutor {
                                 }
                             }
 
-                            player.sendMessage(ChatColor.translateAlternateColorCodes('&', core.getConfig().getString("InEditorMode") + ChatColor.AQUA + "\n (" + titles + ")" + " (" + (pages)  + ")" + ChatColor.YELLOW + "(ShulkerMode: " + isShulker + ")"));
+                            player.sendMessage(ChatColor.translateAlternateColorCodes('&', core.getConfig().getString("messages.InEditorMode") + ChatColor.AQUA + "\n (" + titles + ")" + " (" + (pages)  + ")" + ChatColor.YELLOW + "(ShulkerMode: " + isShulker + ")"));
                             core.getEditorMode().inEditorMode(player, (6 * 9), titles, isShulker, pages);
                             return true;
 
@@ -136,7 +139,7 @@ public class StorageCommand implements CommandExecutor {
                             player.sendMessage("" + args.length);
 
                             if(args.length < 5){
-                                player.sendMessage(ChatColor.translateAlternateColorCodes('&', core.getConfig().getString("CorrectUsage")));
+                                player.sendMessage(ChatColor.translateAlternateColorCodes('&', core.getConfig().getString("messages.CorrectUsage")));
                                 return false;
                             }
 
@@ -151,11 +154,11 @@ public class StorageCommand implements CommandExecutor {
                                 rows = Integer.parseInt(args[2]);
                             }
                             else {
-                                player.sendMessage(ChatColor.translateAlternateColorCodes('&', core.getConfig().getString("CorrectUsage")));
+                                player.sendMessage(ChatColor.translateAlternateColorCodes('&', core.getConfig().getString("messages.CorrectUsage")));
                                 return false;
                             }
                             if(rows==0){
-                                player.sendMessage(ChatColor.translateAlternateColorCodes('&', core.getConfig().getString("CorrectUsage")));
+                                player.sendMessage(ChatColor.translateAlternateColorCodes('&', core.getConfig().getString("messages.CorrectUsage")));
                                 return false;
                             }
 
@@ -166,11 +169,11 @@ public class StorageCommand implements CommandExecutor {
                                 shulkerMode = Boolean.parseBoolean(args[3]);
                             }
                             else {
-                                player.sendMessage(ChatColor.translateAlternateColorCodes('&', core.getConfig().getString("CorrectUsage")));
+                                player.sendMessage(ChatColor.translateAlternateColorCodes('&', core.getConfig().getString("messages.CorrectUsage")));
                                 return false;
                             }
                             if(args[3] == null){
-                                player.sendMessage(ChatColor.translateAlternateColorCodes('&', core.getConfig().getString("CorrectUsage")));
+                                player.sendMessage(ChatColor.translateAlternateColorCodes('&', core.getConfig().getString("messages.CorrectUsage")));
                                 return false;
                             }
 
@@ -197,7 +200,7 @@ public class StorageCommand implements CommandExecutor {
 
                             else{
 
-                                player.sendMessage(ChatColor.translateAlternateColorCodes('&', core.getConfig().getString("InEditorMode") + ChatColor.AQUA + "\n (" + title + ")" + " (" + (rows * 9)  + ")" + ChatColor.YELLOW + "(ShulkerMode: " + shulkerMode + ")"));
+                                player.sendMessage(ChatColor.translateAlternateColorCodes('&', core.getConfig().getString("messages.InEditorMode") + ChatColor.AQUA + "\n (" + title + ")" + " (" + (rows * 9)  + ")" + ChatColor.YELLOW + "(ShulkerMode: " + shulkerMode + ")"));
                                 core.getEditorMode().inEditorMode(player, (rows * 9), title, shulkerMode,1);
                                 return true;
 
@@ -207,13 +210,64 @@ public class StorageCommand implements CommandExecutor {
 
                     break;
 
+                case "editStorage":
 
+                    if(args[1] == null){
+                        return false;
+                    }
+
+                    if(core.getBlockManager().existNameSpaceID(args[1])) {
+
+                        Panel panel0 = core.getPanelsManager().createPanel(3, args[1], player, "editor_");
+
+                        panel0.getInventory().setItem(0, new ItemStack(Material.CHEST));
+
+                        Bukkit.getScheduler().runTask(core, () -> player.openInventory(panel0.getInventory()));
+
+                    }
+                    else {
+                        return false;
+                    }
+
+                    break;
                 case "loadALL":
 
-                    player.sendMessage(ChatColor.translateAlternateColorCodes('&',core.getConfig().getString("loadAllCommand")));
+                    player.sendMessage(ChatColor.translateAlternateColorCodes('&',core.getConfig().getString("messages.loadAllCommand")));
                     core.getBlockManager().getGestorYaml().loadConfig();
                     break;
 
+                case "modifyItem":
+
+                    ItemStack itemStack = player.getInventory().getItemInMainHand();
+
+                    if(itemStack == null){
+                        player.sendMessage(ChatColor.translateAlternateColorCodes('&', core.getConfig().getString("messages.NotItemInHand")));
+                        return false;
+                    }
+                    if(args[1] == null){
+                        player.sendMessage(ChatColor.translateAlternateColorCodes('&', core.getConfig().getString("messages.CorrectUsage")));
+                        return false;
+                    }
+                    if(args.length > 2){
+                        player.sendMessage(ChatColor.translateAlternateColorCodes('&', core.getConfig().getString("messages.CorrectUsage")));
+                        return false;
+                    }
+
+                    ItemModifyManager.ItemsModification itemModification = ItemModifyManager.ItemsModification.valueOf(args[1].toUpperCase());
+
+                    if(itemModification == null){
+
+                        player.sendMessage(ChatColor.translateAlternateColorCodes('&', core.getConfig().getString("messages.CorrectUsage")));
+                        return false;
+
+                    }
+                    else {
+
+                        player.getInventory().setItemInMainHand(core.getStorageManager().getItemModifyManager().modifyItem(itemStack,itemModification));
+
+                    }
+
+                    break;
 
                 case "info":
 
@@ -246,7 +300,7 @@ public class StorageCommand implements CommandExecutor {
 
     private void sendCorrectUsage(Player player){
 
-        player.sendMessage(ChatColor.translateAlternateColorCodes('&',core.getConfig().getString("CorrectUsage")));
+        player.sendMessage(ChatColor.translateAlternateColorCodes('&',core.getConfig().getString("messages.CorrectUsage")));
 
     }
 }

@@ -55,7 +55,7 @@ public class OnFurnitureInteract implements Listener {
                 else {
                     //Si el bloque no esta en la lista
 
-                    player.sendMessage(ChatColor.translateAlternateColorCodes('&', core.getConfig().getString("NotInList") + NamespacedID));
+                    player.sendMessage(ChatColor.translateAlternateColorCodes('&', core.getConfig().getString("messages.NotInList") + NamespacedID));
 
                 }
 
@@ -81,7 +81,7 @@ public class OnFurnitureInteract implements Listener {
                 else{
                     //Añadir mensaje de que ya existe este bloque en la lista y que primero debe eliminarlo para poder añadir otro
 
-                    player.sendMessage(ChatColor.translateAlternateColorCodes('&', core.getConfig().getString("AlreadyInList")));
+                    player.sendMessage(ChatColor.translateAlternateColorCodes('&', core.getConfig().getString("messages.AlreadyInList")));
 
                 }
 
@@ -137,7 +137,7 @@ public class OnFurnitureInteract implements Listener {
                             } else {
 
 
-                                core.getStorageManager().CreateStorage(player, id, title, slots, isShulker, NamespacedID, pag);
+                                core.getStorageManager().CreateStorage(player, id, title, slots, isShulker, NamespacedID, pag, loc);
                                 //Crear el inventario
                                 Bukkit.getScheduler().runTaskLater(core, () -> {
                                     try {

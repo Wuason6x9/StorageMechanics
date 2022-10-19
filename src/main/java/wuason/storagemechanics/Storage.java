@@ -14,6 +14,7 @@ import wuason.storagemechanics.Events.EventsManager;
 import wuason.storagemechanics.Helper.Helper;
 import wuason.storagemechanics.Storages.StorageManager;
 import wuason.storagemechanics.info.InfoManager;
+import wuason.storagemechanics.panels.PanelsManager;
 import wuason.storagemechanics.worldguard.RegionManagerStorage;
 
 import java.io.FileNotFoundException;
@@ -31,6 +32,7 @@ public final class Storage extends JavaPlugin {
     private InfoManager infoManager;
     private Helper helperManager;
     private RegionManagerStorage regionManagerStorage;
+    private PanelsManager panelsManager;
     private ConfigManager configManager;
     private static Storage instance = null;
 
@@ -56,6 +58,7 @@ public final class Storage extends JavaPlugin {
         storageUtils = new StorageUtils(this);
         commandManager = new CommandManager(this);
         storageManager = new StorageManager(this);
+        panelsManager = new PanelsManager(this);
         bossBarManager = new BossBarManager(this);
         eventsManager = new EventsManager(this);
         try {
@@ -156,6 +159,10 @@ public final class Storage extends JavaPlugin {
 
     public ConfigManager getConfigManager() {
         return configManager;
+    }
+
+    public PanelsManager getPanelsManager() {
+        return panelsManager;
     }
 
     public RegionManagerStorage getRegionManagerStorage() {

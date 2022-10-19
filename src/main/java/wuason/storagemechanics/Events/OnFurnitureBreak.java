@@ -3,6 +3,7 @@ package wuason.storagemechanics.Events;
 import dev.lone.itemsadder.api.CustomStack;
 import dev.lone.itemsadder.api.Events.FurnitureBreakEvent;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.block.Block;
 import org.bukkit.event.EventHandler;
@@ -95,7 +96,7 @@ public class OnFurnitureBreak implements Listener {
 
                             for(ItemStack l : items) {
 
-                                if(l != null){
+                                if(l != null && !l.getType().equals(Material.AIR)){
 
                                     ItemMeta meta = l.getItemMeta();
 
@@ -145,7 +146,7 @@ public class OnFurnitureBreak implements Listener {
 
                                 for(ItemStack l : items) {
 
-                                    if(l != null){
+                                    if(l != null && !l.getType().equals(Material.AIR)){
 
                                         ItemMeta meta = l.getItemMeta();
 

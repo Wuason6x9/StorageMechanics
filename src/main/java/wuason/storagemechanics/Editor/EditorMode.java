@@ -26,11 +26,11 @@ public class EditorMode {
         }
         if(pages==1){
 
-            core.getBossBarManager().createBosbbar(player,core.getConfig().getString("BossbarText") + " " + core.getConfig().getString("Bossbarslots") + " " + slots, BarColor.valueOf(core.getConfig().getString("BarColor").toUpperCase()), BarStyle.valueOf(core.getConfig().getString("BarStyle").toUpperCase()),100D, "editormode");
+            core.getBossBarManager().createBosbbar(player,core.getConfig().getString("config.BossbarText") + " " + core.getConfig().getString("config.Bossbarslots") + " " + slots, BarColor.valueOf(core.getConfig().getString("config.BarColor").toUpperCase()), BarStyle.valueOf(core.getConfig().getString("config.BarStyle").toUpperCase()),100D, "editormode");
 
         }
         else {
-            core.getBossBarManager().createBosbbar(player,core.getConfig().getString("BossbarText") + " " + core.getConfig().getString("Bossbarpages") + " " + pages, BarColor.valueOf(core.getConfig().getString("BarColor").toUpperCase()), BarStyle.valueOf(core.getConfig().getString("BarStyle").toUpperCase()),100D, "editormode");
+            core.getBossBarManager().createBosbbar(player,core.getConfig().getString("config.BossbarText") + " " + core.getConfig().getString("config.Bossbarpages") + " " + pages, BarColor.valueOf(core.getConfig().getString("config.BarColor").toUpperCase()), BarStyle.valueOf(core.getConfig().getString("config.BarStyle").toUpperCase()),100D, "editormode");
         }
 
         ActivePlayersEditorMode.add(new PlayerEditorMode(player,(byte)slots, title,isShulker,pages));

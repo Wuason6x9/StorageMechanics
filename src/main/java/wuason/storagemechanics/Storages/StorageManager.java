@@ -15,6 +15,11 @@ import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.scheduler.BukkitTask;
 import wuason.storagemechanics.Storage;
 import wuason.storagemechanics.StorageUtils;
+import wuason.storagemechanics.Storages.chunk.ChunkManager;
+import wuason.storagemechanics.Storages.chunk.ChunkStorage;
+import wuason.storagemechanics.Storages.itemmodify.ItemModifyManager;
+import wuason.storagemechanics.Storages.search.SearchSystem;
+import wuason.storagemechanics.api.Events.InventoryOpenEvent;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -29,10 +34,17 @@ public class StorageManager {
     private Storage core;
     private StorageUtils storageUtils;
 
+    private ChunkManager chunkManager;
+    private SearchSystem searchSystemManager;
+    private ItemModifyManager itemModifyManager;
+
     public StorageManager(Storage plugin){
         this.core = plugin;
         this.gson = new Gson();
         this.storageUtils = plugin.getStorageUtils();
+        this.chunkManager = new ChunkManager(plugin);
+        this.searchSystemManager = new SearchSystem(plugin);
+        this.itemModifyManager = new ItemModifyManager(plugin);
     }
 
     public boolean RemoveStorage(String id){
@@ -45,10 +57,13 @@ public class StorageManager {
 
                 for(Inventory inv : storageMemory.getInventories()){
 
-                    while (!inv.getViewers().isEmpty()){
+                    if(inv != null) {
 
-                        inv.getViewers().get(0).closeInventory();
+                        while (!inv.getViewers().isEmpty()) {
 
+                            inv.getViewers().get(0).closeInventory();
+
+                        }
                     }
 
                 }
@@ -67,6 +82,8 @@ public class StorageManager {
                     file.delete();
                 }
             }
+
+            getChunkManager().removeChunk(id);
 
             storageMemories.remove(storageMemory);
 
@@ -111,26 +128,27 @@ public class StorageManager {
         if(storageMemory.getInventories().get(0) != null){
 
             for(int i=0;i<storageMemory.getInventories().size();i++){
-
                 inv = storageMemory.getInventories().get(i);
-                if(inv.getViewers().size()>0){
+                if(inv != null) {
+                    inv = storageMemory.getInventories().get(i);
+                    if (inv.getViewers().size() > 0) {
 
-                    while (!inv.getViewers().isEmpty()){
+                        while (!inv.getViewers().isEmpty()) {
 
-                        human = inv.getViewers().get(0);
+                            human = inv.getViewers().get(0);
 
-                        human.removeMetadata("storageinventory",core);
-                        human.removeMetadata("storageid",core);
-                        human.removeMetadata("storageinventorypag", core);
+                            human.removeMetadata("storageinventory", core);
+                            human.removeMetadata("storageid", core);
+                            human.removeMetadata("storageinventorypag", core);
 
-                        human.closeInventory();
+                            human.closeInventory();
+
+                        }
+
+                        storageMemory.setItems(inv.getContents(), i);
 
                     }
-
-                    storageMemory.setItems(inv.getContents(), i);
-
                 }
-
             }
 
         }
@@ -142,54 +160,114 @@ public class StorageManager {
 
             int pag = player.getMetadata("storageinventorypag").get(0).asInt();
             StorageMemory storageMemory = getStorageMemory(id);
-            Inventory inventory = storageMemory.getInventories().get(pag);
-            List<HumanEntity> players = inventory.getViewers();
 
             player.removeMetadata("storageid",core);
             player.removeMetadata("storageinventory",core);
             player.removeMetadata("storageinventorypag", core);
-            if(players.size()>1){
 
-            }
-            else {
+            closeInv(storageMemory,player,pag);
 
-                storageMemory.setItems(inventory.getContents(),pag);
-
-            }
 
         }
     }
 
 
+    public void openInv(StorageMemory memory,Player player ,int pag){
+
+
+        player.setMetadata("storageinventorypag", new FixedMetadataValue(core, pag));
+        player.setMetadata("storageid", new FixedMetadataValue(core, memory.getId()));
+
+        if(memory.existInventory(pag)){
+
+            Inventory inv = memory.getInventory(pag);
+
+            player.setMetadata("storageinventory", new FixedMetadataValue(core, inv));
+            player.openInventory(inv);
+
+        }
+        else {
+
+            Inventory inv = Bukkit.createInventory(player,(int)memory.getSlots(),ChatColor.translateAlternateColorCodes('&',memory.getTitle().replaceAll("%actual_pag%", "" + (pag + 1))).replaceAll("%pag_count%", "" + memory.getPages()).replaceAll("%owner%","" + Bukkit.getOfflinePlayer(UUID.fromString(memory.getUuidOwner())).getName()));
+            InventoryOpenEvent inventoryOpenEvent = new InventoryOpenEvent(player,inv,pag,memory);
+            Bukkit.getPluginManager().callEvent(inventoryOpenEvent);
+
+
+            player.setMetadata("storageinventory", new FixedMetadataValue(core, inv));
+            inv.setContents(memory.getItems(pag));
+
+            if(memory.getPages()>1){
+
+                //set items
+
+                int [] slots = {45,46,47,48,49,50,51,52,53};
+                core.getStorageUtils().setBlockItems(slots, inv);
+
+
+                inv.setItem(52, core.getStorageUtils().getNextItem(CustomStack.getInstance(core.getConfig().getString("config.NextPageItem")).getItemStack()));
+                inv.setItem((memory.getSlots() - 4), core.getStorageUtils().getSearchItem());
+
+                if(pag>0){
+
+                    inv.setItem(46, core.getStorageUtils().getBackItem(CustomStack.getInstance(core.getConfig().getString("config.BackPageItem")).getItemStack()));
+
+                }
+                if(pag == (memory.getPages() - 1)){
+
+                    inv.setItem(46, core.getStorageUtils().getBackItem(CustomStack.getInstance(core.getConfig().getString("config.BackPageItem")).getItemStack()));
+                    inv.setItem(52, core.getStorageUtils().getBlockItem());
+                }
+            }
+
+            if(Bukkit.getPluginManager().getPlugin("ChestSort") != null) {
+                if(memory.getPages()>1){
+
+                    inv.setItem((memory.getSlots() - 5) ,core.getStorageUtils().getChestSortItem(CustomStack.getInstance(core.getConfig().getString("config.ChestSortItem")).getItemStack()));
+
+                }
+                else {
+
+                    inv.setItem(memory.getSlots() - 1 ,core.getStorageUtils().getChestSortItem(CustomStack.getInstance(core.getConfig().getString("config.ChestSortItem")).getItemStack()));
+
+                }
+                //de.jeff_media.chestsort.api.ChestSortAPI.sortInventory(inv,0,45);
+            }
+
+            memory.setItems(inv.getContents(), pag);
+
+            memory.setInventory(inv, pag);
+            player.openInventory(inv);
+
+        }
+
+    }
+
+    public void closeInv(StorageMemory memory, Player player, int pag){
+
+        Inventory inventory = memory.getInventory(pag);
+
+        List<HumanEntity> players = inventory.getViewers();
+
+        if(!(players.size()>1)){
+
+            memory.setItems(inventory.getContents(),pag);
+            memory.removeInventory(pag);
+
+        }
+
+
+    }
+
+
     public void OpenStorage(Player player, String id, int pag) throws FileNotFoundException {
+
 
         if(existStorageByID(id)){
             StorageMemory storageMemory = getStorageMemory(id);
-            Inventory inventory = storageMemory.getInventories().get(pag);
-            List<HumanEntity> players = inventory.getViewers();
-
-            if(players.size()>0){
-
-                player.openInventory(inventory);
-                player.setMetadata("storageinventorypag", new FixedMetadataValue(core, pag));
-                player.setMetadata("storageinventory", new FixedMetadataValue(core, inventory));
-                player.setMetadata("storageid", new FixedMetadataValue(core, id));
-
-            }
-            else {
-
-                inventory.setContents(storageMemory.getItems(pag));
 
 
-                player.openInventory(inventory);
+            openInv(storageMemory,player,pag);
 
-                player.setMetadata("storageinventory", new FixedMetadataValue(core, inventory));
-
-                player.setMetadata("storageinventorypag", new FixedMetadataValue(core, pag));
-
-                player.setMetadata("storageid", new FixedMetadataValue(core, id));
-
-            }
         }
         else{
             if(existStorageJson(id)){
@@ -198,23 +276,27 @@ public class StorageManager {
 
                     StorageMemory storageMemory = loadStorage(id);
 
-                    Inventory inventory = storageMemory.getInventories().get(pag);
 
-                    inventory.setContents(storageMemory.getItems(pag));
+                    openInv(storageMemory,player,pag);
 
-                    player.setMetadata("storageinventory", new FixedMetadataValue(core, inventory));
-
-                    player.setMetadata("storageid", new FixedMetadataValue(core, id));
-
-                    player.setMetadata("storageinventorypag", new FixedMetadataValue(core, pag));
-
-                    Bukkit.getScheduler().runTaskLater(core,() -> player.openInventory(storageMemory.getInventories().get(pag)), 1L);
+                    if(!storageMemory.isShulker()){
+                        File file = new File(core.getDataFolder().getPath() + "/storages/blockstatic/" + storageMemory.getId() + ".json");
+                        if(file.exists()){
+                            file.delete();
+                        }
+                    }
+                    else {
+                        File file = new File(core.getDataFolder().getPath() + "/storages/shulker/" + storageMemory.getId() + ".json");
+                        if(file.exists()){
+                            file.delete();
+                        }
+                    }
 
                 }
             }
             else {
 
-                System.out.println("Storage doesn't exist");
+                player.sendMessage(ChatColor.translateAlternateColorCodes('&', core.getConfig().getString("messages.storageNotExist")));
 
             }
         }
@@ -223,7 +305,7 @@ public class StorageManager {
 
 
 
-    public StorageMemory CreateStorage(Player player, String id, String title, byte slots, boolean isShulker, String namespaceid, int pag) throws IllegalStateException{
+    public StorageMemory CreateStorage(Player player, String id, String title, byte slots, boolean isShulker, String namespaceid, int pag,Location loc) throws IllegalStateException{
 
         if(!existStorageJson(id)){
             if(existStorageByID(id)){
@@ -233,73 +315,13 @@ public class StorageManager {
             }
             else{
 
-                ItemStack itemBlackPanel = new ItemStack(Material.BLACK_STAINED_GLASS_PANE);
-                ItemMeta itemBlackPanelMeta = itemBlackPanel.getItemMeta();
-                itemBlackPanelMeta.setDisplayName(" ");
-                itemBlackPanelMeta.setCustomModelData(core.getConfig().getInt("CustomModelDataBlackGlass"));
-                itemBlackPanelMeta.getPersistentDataContainer().set(new NamespacedKey(core, "itemBlocked"), PersistentDataType.STRING, "blocked");
-                itemBlackPanel.setItemMeta(itemBlackPanelMeta);
-
                 StorageMemory storageMemory = new StorageMemory(id,title,slots,player.getUniqueId().toString(),isShulker,namespaceid, pag);
 
+                ChunkStorage chunkStorage = getChunkManager().addChunk(loc, id);
 
+                storageMemory.setChunkStorage(chunkStorage);
 
-                ArrayList<Inventory> inventories = new ArrayList<>();
-
-                for(int i=0;i<(pag);i++){
-
-                    Inventory inv = Bukkit.createInventory(player,(int)slots,ChatColor.translateAlternateColorCodes('&',title.replaceAll("%actual_pag%", "" + (i + 1)).replaceAll("%pag_count%", "" + pag).replaceAll("%owner%","" + Bukkit.getOfflinePlayer(UUID.fromString(storageMemory.getUuidOwner())).getName())));
-
-
-                    if(pag>1){
-
-                        int[] slotsNull = {45,46,47,48,49,50,51,52,53};
-
-                        //set items
-                        for(int l : slotsNull){
-
-                            inv.setItem(l, itemBlackPanel);
-
-                        }
-
-                        inv.setItem(52, core.getStorageUtils().getNextItem(CustomStack.getInstance(core.getConfig().getString("NextPageItem")).getItemStack()));
-
-
-                        if(i>0){
-
-                            inv.setItem(46, core.getStorageUtils().getBackItem(CustomStack.getInstance(core.getConfig().getString("BackPageItem")).getItemStack()));
-
-                        }
-                        if(i == (pag - 1)){
-
-                            inv.setItem(46, core.getStorageUtils().getBackItem(CustomStack.getInstance(core.getConfig().getString("BackPageItem")).getItemStack()));
-                            inv.setItem(52, itemBlackPanel);
-                        }
-                    }
-
-                    if(Bukkit.getPluginManager().getPlugin("ChestSort") != null) {
-                        if(pag>1){
-
-                            inv.setItem((storageMemory.getSlots() - 5) ,core.getStorageUtils().getChestSortItem(CustomStack.getInstance(core.getConfig().getString("ChestSortItem")).getItemStack()));
-
-                        }
-                        else {
-
-                            inv.setItem(storageMemory.getSlots() - 1 ,core.getStorageUtils().getChestSortItem(CustomStack.getInstance(core.getConfig().getString("ChestSortItem")).getItemStack()));
-
-                        }
-                        //de.jeff_media.chestsort.api.ChestSortAPI.sortInventory(inv,0,45);
-                    }
-
-                    storageMemory.setItems(inv.getContents(), i);
-                    inventories.add(inv);
-
-
-                }
-
-                storageMemory.setInventories(inventories);
                 storageMemories.add(storageMemory);
-                TaskBlockMode(storageMemory);
 
                 return storageMemory;
 
@@ -421,6 +443,13 @@ public class StorageManager {
 
                             inventory = storageMemory.getInventories().get(i);
 
+                            if(inventory == null){
+
+                                TaskBlockMode(storageMemory);
+                                return;
+
+                            }
+
                             if(inventory.getViewers().size() >= 1){
                                 TaskBlockMode(storageMemory);
                                 return;
@@ -502,7 +531,7 @@ public class StorageManager {
         }
 
 
-        StorageFile storageFile = new StorageFile(storageMemory.getId(),items,storageMemory.getSlots(),storageMemory.getTitle(),storageMemory.getUuidOwner(),storageMemory.isShulker(),storageMemory.getNameSpaceID());
+        StorageFile storageFile = new StorageFile(storageMemory.getId(),items,storageMemory.getSlots(),storageMemory.getTitle(),storageMemory.getUuidOwner(),storageMemory.isShulker(),storageMemory.getNameSpaceID(),storageMemory.getChunkStorage().getLocation());
         gson.toJson(storageFile, writer);
         writer.flush();
         writer.close();
@@ -527,24 +556,20 @@ public class StorageManager {
                 StorageFile storageFile = gson.fromJson(reader, StorageFile.class);
                 StorageMemory storageMemory = new StorageMemory(id,storageFile.getTitle(),storageFile.getSlots(),storageFile.getUuidOwner(),storageFile.isShulker(),storageFile.getNameSpaceID(), storageFile.getPages());
 
+                Location location = new Location(Bukkit.getWorld(storageFile.getWorld()),storageFile.getX(),storageFile.getY(),storageFile.getZ());
+
                 UUID uuidOwner = UUID.fromString(storageFile.getUuidOwner());
                 OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(uuidOwner);
                 file.delete();
 
+
+                ChunkStorage chunkStorage = getChunkManager().addChunk(location, id);
+                storageMemory.setChunkStorage(chunkStorage);
+
                 String title = storageFile.getTitle();
                 int pag = storageFile.getPages();
-                ArrayList<Inventory> inventories = new ArrayList<>();
 
-
-                for(int i=0;i<pag;i++){
-
-                    Inventory inventory =Bukkit.createInventory(offlinePlayer.getPlayer(),storageFile.getSlots(),title.replaceAll("%actual_pag%", "" + (i + 1)).replaceAll("%pag_count%", "" + pag).replaceAll("%owner%","" + Bukkit.getOfflinePlayer(UUID.fromString(storageMemory.getUuidOwner())).getName()));
-
-                    inventories.add(inventory);
-
-                }
-
-                storageMemory.setInventories(inventories);
+                //inv add
 
                 storageMemories.add(storageMemory);
 
@@ -593,5 +618,17 @@ public class StorageManager {
 
     public ArrayList<StorageMemory> getStorageMemories() {
         return storageMemories;
+    }
+
+    public ChunkManager getChunkManager() {
+        return chunkManager;
+    }
+
+    public SearchSystem getSearchSystemManager() {
+        return searchSystemManager;
+    }
+
+    public ItemModifyManager getItemModifyManager() {
+        return itemModifyManager;
     }
 }

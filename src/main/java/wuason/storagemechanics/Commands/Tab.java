@@ -7,6 +7,8 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 import wuason.storagemechanics.Storage;
+import wuason.storagemechanics.Storages.itemmodify.ItemModify;
+import wuason.storagemechanics.Storages.itemmodify.ItemModifyManager;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -33,10 +35,21 @@ public class Tab implements TabCompleter {
 
                     case 1:
 
-                        return Arrays.asList("create", "info", "loadALL","exit");
+                        return Arrays.asList("create", "info", "loadALL","exit", "modifyItem","editStorage");
 
                     case 2:
                         switch(args[0]){
+
+                            case "modifyItem":
+
+                                List<String> list = new ArrayList<>();
+                                for(ItemModifyManager.ItemsModification item : ItemModifyManager.ItemsModification.values()){
+
+                                    list.add(item.toString());
+
+                                }
+
+                                return list;
 
                             case "create":
 

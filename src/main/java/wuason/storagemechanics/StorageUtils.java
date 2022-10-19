@@ -1,11 +1,11 @@
 package wuason.storagemechanics;
 
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Location;
-import org.bukkit.NamespacedKey;
+import com.sun.tools.javac.jvm.Items;
+import dev.lone.itemsadder.api.CustomStack;
+import org.bukkit.*;
 import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarStyle;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
@@ -105,7 +105,7 @@ public class StorageUtils {
         String NameSpaceID = id + "_added";
         if(!existTask(NameSpaceID)){
 
-            Bar bar = core.getBossBarManager().createBosbbar(info.getPlayer(), ChatColor.translateAlternateColorCodes('&', core.getConfig().getString("BossbarAdded") + id), BarColor.valueOf(core.getConfig().getString("BarAddedColor")), BarStyle.valueOf(core.getConfig().getString("BarAddedStyle")),100D, NameSpaceID);
+            Bar bar = core.getBossBarManager().createBosbbar(info.getPlayer(), ChatColor.translateAlternateColorCodes('&', core.getConfig().getString("config.BossbarAdded") + id), BarColor.valueOf(core.getConfig().getString("config.BarAddedColor")), BarStyle.valueOf(core.getConfig().getString("config.BarAddedStyle")),100D, NameSpaceID);
 
 
             final double[] num = {100};
@@ -129,7 +129,7 @@ public class StorageUtils {
         String NameSpaceID = id + "_removed";
         if(!existTask(NameSpaceID)){
 
-            Bar bar = core.getBossBarManager().createBosbbar(info.getPlayer(), ChatColor.translateAlternateColorCodes('&', core.getConfig().getString("Bossbarremoved") + id), BarColor.valueOf(core.getConfig().getString("BarremovedColor")), BarStyle.valueOf(core.getConfig().getString("BarremovedStyle")),100D, NameSpaceID);
+            Bar bar = core.getBossBarManager().createBosbbar(info.getPlayer(), ChatColor.translateAlternateColorCodes('&', core.getConfig().getString("config.Bossbarremoved") + id), BarColor.valueOf(core.getConfig().getString("config.BarremovedColor")), BarStyle.valueOf(core.getConfig().getString("config.BarremovedStyle")),100D, NameSpaceID);
 
 
             final double[] num = {100};
@@ -280,7 +280,58 @@ public class StorageUtils {
 
         return item;
     }
+    public ItemStack getSearchItem(){
+        ItemStack item = CustomStack.getInstance(core.getConfig().getString("config.SearchItem")).getItemStack();
 
+        ItemMeta meta = item.getItemMeta();
+
+        meta.getPersistentDataContainer().set(new NamespacedKey(core,"searchItem"), PersistentDataType.STRING, "searchItem");
+        meta.getPersistentDataContainer().set(new NamespacedKey(core, "itemBlocked"), PersistentDataType.STRING, "blocked");
+
+        item.setItemMeta(meta);
+
+        return item;
+    }
+
+    public ItemStack getBlockItem(){
+
+        ItemStack itemBlackPanel = new ItemStack(Material.BLACK_STAINED_GLASS_PANE);
+        ItemMeta itemBlackPanelMeta = itemBlackPanel.getItemMeta();
+        itemBlackPanelMeta.setDisplayName(" ");
+        itemBlackPanelMeta.setCustomModelData(core.getConfig().getInt("CustomModelDataBlackGlass"));
+        itemBlackPanelMeta.getPersistentDataContainer().set(new NamespacedKey(core, "itemBlocked"), PersistentDataType.STRING, "blocked");
+        itemBlackPanel.setItemMeta(itemBlackPanelMeta);
+
+        return itemBlackPanel;
+
+    }
+
+    public void setBlockItems(int[] slots, Inventory inv){
+
+        for(int l : slots){
+
+            inv.setItem(l, getBlockItem());
+
+        }
+
+    }
+
+    public boolean isSearchItem(ItemStack item){
+
+        ItemMeta meta = item.getItemMeta();
+
+        if(meta.getPersistentDataContainer().has(new NamespacedKey(core, "searchItem"), PersistentDataType.STRING)){
+
+            return true;
+
+        }
+        else {
+
+            return false;
+
+        }
+
+    }
     public boolean isNextItem(ItemStack item){
 
         ItemMeta meta = item.getItemMeta();
@@ -330,6 +381,7 @@ public class StorageUtils {
         }
 
     }
+
 
     public boolean isBlockedItem(ItemStack item){
 

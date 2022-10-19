@@ -15,10 +15,14 @@ public class StorageFile {
     private String uuidOwner;
     private boolean shulker;
     private String NameSpaceID;
+    private String world;
+    private double x;
+    private double y;
+    private double z;
 
     private ArrayList<ArrayList<String>> items;
 
-    public StorageFile(String ID, ArrayList<ArrayList<String>> itemStack, byte Slots, String TITLE,String uuidowner, boolean isShulker,String namespaceid){
+    public StorageFile(String ID, ArrayList<ArrayList<String>> itemStack, byte Slots, String TITLE,String uuidowner, boolean isShulker,String namespaceid, Location loc){
         this.id = ID;
         this.slots = Slots;
         this.title = TITLE;
@@ -26,6 +30,10 @@ public class StorageFile {
         this.uuidOwner = uuidowner;
         this.shulker = isShulker;
         this.NameSpaceID = namespaceid;
+        this.x = loc.getX();
+        this.y = loc.getY();
+        this.z = loc.getZ();
+        this.world = loc.getWorld().getName();
     }
 
     public String getId() {
@@ -60,5 +68,21 @@ public class StorageFile {
 
         return items.size();
 
+    }
+
+    public String getWorld() {
+        return world;
+    }
+
+    public double getX() {
+        return x;
+    }
+
+    public double getY() {
+        return y;
+    }
+
+    public double getZ() {
+        return z;
     }
 }

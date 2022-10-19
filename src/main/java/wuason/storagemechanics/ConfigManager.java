@@ -16,116 +16,144 @@ public class ConfigManager {
 
     public void config(){
         FileConfiguration config = core.getConfig();
-        if(!config.contains("EditorModeDesactivedMessage")){
-            config.addDefault("EditorModeDesactivedMessage", "&8[&6StorageMechanics&8] -> &cEditor mode deactivated!");
+        if(!config.contains("messages.EditorModeDesactivedMessage")){
+            config.addDefault("messages.EditorModeDesactivedMessage", "&8[&6StorageMechanics&8] -> &cEditor mode deactivated!");
             Bukkit.getScheduler().runTaskLater(core,() -> core.saveConfig(), 10);
         }
-        if(!config.contains("message_editor_maxRows")){
-            config.addDefault("message_editor_maxRows", "&8[&6StorageMechanics&8] -> &cError, max 6 rows!");
+        if(!config.contains("messages.message_editor_maxRows")){
+            config.addDefault("messages.message_editor_maxRows", "&8[&6StorageMechanics&8] -> &cError, max 6 rows!");
             Bukkit.getScheduler().runTaskLater(core,() -> core.saveConfig(), 10);
         }
-        if(!config.contains("BossbarText")){
-            config.addDefault("BossbarText", "Editor mode");
+        if(!config.contains("config.BossbarText")){
+            config.addDefault("config.BossbarText", "Editor mode");
             Bukkit.getScheduler().runTaskLater(core,() -> core.saveConfig(), 10);
         }
-        if(!config.contains("Bossbarpages")){
-            config.addDefault("Bossbarpages", "Pages: ");
+        if(!config.contains("config.Bossbarpages")){
+            config.addDefault("config.Bossbarpages", "Pages: ");
             Bukkit.getScheduler().runTaskLater(core,() -> core.saveConfig(), 10);
         }
-        if(!config.contains("Bossbarslots")){
-            config.addDefault("Bossbarslots", "Slots:");
+        if(!config.contains("config.Bossbarslots")){
+            config.addDefault("config.Bossbarslots", "Slots:");
             Bukkit.getScheduler().runTaskLater(core,() -> core.saveConfig(), 10);
         }
-        if(!config.contains("BarColor")){
-            config.addDefault("BarColor", "BLUE");
+        if(!config.contains("config.BarColor")){
+            config.addDefault("config.BarColor", "BLUE");
             Bukkit.getScheduler().runTaskLater(core,() -> core.saveConfig(), 10);
         }
-        if(!config.contains("BarStyle")){
-            config.addDefault("BarStyle", "SOLID");
+        if(!config.contains("config.BarStyle")){
+            config.addDefault("config.BarStyle", "SOLID");
             Bukkit.getScheduler().runTaskLater(core,() -> core.saveConfig(), 10);
         }
-        if(!config.contains("BarAddedColor")){
-            config.addDefault("BarAddedColor", "GREEN");
+        if(!config.contains("config.BarAddedColor")){
+            config.addDefault("config.BarAddedColor", "GREEN");
             Bukkit.getScheduler().runTaskLater(core,() -> core.saveConfig(), 10);
         }
-        if(!config.contains("BarAddedStyle")){
-            config.addDefault("BarAddedStyle", "SOLID");
+        if(!config.contains("config.BarAddedStyle")){
+            config.addDefault("config.BarAddedStyle", "SOLID");
             Bukkit.getScheduler().runTaskLater(core,() -> core.saveConfig(), 10);
         }
-        if(!config.contains("CorrectUsage")){
-            config.addDefault("CorrectUsage", "&8[&6StorageMechanics&8] -> &cError command");
+        if(!config.contains("messages.CorrectUsage")){
+            config.addDefault("messages.CorrectUsage", "&8[&6StorageMechanics&8] -> &cError command");
             Bukkit.getScheduler().runTaskLater(core,() -> core.saveConfig(), 10);
         }
-        if(!config.contains("InEditorMode")){
-            config.addDefault("InEditorMode","&8[&6StorageMechanics&8] -> &aEditor mode activated");
+        if(!config.contains("messages.InEditorMode")){
+            config.addDefault("messages.InEditorMode","&8[&6StorageMechanics&8] -> &aEditor mode activated");
             Bukkit.getScheduler().runTaskLater(core,() -> core.saveConfig(), 10);
         }
-        if(!config.contains("added")){
-            config.addDefault("added","&8[&6StorageMechanics&8] -> &9¡New block added!");
+        if(!config.contains("messages.added")){
+            config.addDefault("messages.added","&8[&6StorageMechanics&8] -> &9New block added!");
             Bukkit.getScheduler().runTaskLater(core,() -> core.saveConfig(), 10);
         }
-        if(!config.contains("BossbarAdded")){
-            config.addDefault("BossbarAdded","New block added: ");
+        if(!config.contains("config.BossbarAdded")){
+            config.addDefault("config.BossbarAdded","New block added: ");
             Bukkit.getScheduler().runTaskLater(core,() -> core.saveConfig(), 10);
         }
-        if(!config.contains("Bossbarremoved")){
-            config.addDefault("Bossbarremoved","New block removed: ");
+        if(!config.contains("config.Bossbarremoved")){
+            config.addDefault("config.Bossbarremoved","New block removed: ");
             Bukkit.getScheduler().runTaskLater(core,() -> core.saveConfig(), 10);
         }
-        if(!config.contains("BarremovedColor")){
-            config.addDefault("BarremovedColor", "RED");
+        if(!config.contains("config.BarremovedColor")){
+            config.addDefault("config.BarremovedColor", "RED");
             Bukkit.getScheduler().runTaskLater(core,() -> core.saveConfig(), 10);
         }
-        if(!config.contains("BarremovedStyle")){
-            config.addDefault("BarremovedStyle", "SOLID");
+        if(!config.contains("config.BarremovedStyle")){
+            config.addDefault("config.BarremovedStyle", "SOLID");
             Bukkit.getScheduler().runTaskLater(core,() -> core.saveConfig(), 10);
         }
-        if(!config.contains("NotInList")){
-            config.addDefault("NotInList", "&8[&6StorageMechanics&8] -> &2¡This block not in list! &a");
+        if(!config.contains("messages.NotInList")){
+            config.addDefault("messages.NotInList", "&8[&6StorageMechanics&8] -> &2This block not in list! &a");
             Bukkit.getScheduler().runTaskLater(core,() -> core.saveConfig(), 10);
         }
-        if(!config.contains("AlreadyInList")){
-            config.addDefault("AlreadyInList", "&8[&6StorageMechanics&8] -> &2¡This block already in list! &a");
+        if(!config.contains("messages.AlreadyInList")){
+            config.addDefault("messages.AlreadyInList", "&8[&6StorageMechanics&8] -> &2This block already in list! &a");
             Bukkit.getScheduler().runTaskLater(core,() -> core.saveConfig(), 10);
         }
-        if(!config.contains("timetosavestorageinMINUTES")){
-            config.addDefault("timetosavestorageinMINUTES", 60L);
+        if(!config.contains("config.timetosavestorageinMINUTES")){
+            config.addDefault("config.timetosavestorageinMINUTES", 60L);
             Bukkit.getScheduler().runTaskLater(core,() -> core.saveConfig(), 10);
         }
-        if(!config.contains("InventoryPanelInfo")){
-            config.addDefault("InventoryPanelInfo", "&aPanel Info");
+        if(!config.contains("config.InventoryPanelInfo")){
+            config.addDefault("config.InventoryPanelInfo", "&aPanel Info");
             Bukkit.getScheduler().runTaskLater(core,() -> core.saveConfig(), 10);
         }
-        if(!config.contains("InventoryPanelInfoSound")){
-            config.addDefault("InventoryPanelInfoSound", "none");
+        if(!config.contains("config.InventoryPanelInfoSound")){
+            config.addDefault("config.InventoryPanelInfoSound", "none");
             Bukkit.getScheduler().runTaskLater(core,() -> core.saveConfig(), 10);
         }
-        if(!config.contains("InventoryPanelInfoItem")){
-            config.addDefault("InventoryPanelInfoItem", "&6General info");
+        if(!config.contains("config.InventoryPanelInfoItem")){
+            config.addDefault("config.InventoryPanelInfoItem", "&6General info");
             Bukkit.getScheduler().runTaskLater(core,() -> core.saveConfig(), 10);
         }
-        if(!config.contains("InventoryPanelInfoItemUpdate")){
-            config.addDefault("InventoryPanelInfoItemUpdate", "&6Refresh");
+        if(!config.contains("config.InventoryPanelInfoItemUpdate")){
+            config.addDefault("config.InventoryPanelInfoItemUpdate", "&6Refresh");
             Bukkit.getScheduler().runTaskLater(core,() -> core.saveConfig(), 10);
         }
-        if(!config.contains("loadAllCommand")){
-            config.addDefault("loadAllCommand", "&8[&6StorageMechanics&8] -> &c¡Config has been loaded!");
+        if(!config.contains("messages.loadAllCommand")){
+            config.addDefault("messages.loadAllCommand", "&8[&6StorageMechanics&8] -> &cConfig has been loaded!");
             Bukkit.getScheduler().runTaskLater(core,() -> core.saveConfig(), 10);
         }
-        if(!config.contains("CustomModelDataBlackGlass")){
-            config.addDefault("CustomModelDataBlackGlass", 100000);
+        if(!config.contains("config.CustomModelDataBlackGlass")){
+            config.addDefault("config.CustomModelDataBlackGlass", 100000);
             Bukkit.getScheduler().runTaskLater(core,() -> core.saveConfig(), 10);
         }
-        if(!config.contains("NextPageItem")){
-            config.addDefault("NextPageItem", "mcicons:icon_next_orange");
+        if(!config.contains("config.NextPageItem")){
+            config.addDefault("config.NextPageItem", "mcicons:icon_next_orange");
             Bukkit.getScheduler().runTaskLater(core,() -> core.saveConfig(), 10);
         }
-        if(!config.contains("BackPageItem")){
-            config.addDefault("BackPageItem", "mcicons:icon_back_orange");
+        if(!config.contains("config.BackPageItem")){
+            config.addDefault("config.BackPageItem", "mcicons:icon_back_orange");
             Bukkit.getScheduler().runTaskLater(core,() -> core.saveConfig(), 10);
         }
-        if(!config.contains("ChestSortItem")){
-            config.addDefault("ChestSortItem", "mcicons:icon_arrow_chest");
+        if(!config.contains("config.ChestSortItem")){
+            config.addDefault("config.ChestSortItem", "mcicons:icon_arrow_chest");
+            Bukkit.getScheduler().runTaskLater(core,() -> core.saveConfig(), 10);
+        }
+        if(!config.contains("config.SearchItem")){
+            config.addDefault("config.SearchItem", "mcicons:icon_search");
+            Bukkit.getScheduler().runTaskLater(core,() -> core.saveConfig(), 10);
+        }
+        if(!config.contains("messages.SearchSystemChat")){
+            config.addDefault("messages.SearchSystemChat", "&8[&6StorageMechanics&8] -> &2Enter a valid page!");
+            Bukkit.getScheduler().runTaskLater(core,() -> core.saveConfig(), 10);
+        }
+        if(!config.contains("messages.storageNotExist")){
+            config.addDefault("messages.storageNotExist", "&8[&6StorageMechanics&8] -> &cThe storage you are trying to open does not exist!");
+            Bukkit.getScheduler().runTaskLater(core,() -> core.saveConfig(), 10);
+        }
+        if(!config.contains("messages.PageNotExist")){
+            config.addDefault("messages.PageNotExist", "&8[&6StorageMechanics&8] -> &cThat page does not exist!");
+            Bukkit.getScheduler().runTaskLater(core,() -> core.saveConfig(), 10);
+        }
+        if(!config.contains("messages.NotItemInHand")){
+            config.addDefault("messages.NotItemInHand", "&8[&6StorageMechanics&8] -> &cYou don't have any items in hand!");
+            Bukkit.getScheduler().runTaskLater(core,() -> core.saveConfig(), 10);
+        }
+        if(!config.contains("config.MaxDistanceOpenStorage")){
+            config.addDefault("config.MaxDistanceOpenStorage", 6);
+            Bukkit.getScheduler().runTaskLater(core,() -> core.saveConfig(), 10);
+        }
+        if(!config.contains("messages.MaxDistanceOpenStorage")){
+            config.addDefault("messages.MaxDistanceOpenStorage", "&8[&6StorageMechanics&8] -> &cYou can't open the storage at that distance, get a little closer and try again");
             Bukkit.getScheduler().runTaskLater(core,() -> core.saveConfig(), 10);
         }
         config.options().copyDefaults(true);

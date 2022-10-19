@@ -34,7 +34,7 @@ public class PanelInfo implements Listener {
 
     public void load(){
 
-        inv = Bukkit.createInventory(player, InventoryType.DROPPER, ChatColor.translateAlternateColorCodes('&', core.getConfig().getString("InventoryPanelInfo")));
+        inv = Bukkit.createInventory(player, InventoryType.DROPPER, ChatColor.translateAlternateColorCodes('&', core.getConfig().getString("config.InventoryPanelInfo")));
         loadItems();
 
     }
@@ -47,7 +47,7 @@ public class PanelInfo implements Listener {
 
         if(player.hasPermission(openPerm)){
 
-            String sound = core.getConfig().getString("InventoryPanelInfoSound");
+            String sound = core.getConfig().getString("config.InventoryPanelInfoSound");
 
             if(!sound.equals("none")){
 
@@ -98,7 +98,7 @@ public class PanelInfo implements Listener {
         //book item info general
         ItemStack itemBook = new ItemStack(Material.BOOK);
         ItemMeta itemBookMeta = itemBook.getItemMeta();
-        itemBookMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', core.getConfig().getString("InventoryPanelInfoItem")));
+        itemBookMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', core.getConfig().getString("config.InventoryPanelInfoItem")));
         itemBook.setItemMeta(itemBookMeta);
         //Paneles
 
@@ -116,14 +116,14 @@ public class PanelInfo implements Listener {
 
         }
         inv.setItem(4, itemBook);
-        inv.setItem(1, core.getStorageUtils().createItem(new ItemStack(Material.BLUE_CONCRETE),ChatColor.translateAlternateColorCodes('&', core.getConfig().getString("InventoryPanelInfoItemUpdate"))));
+        inv.setItem(1, core.getStorageUtils().createItem(new ItemStack(Material.BLUE_CONCRETE),ChatColor.translateAlternateColorCodes('&', core.getConfig().getString("config.InventoryPanelInfoItemUpdate"))));
 
     }
 
     @EventHandler
     public void onClick(final InventoryClickEvent event){
 
-        if(event.getWhoClicked().getOpenInventory().getTitle().equals(ChatColor.translateAlternateColorCodes('&', core.getConfig().getString("InventoryPanelInfo")))){
+        if(event.getWhoClicked().getOpenInventory().getTitle().equals(ChatColor.translateAlternateColorCodes('&', core.getConfig().getString("config.InventoryPanelInfo")))){
             if(event.getInventory().getType().equals(InventoryType.DROPPER)){
 
                 event.setCancelled(true);

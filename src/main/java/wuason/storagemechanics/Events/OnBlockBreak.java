@@ -3,10 +3,7 @@ package wuason.storagemechanics.Events;
 import dev.lone.itemsadder.api.CustomBlock;
 import dev.lone.itemsadder.api.CustomStack;
 import dev.lone.itemsadder.api.Events.CustomBlockBreakEvent;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Location;
-import org.bukkit.NamespacedKey;
+import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Item;
@@ -101,7 +98,7 @@ public class OnBlockBreak implements Listener {
 
                             for(ItemStack l : items) {
 
-                                if(l != null){
+                                if(l != null && !l.getType().equals(Material.AIR)){
 
                                     ItemMeta meta = l.getItemMeta();
 
@@ -151,7 +148,7 @@ public class OnBlockBreak implements Listener {
 
                                 for(ItemStack l : items) {
 
-                                    if(l != null){
+                                    if(l != null && !l.getType().equals(Material.AIR)){
 
                                         ItemMeta meta = l.getItemMeta();
 
