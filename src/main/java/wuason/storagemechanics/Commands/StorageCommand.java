@@ -1,13 +1,6 @@
 package wuason.storagemechanics.Commands;
 
-import com.sk89q.worldedit.WorldEdit;
-import com.sk89q.worldedit.bukkit.BukkitAdapter;
-import com.sk89q.worldguard.protection.managers.RegionManager;
-import com.sk89q.worldguard.protection.regions.ProtectedRegion;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.Material;
-import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -15,12 +8,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import wuason.storagemechanics.Storage;
 import wuason.storagemechanics.Storages.itemmodify.ItemModifyManager;
-import wuason.storagemechanics.panels.Panel;
 import wuason.storagemechanics.panels.PanelInfo;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
 
 public class StorageCommand implements CommandExecutor {
 
@@ -212,28 +200,20 @@ public class StorageCommand implements CommandExecutor {
 
                 case "editStorage":
 
-                    if(args[1] == null){
-                        return false;
+                    if(args.length == 2) {
+
+                        if (core.getBlockManager().existNameSpaceID(args[1])) {
+
+                            core.getStorageManager().getInterfacesManger().openEditor(player, args[1]);
+                            return true;
+
+                        }
                     }
-
-                    if(core.getBlockManager().existNameSpaceID(args[1])) {
-
-                        Panel panel0 = core.getPanelsManager().createPanel(3, args[1], player, "editor_");
-
-                        panel0.getInventory().setItem(0, new ItemStack(Material.CHEST));
-
-                        Bukkit.getScheduler().runTask(core, () -> player.openInventory(panel0.getInventory()));
-
-                    }
-                    else {
-                        return false;
-                    }
-
-                    break;
+                    return false;
                 case "loadALL":
 
                     player.sendMessage(ChatColor.translateAlternateColorCodes('&',core.getConfig().getString("messages.loadAllCommand")));
-                    core.getBlockManager().getGestorYaml().loadConfig();
+                    core.getBlockManager().getManagerYaml().loadConfig();
                     break;
 
                 case "modifyItem":

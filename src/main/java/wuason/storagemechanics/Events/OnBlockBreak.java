@@ -38,6 +38,7 @@ public class OnBlockBreak implements Listener {
 
             boolean succes = false;
 
+
             if(core.getHelperManager() == null){
 
                 succes = true;
@@ -70,6 +71,17 @@ public class OnBlockBreak implements Listener {
                 if (manager.existStorageByID(id)) {
 
                     StorageMemory storageMemory = manager.getStorageMemory(id);
+
+                    if(!core.getBlockManager().isBreakable(event.getNamespacedID())){
+
+                        if(!storageMemory.isEmpty()){
+
+                            event.setCancelled(true);
+                            event.getPlayer().sendMessage(ChatColor.translateAlternateColorCodes('&',core.getConfig().getString("messages.ItemsInStorage")));
+                            return;
+                        }
+
+                    }
 
                     manager.closePlayersInvetory(storageMemory);
 
@@ -123,6 +135,18 @@ public class OnBlockBreak implements Listener {
                     if (manager.existStorageJson(id)) {
 
                         StorageMemory storageMemory = manager.loadStorage(id);
+
+                        if(!core.getBlockManager().isBreakable(event.getNamespacedID())){
+
+                            if(!storageMemory.isEmpty()){
+
+                                event.setCancelled(true);
+                                event.getPlayer().sendMessage(ChatColor.translateAlternateColorCodes('&',core.getConfig().getString("messages.ItemsInStorage")));
+                                return;
+
+                            }
+
+                        }
 
                         if (storageMemory.isShulker()) {
 

@@ -8,7 +8,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import wuason.storagemechanics.BlockGestor.Gestor;
+import wuason.storagemechanics.BlockManager.Manager;
 import wuason.storagemechanics.Editor.PlayerEditorMode;
 import wuason.storagemechanics.Storage;
 
@@ -115,7 +115,7 @@ public class OnFurnitureInteract implements Listener {
                     Location loc = event.getBukkitEntity().getLocation();
                     if (!player.isSneaking()) {
                         event.setCancelled(true);
-                        Gestor blockManager = core.getBlockManager();
+                        Manager blockManager = core.getBlockManager();
 
                         byte slots = blockManager.getSlots(NamespacedID);
                         String title = blockManager.getTitle(NamespacedID);

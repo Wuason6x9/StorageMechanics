@@ -116,7 +116,7 @@ public class PanelInfo implements Listener {
 
         }
         inv.setItem(4, itemBook);
-        inv.setItem(1, core.getStorageUtils().createItem(new ItemStack(Material.BLUE_CONCRETE),ChatColor.translateAlternateColorCodes('&', core.getConfig().getString("config.InventoryPanelInfoItemUpdate"))));
+        inv.setItem(1, core.getStorageUtils().createItem(new ItemStack(Material.BLUE_CONCRETE),ChatColor.translateAlternateColorCodes('&', core.getConfig().getString("config.InventoryPanelInfoItemUpdate")),null));
 
     }
 

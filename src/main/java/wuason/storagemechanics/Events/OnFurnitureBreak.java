@@ -2,6 +2,7 @@ package wuason.storagemechanics.Events;
 
 import dev.lone.itemsadder.api.CustomStack;
 import dev.lone.itemsadder.api.Events.FurnitureBreakEvent;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -69,6 +70,17 @@ public class OnFurnitureBreak implements Listener {
 
                     StorageMemory storageMemory = manager.getStorageMemory(id);
 
+                    if(!core.getBlockManager().isBreakable(event.getNamespacedID())){
+
+                        if(!storageMemory.isEmpty()){
+
+                            event.setCancelled(true);
+                            event.getPlayer().sendMessage(ChatColor.translateAlternateColorCodes('&',core.getConfig().getString("messages.ItemsInStorage")));
+                            return;
+                        }
+
+                    }
+
                     manager.closePlayersInvetory(storageMemory);
 
 
@@ -121,6 +133,17 @@ public class OnFurnitureBreak implements Listener {
                     if (manager.existStorageJson(id)) {
 
                         StorageMemory storageMemory = manager.loadStorage(id);
+
+                        if(!core.getBlockManager().isBreakable(event.getNamespacedID())){
+
+                            if(!storageMemory.isEmpty()){
+
+                                event.setCancelled(true);
+                                event.getPlayer().sendMessage(ChatColor.translateAlternateColorCodes('&',core.getConfig().getString("messages.ItemsInStorage")));
+                                return;
+                            }
+
+                        }
 
                         if (storageMemory.isShulker()) {
 

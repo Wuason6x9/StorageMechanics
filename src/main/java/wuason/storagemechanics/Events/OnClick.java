@@ -9,7 +9,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
-import wuason.storagemechanics.BlockGestor.Gestor;
+import wuason.storagemechanics.BlockManager.Manager;
 import wuason.storagemechanics.Editor.PlayerEditorMode;
 import wuason.storagemechanics.Storage;
 import wuason.storagemechanics.Storages.StorageManager;
@@ -28,6 +28,8 @@ public class OnClick implements Listener {
 
     @EventHandler(priority = EventPriority.NORMAL)
     public void OnCustomBlockClick(CustomBlockInteractEvent event) throws FileNotFoundException {
+
+
         Player player = event.getPlayer();
         String NamespacedID = event.getNamespacedID();
         if(event.getAction().equals(Action.RIGHT_CLICK_BLOCK)){
@@ -113,7 +115,7 @@ public class OnClick implements Listener {
                         if (!player.isSneaking()) {
                             event.setCancelled(true);
                             Block block = event.getBlockClicked();
-                            Gestor blockManager = core.getBlockManager();
+                            Manager blockManager = core.getBlockManager();
 
                             byte slots = blockManager.getSlots(NamespacedID);
                             String title = blockManager.getTitle(NamespacedID);

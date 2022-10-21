@@ -13,6 +13,7 @@ import org.bukkit.scheduler.BukkitTask;
 import wuason.storagemechanics.Editor.PlayerEditorMode;
 import wuason.storagemechanics.BossBar.Bar;
 import wuason.storagemechanics.Storages.StorageManager;
+import wuason.storagemechanics.Storages.itemmodify.ItemModifyManager;
 
 import java.io.File;
 import java.io.IOException;
@@ -20,6 +21,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Base64;
+import java.util.List;
 import java.util.UUID;
 
 public class StorageUtils {
@@ -238,15 +240,57 @@ public class StorageUtils {
 
     }
 
-    public ItemStack createItem(ItemStack item, String displayname){
+    public ItemStack createItem(ItemStack item, String displayname, List<String> lore){
 
         ItemMeta itemMeta = item.getItemMeta();
         itemMeta.setDisplayName(displayname);
+        if(lore != null){
+            itemMeta.setLore(lore);
+        }
         item.setItemMeta(itemMeta);
         return item;
 
     }
 
+    public ItemStack getItemModified(ItemStack i, ItemModifyManager.ItemsModification itemModify){
+
+        itemModify = core.getStorageManager().getItemModifyManager().getItemModification(i);
+        ItemStack item = core.getStorageManager().getItemModifyManager().removeModifyItem(i);
+        ItemMeta meta = item.getItemMeta();
+
+        switch (itemModify){
+
+            case BLOCKED_ITEM:
+                meta.getPersistentDataContainer().set(new NamespacedKey(core, "itemBlocked"), PersistentDataType.STRING, "blocked");
+                meta.getPersistentDataContainer().set(new NamespacedKey(core, "blockedItem"), PersistentDataType.STRING, "blocked");
+                break;
+
+            case SEARCH_PAGE:
+                meta.getPersistentDataContainer().set(new NamespacedKey(core,"searchItem"), PersistentDataType.STRING, "searchItem");
+                meta.getPersistentDataContainer().set(new NamespacedKey(core, "itemBlocked"), PersistentDataType.STRING, "blocked");
+                break;
+
+            case SORT_ITEMS:
+                meta.getPersistentDataContainer().set(new NamespacedKey(core,"chestsortItem"), PersistentDataType.STRING, "chestsort");
+                meta.getPersistentDataContainer().set(new NamespacedKey(core, "itemBlocked"), PersistentDataType.STRING, "blocked");
+                break;
+
+            case NEXT_PAGE:
+                meta.getPersistentDataContainer().set(new NamespacedKey(core,"nextItem"), PersistentDataType.STRING, "next");
+                meta.getPersistentDataContainer().set(new NamespacedKey(core, "itemBlocked"), PersistentDataType.STRING, "blocked");
+                break;
+
+            case BACK_PAGE:
+                meta.getPersistentDataContainer().set(new NamespacedKey(core,"backItem"), PersistentDataType.STRING, "back");
+                meta.getPersistentDataContainer().set(new NamespacedKey(core, "itemBlocked"), PersistentDataType.STRING, "blocked");
+                break;
+
+        }
+
+        item.setItemMeta(meta);
+
+        return item;
+    }
     public ItemStack getNextItem(ItemStack item){
 
         ItemMeta meta = item.getItemMeta();
@@ -273,7 +317,7 @@ public class StorageUtils {
 
         ItemMeta meta = item.getItemMeta();
 
-        meta.getPersistentDataContainer().set(new NamespacedKey(core,"chestsortItem"), PersistentDataType.STRING, "back");
+        meta.getPersistentDataContainer().set(new NamespacedKey(core,"chestsortItem"), PersistentDataType.STRING, "chestsort");
         meta.getPersistentDataContainer().set(new NamespacedKey(core, "itemBlocked"), PersistentDataType.STRING, "blocked");
 
         item.setItemMeta(meta);
@@ -299,6 +343,7 @@ public class StorageUtils {
         ItemMeta itemBlackPanelMeta = itemBlackPanel.getItemMeta();
         itemBlackPanelMeta.setDisplayName(" ");
         itemBlackPanelMeta.setCustomModelData(core.getConfig().getInt("CustomModelDataBlackGlass"));
+        itemBlackPanelMeta.getPersistentDataContainer().set(new NamespacedKey(core, "blockedItem"), PersistentDataType.STRING, "blocked");
         itemBlackPanelMeta.getPersistentDataContainer().set(new NamespacedKey(core, "itemBlocked"), PersistentDataType.STRING, "blocked");
         itemBlackPanel.setItemMeta(itemBlackPanelMeta);
 

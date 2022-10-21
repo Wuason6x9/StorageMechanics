@@ -1,9 +1,13 @@
 package wuason.storagemechanics.Storages;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.persistence.PersistentDataType;
+import wuason.storagemechanics.Storage;
 import wuason.storagemechanics.Storages.chunk.ChunkStorage;
 
 import java.util.ArrayList;
@@ -19,6 +23,7 @@ public class StorageMemory {
     private boolean shulker;
     private String NameSpaceID;
     private ChunkStorage chunkStorage;
+    private Storage core;
 
     public StorageMemory(String ID, String TITLE, byte SLOTS, String uuidplayer, boolean isShulker, String namespaceid, int pag){
         this.id = ID;
@@ -27,6 +32,7 @@ public class StorageMemory {
         this.uuidOwner = uuidplayer;
         this.shulker = isShulker;
         this.NameSpaceID = namespaceid;
+        this.core = Storage.getInstance();
         for(int i=0;i<pag;i++){
 
             allItems.add(new ItemStack[SLOTS]);
@@ -125,6 +131,37 @@ public class StorageMemory {
     public Inventory setInventory(Inventory inv, int page){
 
         return inventories.set(page, inv);
+
+    }
+    public boolean isEmpty(){
+
+        boolean succes = true;
+
+        for(ItemStack[] items : allItems){
+
+            for(ItemStack item : items){
+
+                if(item != null && !item.equals(Material.AIR) && !item.getItemMeta().getPersistentDataContainer().has(new NamespacedKey(core, "itemBlocked"), PersistentDataType.STRING)){
+
+                    succes = false;
+
+                }
+
+            }
+
+        }
+
+        if(succes){
+
+            return true;
+
+        }
+
+        else {
+
+            return false;
+
+        }
 
     }
     public boolean existInventory(int page){

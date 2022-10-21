@@ -19,6 +19,7 @@ import wuason.storagemechanics.Storages.chunk.ChunkManager;
 import wuason.storagemechanics.Storages.chunk.ChunkStorage;
 import wuason.storagemechanics.Storages.itemmodify.ItemModifyManager;
 import wuason.storagemechanics.Storages.search.SearchSystem;
+import wuason.storagemechanics.Storages.utils.ChatInputManager;
 import wuason.storagemechanics.api.Events.InventoryOpenEvent;
 
 import java.io.*;
@@ -37,6 +38,8 @@ public class StorageManager {
     private ChunkManager chunkManager;
     private SearchSystem searchSystemManager;
     private ItemModifyManager itemModifyManager;
+    private Interfaces interfacesManger;
+    private ChatInputManager chatInputManager;
 
     public StorageManager(Storage plugin){
         this.core = plugin;
@@ -45,6 +48,8 @@ public class StorageManager {
         this.chunkManager = new ChunkManager(plugin);
         this.searchSystemManager = new SearchSystem(plugin);
         this.itemModifyManager = new ItemModifyManager(plugin);
+        this.interfacesManger = new Interfaces(plugin);
+        this.chatInputManager = new ChatInputManager(plugin);
     }
 
     public boolean RemoveStorage(String id){
@@ -161,6 +166,13 @@ public class StorageManager {
             int pag = player.getMetadata("storageinventorypag").get(0).asInt();
             StorageMemory storageMemory = getStorageMemory(id);
 
+            if(core.getBlockManager().getCloseSound(storageMemory.getNameSpaceID()) != null){
+
+                String sound = core.getBlockManager().getCloseSound(storageMemory.getNameSpaceID());
+                player.playSound(player.getLocation(),sound,100f,1f);
+
+            }
+
             player.removeMetadata("storageid",core);
             player.removeMetadata("storageinventory",core);
             player.removeMetadata("storageinventorypag", core);
@@ -174,6 +186,12 @@ public class StorageManager {
 
     public void openInv(StorageMemory memory,Player player ,int pag){
 
+        if(core.getBlockManager().getOpenSound(memory.getNameSpaceID()) != null){
+
+            String sound = core.getBlockManager().getOpenSound(memory.getNameSpaceID());
+            player.playSound(player.getLocation(),sound,100f,1f);
+
+        }
 
         player.setMetadata("storageinventorypag", new FixedMetadataValue(core, pag));
         player.setMetadata("storageid", new FixedMetadataValue(core, memory.getId()));
@@ -196,41 +214,161 @@ public class StorageManager {
             player.setMetadata("storageinventory", new FixedMetadataValue(core, inv));
             inv.setContents(memory.getItems(pag));
 
-            if(memory.getPages()>1){
+            if(!core.getBlockManager().existInterfaces(memory.getNameSpaceID())) {
 
-                //set items
+                for(int i = 0; i<inv.getSize();i++){
+                    if(inv.getItem(i) != null && !inv.getItem(i).getType().equals(Material.AIR)) {
 
-                int [] slots = {45,46,47,48,49,50,51,52,53};
-                core.getStorageUtils().setBlockItems(slots, inv);
+                        if (core.getStorageUtils().isBlockedItem(inv.getItem(i))) {
 
+                            inv.clear(i);
 
-                inv.setItem(52, core.getStorageUtils().getNextItem(CustomStack.getInstance(core.getConfig().getString("config.NextPageItem")).getItemStack()));
-                inv.setItem((memory.getSlots() - 4), core.getStorageUtils().getSearchItem());
-
-                if(pag>0){
-
-                    inv.setItem(46, core.getStorageUtils().getBackItem(CustomStack.getInstance(core.getConfig().getString("config.BackPageItem")).getItemStack()));
-
+                        }
+                    }
                 }
-                if(pag == (memory.getPages() - 1)){
 
-                    inv.setItem(46, core.getStorageUtils().getBackItem(CustomStack.getInstance(core.getConfig().getString("config.BackPageItem")).getItemStack()));
-                    inv.setItem(52, core.getStorageUtils().getBlockItem());
+                if (memory.getPages() > 1) {
+
+                    //set items
+
+                    int[] slots = {45, 46, 47, 48, 49, 50, 51, 52, 53};
+                    core.getStorageUtils().setBlockItems(slots, inv);
+
+
+                    inv.setItem(52, core.getStorageUtils().getNextItem(CustomStack.getInstance(core.getConfig().getString("config.NextPageItem")).getItemStack()));
+                    inv.setItem((memory.getSlots() - 4), core.getStorageUtils().getSearchItem());
+
+                    if (pag > 0) {
+
+                        inv.setItem(46, core.getStorageUtils().getBackItem(CustomStack.getInstance(core.getConfig().getString("config.BackPageItem")).getItemStack()));
+
+                    }
+                    if (pag == (memory.getPages() - 1)) {
+
+                        inv.setItem(46, core.getStorageUtils().getBackItem(CustomStack.getInstance(core.getConfig().getString("config.BackPageItem")).getItemStack()));
+                        inv.setItem(52, core.getStorageUtils().getBlockItem());
+                    }
+                }
+
+                if (Bukkit.getPluginManager().getPlugin("ChestSort") != null) {
+                    if (memory.getPages() > 1) {
+
+                        inv.setItem((memory.getSlots() - 5), core.getStorageUtils().getChestSortItem(CustomStack.getInstance(core.getConfig().getString("config.ChestSortItem")).getItemStack()));
+
+                    } else {
+
+                        inv.setItem(memory.getSlots() - 1, core.getStorageUtils().getChestSortItem(CustomStack.getInstance(core.getConfig().getString("config.ChestSortItem")).getItemStack()));
+
+                    }
+                    //de.jeff_media.chestsort.api.ChestSortAPI.sortInventory(inv,0,45);
                 }
             }
+            else {
 
-            if(Bukkit.getPluginManager().getPlugin("ChestSort") != null) {
-                if(memory.getPages()>1){
 
-                    inv.setItem((memory.getSlots() - 5) ,core.getStorageUtils().getChestSortItem(CustomStack.getInstance(core.getConfig().getString("config.ChestSortItem")).getItemStack()));
+                if (memory.getPages() > 1){
+
+                    if(pag == 0){
+
+                        ItemStack[] itemStack = core.getBlockManager().getInterfaceFirst(memory.getNameSpaceID());
+
+                        for (int i = 0; i < inv.getSize(); i++) {
+
+                            if (inv.getItem(i) != null && !inv.getItem(i).getType().equals(Material.AIR)) {
+
+                                if (core.getStorageUtils().isBlockedItem(inv.getItem(i))) {
+
+                                    inv.clear(i);
+
+                                }
+                            }
+
+                            if (itemStack[i] != null && !itemStack[i].getType().equals(Material.AIR)) {
+
+                                inv.setItem(i, itemStack[i]);
+
+                            }
+
+                        }
+
+                    }
+
+                    else if (pag == (memory.getPages() - 1)) {
+
+                        ItemStack[] itemStack = core.getBlockManager().getInterfaceLast(memory.getNameSpaceID());
+
+                        for (int i = 0; i < inv.getSize(); i++) {
+
+                            if (inv.getItem(i) != null && !inv.getItem(i).getType().equals(Material.AIR)) {
+
+                                if (core.getStorageUtils().isBlockedItem(inv.getItem(i))) {
+
+                                    inv.clear(i);
+
+                                }
+                            }
+
+                            if (itemStack[i] != null && !itemStack[i].getType().equals(Material.AIR)) {
+
+                                inv.setItem(i, itemStack[i]);
+
+                            }
+
+                        }
+
+                    }
+
+                    else if (pag > 0) {
+                        ItemStack[] itemStack = core.getBlockManager().getInterfaceBetween(memory.getNameSpaceID());
+
+                        for (int i = 0; i < inv.getSize(); i++) {
+
+                            if (inv.getItem(i) != null && !inv.getItem(i).getType().equals(Material.AIR)) {
+
+                                if (core.getStorageUtils().isBlockedItem(inv.getItem(i))) {
+
+                                    inv.clear(i);
+
+                                }
+                            }
+
+                            if (itemStack[i] != null && !itemStack[i].getType().equals(Material.AIR)) {
+
+                                inv.setItem(i, itemStack[i]);
+
+                            }
+
+                        }
+
+                        //BETWEEN INTERFACE
+
+                    }
 
                 }
                 else {
 
-                    inv.setItem(memory.getSlots() - 1 ,core.getStorageUtils().getChestSortItem(CustomStack.getInstance(core.getConfig().getString("config.ChestSortItem")).getItemStack()));
+                    ItemStack[] itemStack = core.getBlockManager().getInterfaceFirst(memory.getNameSpaceID());
 
+                    for (int i = 0; i < inv.getSize(); i++) {
+
+                        if (inv.getItem(i) != null && !inv.getItem(i).getType().equals(Material.AIR)) {
+
+                            if (core.getStorageUtils().isBlockedItem(inv.getItem(i))) {
+
+                                inv.clear(i);
+
+                            }
+                        }
+
+                        if (itemStack[i] != null && !itemStack[i].getType().equals(Material.AIR)) {
+
+                            inv.setItem(i, itemStack[i]);
+
+                        }
+
+                    }
                 }
-                //de.jeff_media.chestsort.api.ChestSortAPI.sortInventory(inv,0,45);
+
             }
 
             memory.setItems(inv.getContents(), pag);
@@ -630,5 +768,13 @@ public class StorageManager {
 
     public ItemModifyManager getItemModifyManager() {
         return itemModifyManager;
+    }
+
+    public Interfaces getInterfacesManger() {
+        return interfacesManger;
+    }
+
+    public ChatInputManager getChatInputManager() {
+        return chatInputManager;
     }
 }

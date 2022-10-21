@@ -156,6 +156,31 @@ public class ConfigManager {
             config.addDefault("messages.MaxDistanceOpenStorage", "&8[&6StorageMechanics&8] -> &cYou can't open the storage at that distance, get a little closer and try again");
             Bukkit.getScheduler().runTaskLater(core,() -> core.saveConfig(), 10);
         }
+        if(!config.contains("items.InterfaceEditItem")){
+            config.addDefault("items.InterfaceEditItem", "&6Edit interface");
+            Bukkit.getScheduler().runTaskLater(core,() -> core.saveConfig(), 10);
+        }
+        if(!config.contains("items.InterfaceEditLore")){
+            config.addDefault("items.InterfaceEditLore", "&cIf you want to delete the interface just");
+            Bukkit.getScheduler().runTaskLater(core,() -> core.saveConfig(), 10);
+        }
+        if(!config.contains("items.InterfaceEditLore2")){
+            config.addDefault("items.InterfaceEditLore2", "&cdon't add anything and it will be deleted");
+            Bukkit.getScheduler().runTaskLater(core,() -> core.saveConfig(), 10);
+        }
+        if(!config.contains("messages.EnterAsound")){
+            config.addDefault("messages.EnterAsound", "&8[&6StorageMechanics&8] -> &cEnter a sound, example: techmc:music.dakiti or minecraft:music.end");
+            Bukkit.getScheduler().runTaskLater(core,() -> core.saveConfig(), 10);
+        }
+        if(!config.contains("messages.SoundEstablished")){
+            config.addDefault("messages.SoundEstablished", "&8[&6StorageMechanics&8] -> &aThe sound has been established: &b");
+            Bukkit.getScheduler().runTaskLater(core,() -> core.saveConfig(), 10);
+        }
+        if(!config.contains("messages.ItemsInStorage")){
+            config.addDefault("messages.ItemsInStorage", "&8[&6StorageMechanics&8] -> &cThere are still items in storage");
+            Bukkit.getScheduler().runTaskLater(core,() -> core.saveConfig(), 10);
+        }
+
         config.options().copyDefaults(true);
     }
 

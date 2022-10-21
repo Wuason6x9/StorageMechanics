@@ -8,6 +8,8 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 import wuason.storagemechanics.Storage;
 import wuason.storagemechanics.Storages.search.SearchPlayer;
 import wuason.storagemechanics.Storages.search.SearchSystem;
+import wuason.storagemechanics.Storages.utils.ChatInputManager;
+import wuason.storagemechanics.Storages.utils.ChatPlayerInput;
 
 public class PlayerSendMessageEvent implements Listener {
 
@@ -26,6 +28,7 @@ public class PlayerSendMessageEvent implements Listener {
         Player player = event.getPlayer();
         String message = event.getMessage();
         SearchSystem searchManager = core.getStorageManager().getSearchSystemManager();
+        ChatInputManager chatInputManager = core.getStorageManager().getChatInputManager();
 
         if(searchManager.existSearchPlayer(player)){
 
@@ -88,7 +91,21 @@ public class PlayerSendMessageEvent implements Listener {
             }
 
         }
+        else if (chatInputManager.existChatPlayerInput(player)) {
+
+            event.setCancelled(true);
+
+            ChatPlayerInput chatPlayerInput = chatInputManager.getChatPlayerInput(player);
+
+            if(chatPlayerInput.getChatInputType().equals(ChatInputManager.ChatInputType.CLOSE_SOUND) || chatPlayerInput.getChatInputType().equals(ChatInputManager.ChatInputType.OPEN_SOUND)){
+
+                chatInputManager.ChatInput(player,chatPlayerInput.getNameSpaceID(),chatPlayerInput.getChatInputType(),message);
+
+            }
+
+        }
 
     }
+
 
 }

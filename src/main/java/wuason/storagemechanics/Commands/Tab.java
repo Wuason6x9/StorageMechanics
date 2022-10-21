@@ -1,5 +1,7 @@
 package wuason.storagemechanics.Commands;
 
+import dev.lone.itemsadder.api.CustomBlock;
+import dev.lone.itemsadder.api.CustomFurniture;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.command.Command;
@@ -51,9 +53,23 @@ public class Tab implements TabCompleter {
 
                                 return list;
 
+                            case "editStorage":
+
+                                CustomBlock block = CustomBlock.byAlreadyPlaced(player.getTargetBlockExact(100));
+
+                                if(block !=null){
+
+                                    String NameSpaceID = block.getNamespacedID();
+
+                                    return Collections.singletonList(NameSpaceID);
+
+                                }
+                                break;
+
                             case "create":
 
                                 return Arrays.asList("normal", "multipage");
+
 
                             case "info":
 

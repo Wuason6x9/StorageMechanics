@@ -22,15 +22,7 @@ public class PanelClose implements Listener {
     @EventHandler
     public void onClose(InventoryCloseEvent event){
 
-        Inventory inventory = event.getInventory();
 
-        if(manager.existPanel(inventory.getHolder())){
-
-            Panel panel = (Panel) inventory.getHolder();
-
-            manager.removePanel(panel.getId());
-
-        }
 
     }
 }

@@ -1,12 +1,9 @@
 package wuason.storagemechanics;
 
-import com.sk89q.worldguard.protection.managers.RegionManager;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.enginehub.piston.config.Config;
-import wuason.storagemechanics.BlockGestor.Gestor;
+import wuason.storagemechanics.BlockManager.Manager;
 import wuason.storagemechanics.BossBar.BossBarManager;
 import wuason.storagemechanics.Commands.CommandManager;
 import wuason.storagemechanics.Editor.EditorMode;
@@ -28,7 +25,7 @@ public final class Storage extends JavaPlugin {
     private BossBarManager bossBarManager;
     private StorageUtils storageUtils;
     private EditorMode editorMode;
-    private Gestor blockManager;
+    private Manager blockManager;
     private InfoManager infoManager;
     private Helper helperManager;
     private RegionManagerStorage regionManagerStorage;
@@ -51,7 +48,7 @@ public final class Storage extends JavaPlugin {
 
         try {
             this.editorMode = new EditorMode(this);
-            blockManager = new Gestor(this);
+            blockManager = new Manager(this);
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         }
@@ -137,7 +134,7 @@ public final class Storage extends JavaPlugin {
         return bossBarManager;
     }
 
-    public Gestor getBlockManager() {
+    public Manager getBlockManager() {
         return blockManager;
     }
 
