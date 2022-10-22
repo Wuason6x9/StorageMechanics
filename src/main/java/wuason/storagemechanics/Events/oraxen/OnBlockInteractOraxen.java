@@ -1,41 +1,37 @@
-package wuason.storagemechanics.Events;
+package wuason.storagemechanics.Events.oraxen;
 
-import dev.lone.itemsadder.api.Events.FurnitureInteractEvent;
+import io.th0rgal.oraxen.events.OraxenNoteBlockInteractEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.Location;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
 import wuason.storagemechanics.BlockManager.Manager;
 import wuason.storagemechanics.Editor.PlayerEditorMode;
 import wuason.storagemechanics.Storage;
 
 import java.io.FileNotFoundException;
 
-public class OnFurnitureInteract implements Listener {
+public class OnBlockInteractOraxen implements Listener {
+    private final Storage core;
 
-    private Storage core;
-
-    public OnFurnitureInteract(Storage plugin){
+    public OnBlockInteractOraxen(Storage plugin){
 
         this.core = plugin;
 
     }
 
-
-
     @EventHandler(priority = EventPriority.NORMAL)
-    public void onInteract(FurnitureInteractEvent event) throws FileNotFoundException {
-
+    public void OnCustomBlockClick(OraxenNoteBlockInteractEvent event) throws FileNotFoundException {
         Player player = event.getPlayer();
-        String NamespacedID = event.getNamespacedID();
-
+        String NamespacedID = event.getNoteBlockMechanic().getItemID();
         if(core.getEditorMode().isinEditorMode(player)){
 
             event.setCancelled(true);
-            Location loc = event.getBukkitEntity().getLocation();
+            Block block = event.getBlock();
 
             if(player.isSneaking()){
 
@@ -46,7 +42,7 @@ public class OnFurnitureInteract implements Listener {
                     core.getBlockManager().removeNameSpaceID(NamespacedID);
                     core.getStorageUtils().removedBlock(editor, NamespacedID);
 
-                    String id = core.getStorageUtils().getLocationStorageID(loc);
+                    String id = core.getStorageUtils().getLocationStorageID(block.getLocation());
 
                     core.getStorageManager().RemoveStorage(id);
 
@@ -73,13 +69,12 @@ public class OnFurnitureInteract implements Listener {
                     boolean isShulker = editor.isShulker();
                     int pages = editor.getPages();
 
-                    core.getBlockManager().addNameSpaceID(NamespacedID,slots,title,isShulker,pages);
+                    core.getBlockManager().addNameSpaceID(NamespacedID,slots,title,isShulker, pages);
                     core.getStorageUtils().AddedBlock(editor, NamespacedID);
 
 
                 }
                 else{
-                    //Añadir mensaje de que ya existe este bloque en la lista y que primero debe eliminarlo para poder añadir otro
 
                     player.sendMessage(ChatColor.translateAlternateColorCodes('&', core.getConfig().getString("messages.AlreadyInList")));
 
@@ -101,7 +96,7 @@ public class OnFurnitureInteract implements Listener {
                 }
                 if (core.getHelperManager() != null) {
 
-                    succes = core.getRegionManagerStorage().hasPermission(event.getBukkitEntity().getLocation(), event.getPlayer());
+                    succes = core.getRegionManagerStorage().hasPermission(event.getBlock().getLocation(), event.getPlayer());
 
                 }
                 if(event.getPlayer().hasPermission("storage.all")){
@@ -112,41 +107,38 @@ public class OnFurnitureInteract implements Listener {
 
                 if (succes) {
 
-                    Location loc = event.getBukkitEntity().getLocation();
                     if (!player.isSneaking()) {
                         event.setCancelled(true);
+                        Block block = event.getBlock();
                         Manager blockManager = core.getBlockManager();
 
                         byte slots = blockManager.getSlots(NamespacedID);
                         String title = blockManager.getTitle(NamespacedID);
-                        int pag = blockManager.getPags(NamespacedID);
                         boolean isShulker = blockManager.isShulker(NamespacedID);
-                        String id = core.getStorageUtils().getLocationStorageID(loc);
+                        String id = core.getStorageUtils().getLocationStorageID(block.getLocation());
+                        int pag = blockManager.getPags(NamespacedID);
 
                         if (core.getStorageManager().existStorageByID(id)) {  //SI existe el inventario
-
-                            core.getStorageManager().OpenStorage(player, id,0);
+                            core.getStorageManager().OpenStorage(player, id, 0);
                             //abrir inventario
 
                         } else {
 
                             if (core.getStorageManager().existStorageJson(id)) {
 
-                                core.getStorageManager().OpenStorage(player, id,0);
+                                core.getStorageManager().OpenStorage(player, id, 0);
 
                             } else {
 
-
-                                core.getStorageManager().CreateStorage(player, id, title, slots, isShulker, NamespacedID, pag, loc);
+                                core.getStorageManager().CreateStorage(player, id, title, slots, isShulker, NamespacedID, pag,block.getLocation());
                                 //Crear el inventario
                                 Bukkit.getScheduler().runTaskLater(core, () -> {
                                     try {
-                                        core.getStorageManager().OpenStorage(player, id,0);
+                                        core.getStorageManager().OpenStorage(player, id, 0);
                                     } catch (FileNotFoundException e) {
                                         throw new RuntimeException(e);
                                     }
                                 }, 1L);
-
                             }
 
                         }
@@ -155,5 +147,4 @@ public class OnFurnitureInteract implements Listener {
             }
         }
     }
-
 }

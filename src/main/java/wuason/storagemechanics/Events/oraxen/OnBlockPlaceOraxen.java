@@ -1,6 +1,7 @@
-package wuason.storagemechanics.Events;
+package wuason.storagemechanics.Events.oraxen;
 
 import dev.lone.itemsadder.api.Events.CustomBlockPlaceEvent;
+import io.th0rgal.oraxen.events.OraxenNoteBlockPlaceEvent;
 import org.bukkit.Location;
 import org.bukkit.NamespacedKey;
 import org.bukkit.event.EventHandler;
@@ -13,21 +14,20 @@ import wuason.storagemechanics.Storage;
 
 import java.io.IOException;
 
-public class OnPlaceBlock implements Listener {
-
+public class OnBlockPlaceOraxen implements Listener {
     private Storage core;
 
-    public OnPlaceBlock(Storage plugin){
+    public OnBlockPlaceOraxen(Storage plugin){
         this.core = plugin;
     }
 
     @EventHandler(priority = EventPriority.NORMAL)
-    public void OnplaceCustomBlock(CustomBlockPlaceEvent event) throws IOException {
+    public void OnplaceCustomBlock(OraxenNoteBlockPlaceEvent event) throws IOException {
 
-        ItemStack itemInHand = event.getItemInHand();
+        ItemStack itemInHand = event.getPlayer().getInventory().getItemInMainHand();
         ItemMeta itemMetaHand = itemInHand.getItemMeta();
         NamespacedKey key = new NamespacedKey(core, "storageid");
-        String uuid = itemMetaHand.getPersistentDataContainer().get(key,PersistentDataType.STRING);
+        String uuid = itemMetaHand.getPersistentDataContainer().get(key, PersistentDataType.STRING);
 
         if(uuid != null){
 
@@ -40,6 +40,4 @@ public class OnPlaceBlock implements Listener {
         }
 
     }
-
-
 }

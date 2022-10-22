@@ -3,7 +3,6 @@ package wuason.storagemechanics.Storages;
 import com.google.gson.Gson;
 import de.tr7zw.changeme.nbtapi.NBTContainer;
 import de.tr7zw.changeme.nbtapi.NBTItem;
-import dev.lone.itemsadder.api.CustomStack;
 import org.bukkit.*;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
@@ -235,17 +234,17 @@ public class StorageManager {
                     core.getStorageUtils().setBlockItems(slots, inv);
 
 
-                    inv.setItem(52, core.getStorageUtils().getNextItem(CustomStack.getInstance(core.getConfig().getString("config.NextPageItem")).getItemStack()));
+                    inv.setItem(52, core.getStorageUtils().getNextItem());
                     inv.setItem((memory.getSlots() - 4), core.getStorageUtils().getSearchItem());
 
                     if (pag > 0) {
 
-                        inv.setItem(46, core.getStorageUtils().getBackItem(CustomStack.getInstance(core.getConfig().getString("config.BackPageItem")).getItemStack()));
+                        inv.setItem(46, core.getStorageUtils().getBackItem());
 
                     }
                     if (pag == (memory.getPages() - 1)) {
 
-                        inv.setItem(46, core.getStorageUtils().getBackItem(CustomStack.getInstance(core.getConfig().getString("config.BackPageItem")).getItemStack()));
+                        inv.setItem(46, core.getStorageUtils().getBackItem());
                         inv.setItem(52, core.getStorageUtils().getBlockItem());
                     }
                 }
@@ -253,11 +252,11 @@ public class StorageManager {
                 if (Bukkit.getPluginManager().getPlugin("ChestSort") != null) {
                     if (memory.getPages() > 1) {
 
-                        inv.setItem((memory.getSlots() - 5), core.getStorageUtils().getChestSortItem(CustomStack.getInstance(core.getConfig().getString("config.ChestSortItem")).getItemStack()));
+                        inv.setItem((memory.getSlots() - 5), core.getStorageUtils().getChestSortItem());
 
                     } else {
 
-                        inv.setItem(memory.getSlots() - 1, core.getStorageUtils().getChestSortItem(CustomStack.getInstance(core.getConfig().getString("config.ChestSortItem")).getItemStack()));
+                        inv.setItem(memory.getSlots() - 1, core.getStorageUtils().getChestSortItem());
 
                     }
                     //de.jeff_media.chestsort.api.ChestSortAPI.sortInventory(inv,0,45);

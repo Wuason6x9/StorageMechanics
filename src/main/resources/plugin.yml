@@ -2,15 +2,15 @@ name: StorageMechanics
 version: '${project.version}'
 main: wuason.storagemechanics.Storage
 api-version: 1.16
-depend:
-  - ItemsAdder
 softdepend:
+  - ItemsAdder
+  - Oraxen
   - WorldGuard
   - ChestSort
 authors: [ Wuason ]
 description: Adds storage at blocks or furnitures
 website: techmc.es
-load: STARTUP
+load: POSTWORLD
 commands:
   storagemechanics:
     permission: storage.admin

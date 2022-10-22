@@ -10,6 +10,8 @@ import wuason.storagemechanics.Editor.EditorMode;
 import wuason.storagemechanics.Events.EventsManager;
 import wuason.storagemechanics.Helper.Helper;
 import wuason.storagemechanics.Storages.StorageManager;
+import wuason.storagemechanics.adapters.Adapter;
+import wuason.storagemechanics.adapters.PluginSelectorManager;
 import wuason.storagemechanics.info.InfoManager;
 import wuason.storagemechanics.panels.PanelsManager;
 import wuason.storagemechanics.worldguard.RegionManagerStorage;
@@ -30,6 +32,9 @@ public final class Storage extends JavaPlugin {
     private Helper helperManager;
     private RegionManagerStorage regionManagerStorage;
     private PanelsManager panelsManager;
+    private PluginSelectorManager pluginSelectorManager;
+    private PluginSelectorManager.PluginSelected pluginSelected;
+    private Adapter adapter;
     private ConfigManager configManager;
     private static Storage instance = null;
 
@@ -43,6 +48,11 @@ public final class Storage extends JavaPlugin {
     public void onEnable() {
 
         //GESTORES o MANAGERS
+
+        //Selector Plugin
+        pluginSelectorManager = new PluginSelectorManager(this);
+        pluginSelected = pluginSelectorManager.SelectPlugin();
+        adapter = new Adapter(this, pluginSelected);
 
         ConfigManager configManager = new ConfigManager(this);
 
@@ -90,27 +100,30 @@ public final class Storage extends JavaPlugin {
     @Override
     public void onDisable() {
 
-        //apagar block manager
-        try {
-            blockManager.stop();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        if(pluginSelected != null) {
 
-        //GUARDAR TODOS LOS INVETARIOS
-        while (!storageManager.getStorageMemories().isEmpty()){
-            
+            //apagar block manager
             try {
-                storageManager.saveStorage(storageManager.getStorageMemories().get(0));
+                blockManager.stop();
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
 
+            //GUARDAR TODOS LOS INVETARIOS
+            while (!storageManager.getStorageMemories().isEmpty()) {
+
+                try {
+                    storageManager.saveStorage(storageManager.getStorageMemories().get(0));
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+
+            }
+
+            Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "¡All storages saved!");
+
+            // Plugin shutdown logic
         }
-
-        Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "¡All storages saved!");
-
-        // Plugin shutdown logic
     }
 
     //OBTENER INSTANCIAS DE MANAGERS Y CORE
@@ -164,5 +177,17 @@ public final class Storage extends JavaPlugin {
 
     public RegionManagerStorage getRegionManagerStorage() {
         return regionManagerStorage;
+    }
+
+    public PluginSelectorManager getPluginSelectorManager() {
+        return pluginSelectorManager;
+    }
+
+    public PluginSelectorManager.PluginSelected getPluginSelected() {
+        return pluginSelected;
+    }
+
+    public Adapter getAdapter() {
+        return adapter;
     }
 }

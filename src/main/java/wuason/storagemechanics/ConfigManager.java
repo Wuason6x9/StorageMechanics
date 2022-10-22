@@ -2,6 +2,7 @@ package wuason.storagemechanics;
 
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
+import wuason.storagemechanics.adapters.PluginSelectorManager;
 
 public class ConfigManager {
 
@@ -112,26 +113,6 @@ public class ConfigManager {
             config.addDefault("messages.loadAllCommand", "&8[&6StorageMechanics&8] -> &cConfig has been loaded!");
             Bukkit.getScheduler().runTaskLater(core,() -> core.saveConfig(), 10);
         }
-        if(!config.contains("config.BlockItem")){
-            config.addDefault("config.BlockItem", "storagemechanics:blocked_item");
-            Bukkit.getScheduler().runTaskLater(core,() -> core.saveConfig(), 10);
-        }
-        if(!config.contains("config.NextPageItem")){
-            config.addDefault("config.NextPageItem", "storagemechanics:next_page_filled");
-            Bukkit.getScheduler().runTaskLater(core,() -> core.saveConfig(), 10);
-        }
-        if(!config.contains("config.BackPageItem")){
-            config.addDefault("config.BackPageItem", "storagemechanics:back_page_filled");
-            Bukkit.getScheduler().runTaskLater(core,() -> core.saveConfig(), 10);
-        }
-        if(!config.contains("config.ChestSortItem")){
-            config.addDefault("config.ChestSortItem", "storagemechanics:sort_item_filled");
-            Bukkit.getScheduler().runTaskLater(core,() -> core.saveConfig(), 10);
-        }
-        if(!config.contains("config.SearchItem")){
-            config.addDefault("config.SearchItem", "storagemechanics:search_item_filled");
-            Bukkit.getScheduler().runTaskLater(core,() -> core.saveConfig(), 10);
-        }
         if(!config.contains("messages.SearchSystemChat")){
             config.addDefault("messages.SearchSystemChat", "&8[&6StorageMechanics&8] -> &2Enter a valid page!");
             Bukkit.getScheduler().runTaskLater(core,() -> core.saveConfig(), 10);
@@ -179,6 +160,54 @@ public class ConfigManager {
         if(!config.contains("messages.ItemsInStorage")){
             config.addDefault("messages.ItemsInStorage", "&8[&6StorageMechanics&8] -> &cThere are still items in storage");
             Bukkit.getScheduler().runTaskLater(core,() -> core.saveConfig(), 10);
+        }
+
+        if(core.getPluginSelected().equals(PluginSelectorManager.PluginSelected.ORAXEN)){
+
+            if(!config.contains("config.BlockItem")){
+                config.addDefault("config.BlockItem", "sm_blocked_item");
+                Bukkit.getScheduler().runTaskLater(core,() -> core.saveConfig(), 10);
+            }
+            if(!config.contains("config.NextPageItem")){
+                config.addDefault("config.NextPageItem", "sm_next_page_filled");
+                Bukkit.getScheduler().runTaskLater(core,() -> core.saveConfig(), 10);
+            }
+            if(!config.contains("config.BackPageItem")){
+                config.addDefault("config.BackPageItem", "sm_back_page_filled");
+                Bukkit.getScheduler().runTaskLater(core,() -> core.saveConfig(), 10);
+            }
+            if(!config.contains("config.ChestSortItem")){
+                config.addDefault("config.ChestSortItem", "sm_sort_item_filled");
+                Bukkit.getScheduler().runTaskLater(core,() -> core.saveConfig(), 10);
+            }
+            if(!config.contains("config.SearchItem")){
+                config.addDefault("config.SearchItem", "sm_search_item_filled");
+                Bukkit.getScheduler().runTaskLater(core,() -> core.saveConfig(), 10);
+            }
+
+        } else if (core.getPluginSelected().equals(PluginSelectorManager.PluginSelected.ITEMSADDER)) {
+
+            if(!config.contains("config.BlockItem")){
+                config.addDefault("config.BlockItem", "storagemechanics:blocked_item");
+                Bukkit.getScheduler().runTaskLater(core,() -> core.saveConfig(), 10);
+            }
+            if(!config.contains("config.NextPageItem")){
+                config.addDefault("config.NextPageItem", "storagemechanics:next_page_filled");
+                Bukkit.getScheduler().runTaskLater(core,() -> core.saveConfig(), 10);
+            }
+            if(!config.contains("config.BackPageItem")){
+                config.addDefault("config.BackPageItem", "storagemechanics:back_page_filled");
+                Bukkit.getScheduler().runTaskLater(core,() -> core.saveConfig(), 10);
+            }
+            if(!config.contains("config.ChestSortItem")){
+                config.addDefault("config.ChestSortItem", "storagemechanics:sort_item_filled");
+                Bukkit.getScheduler().runTaskLater(core,() -> core.saveConfig(), 10);
+            }
+            if(!config.contains("config.SearchItem")){
+                config.addDefault("config.SearchItem", "storagemechanics:search_item_filled");
+                Bukkit.getScheduler().runTaskLater(core,() -> core.saveConfig(), 10);
+            }
+
         }
 
         config.options().copyDefaults(true);

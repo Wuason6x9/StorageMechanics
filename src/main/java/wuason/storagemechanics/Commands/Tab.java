@@ -2,6 +2,13 @@ package wuason.storagemechanics.Commands;
 
 import dev.lone.itemsadder.api.CustomBlock;
 import dev.lone.itemsadder.api.CustomFurniture;
+import io.th0rgal.oraxen.compatibilities.provided.itembridge.OraxenItemBridge;
+import io.th0rgal.oraxen.mechanics.provided.gameplay.block.BlockMechanic;
+import io.th0rgal.oraxen.mechanics.provided.gameplay.block.BlockMechanicFactory;
+import io.th0rgal.oraxen.mechanics.provided.gameplay.noteblock.NoteBlockMechanic;
+import io.th0rgal.oraxen.mechanics.provided.gameplay.noteblock.NoteBlockMechanicFactory;
+import io.th0rgal.oraxen.mechanics.provided.gameplay.stringblock.StringBlockMechanicFactory;
+import io.th0rgal.oraxen.shaded.customblockdata.CustomBlockData;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.command.Command;
@@ -11,6 +18,7 @@ import org.bukkit.entity.Player;
 import wuason.storagemechanics.Storage;
 import wuason.storagemechanics.Storages.itemmodify.ItemModify;
 import wuason.storagemechanics.Storages.itemmodify.ItemModifyManager;
+import wuason.storagemechanics.adapters.PluginSelectorManager;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -55,13 +63,30 @@ public class Tab implements TabCompleter {
 
                             case "editStorage":
 
-                                CustomBlock block = CustomBlock.byAlreadyPlaced(player.getTargetBlockExact(100));
+                                if(core.getPluginSelected().equals(PluginSelectorManager.PluginSelected.ITEMSADDER)) {
+                                    CustomBlock block = CustomBlock.byAlreadyPlaced(player.getTargetBlockExact(100));
 
-                                if(block !=null){
+                                    if (block != null) {
 
-                                    String NameSpaceID = block.getNamespacedID();
+                                        String NameSpaceID = block.getNamespacedID();
 
-                                    return Collections.singletonList(NameSpaceID);
+                                        return Collections.singletonList(NameSpaceID);
+
+                                    }
+                                }
+                                else if(core.getPluginSelected().equals(PluginSelectorManager.PluginSelected.ORAXEN)){
+
+
+                                    BlockMechanic block = BlockMechanicFactory.getBlockMechanic(player.getTargetBlockExact(100));
+
+
+                                    if (block != null) {
+
+                                        String NameSpaceID = block.getItemID();
+
+                                        return Collections.singletonList(NameSpaceID);
+
+                                    }
 
                                 }
                                 break;

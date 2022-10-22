@@ -1,6 +1,5 @@
-package wuason.storagemechanics.Events;
+package wuason.storagemechanics.Events.itemsadder;
 
-import com.sk89q.worldguard.WorldGuard;
 import dev.lone.itemsadder.api.Events.ItemsAdderLoadDataEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;

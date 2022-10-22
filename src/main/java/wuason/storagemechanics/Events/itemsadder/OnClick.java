@@ -1,4 +1,4 @@
-package wuason.storagemechanics.Events;
+package wuason.storagemechanics.Events.itemsadder;
 
 import dev.lone.itemsadder.api.Events.CustomBlockInteractEvent;
 import org.bukkit.Bukkit;

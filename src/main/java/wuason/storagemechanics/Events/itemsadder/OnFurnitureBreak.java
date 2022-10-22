@@ -1,4 +1,4 @@
-package wuason.storagemechanics.Events;
+package wuason.storagemechanics.Events.itemsadder;
 
 import dev.lone.itemsadder.api.CustomStack;
 import dev.lone.itemsadder.api.Events.FurnitureBreakEvent;
@@ -6,7 +6,6 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
-import org.bukkit.block.Block;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;

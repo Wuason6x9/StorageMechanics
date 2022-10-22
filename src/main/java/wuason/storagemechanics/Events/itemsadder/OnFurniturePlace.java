@@ -1,11 +1,10 @@
-package wuason.storagemechanics.Events;
+package wuason.storagemechanics.Events.itemsadder;
 
 import de.tr7zw.changeme.nbtapi.NBTContainer;
 import de.tr7zw.changeme.nbtapi.NBTItem;
 import dev.lone.itemsadder.api.CustomStack;
 import dev.lone.itemsadder.api.Events.FurniturePlaceSuccessEvent;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;

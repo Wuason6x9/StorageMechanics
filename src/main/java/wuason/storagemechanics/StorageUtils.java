@@ -1,7 +1,6 @@
 package wuason.storagemechanics;
 
 import com.sun.tools.javac.jvm.Items;
-import dev.lone.itemsadder.api.CustomStack;
 import org.bukkit.*;
 import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarStyle;
@@ -291,8 +290,8 @@ public class StorageUtils {
 
         return item;
     }
-    public ItemStack getNextItem(ItemStack item){
-
+    public ItemStack getNextItem(){
+        ItemStack item = core.getAdapter().getItemStackByInstance(core.getConfig().getString("config.NextPageItem"));
         ItemMeta meta = item.getItemMeta();
 
         meta.getPersistentDataContainer().set(new NamespacedKey(core,"nextItem"), PersistentDataType.STRING, "next");
@@ -302,8 +301,8 @@ public class StorageUtils {
 
         return item;
     }
-    public ItemStack getBackItem(ItemStack item){
-
+    public ItemStack getBackItem(){
+        ItemStack item = core.getAdapter().getItemStackByInstance(core.getConfig().getString("config.BackPageItem"));
         ItemMeta meta = item.getItemMeta();
 
         meta.getPersistentDataContainer().set(new NamespacedKey(core,"backItem"), PersistentDataType.STRING, "back");
@@ -313,7 +312,9 @@ public class StorageUtils {
 
         return item;
     }
-    public ItemStack getChestSortItem(ItemStack item){
+    public ItemStack getChestSortItem(){
+
+        ItemStack item = core.getAdapter().getItemStackByInstance(core.getConfig().getString("config.ChestSortItem"));
 
         ItemMeta meta = item.getItemMeta();
 
@@ -325,7 +326,7 @@ public class StorageUtils {
         return item;
     }
     public ItemStack getSearchItem(){
-        ItemStack item = CustomStack.getInstance(core.getConfig().getString("config.SearchItem")).getItemStack();
+        ItemStack item = core.getAdapter().getItemStackByInstance(core.getConfig().getString("config.SearchItem"));
 
         ItemMeta meta = item.getItemMeta();
 
@@ -339,7 +340,7 @@ public class StorageUtils {
 
     public ItemStack getBlockItem(){
 
-        ItemStack itemBlackPanel = CustomStack.getInstance(core.getConfig().getString("config.BlockItem")).getItemStack();
+        ItemStack itemBlackPanel = core.getAdapter().getItemStackByInstance(core.getConfig().getString("config.BlockItem"));
         ItemMeta itemBlackPanelMeta = itemBlackPanel.getItemMeta();
 
 
@@ -370,11 +371,7 @@ public class StorageUtils {
             return true;
 
         }
-        else {
-
-            return false;
-
-        }
+        return false;
 
     }
     public boolean isNextItem(ItemStack item){
@@ -386,11 +383,7 @@ public class StorageUtils {
             return true;
 
         }
-        else {
-
-            return false;
-
-        }
+        return false;
 
     }
     public boolean isSortItem(ItemStack item){
@@ -402,11 +395,7 @@ public class StorageUtils {
             return true;
 
         }
-        else {
-
-            return false;
-
-        }
+        return false;
 
     }
 
@@ -419,11 +408,7 @@ public class StorageUtils {
             return true;
 
         }
-        else {
-
-            return false;
-
-        }
+        return false;
 
     }
 
@@ -437,11 +422,7 @@ public class StorageUtils {
             return true;
 
         }
-        else {
-
-            return false;
-
-        }
+        return false;
 
     }
 

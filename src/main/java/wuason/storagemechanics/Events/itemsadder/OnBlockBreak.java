@@ -1,12 +1,9 @@
-package wuason.storagemechanics.Events;
+package wuason.storagemechanics.Events.itemsadder;
 
-import dev.lone.itemsadder.api.CustomBlock;
 import dev.lone.itemsadder.api.CustomStack;
 import dev.lone.itemsadder.api.Events.CustomBlockBreakEvent;
 import org.bukkit.*;
 import org.bukkit.block.Block;
-import org.bukkit.entity.HumanEntity;
-import org.bukkit.entity.Item;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -17,10 +14,7 @@ import wuason.storagemechanics.Storage;
 import wuason.storagemechanics.Storages.StorageManager;
 import wuason.storagemechanics.Storages.StorageMemory;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.UUID;
 
 public class OnBlockBreak implements Listener {

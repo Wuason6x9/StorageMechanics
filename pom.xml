@@ -126,5 +126,11 @@
             <version>7.0.7</version>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>com.github.oraxen</groupId>
+            <artifactId>oraxen</artifactId>
+            <version>-fd24cac055-1</version>
+            <scope>provided</scope>
+        </dependency>
     </dependencies>
 </project>
