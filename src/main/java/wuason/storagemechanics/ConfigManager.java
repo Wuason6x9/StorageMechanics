@@ -112,24 +112,24 @@ public class ConfigManager {
             config.addDefault("messages.loadAllCommand", "&8[&6StorageMechanics&8] -> &cConfig has been loaded!");
             Bukkit.getScheduler().runTaskLater(core,() -> core.saveConfig(), 10);
         }
-        if(!config.contains("config.CustomModelDataBlackGlass")){
-            config.addDefault("config.CustomModelDataBlackGlass", 100000);
+        if(!config.contains("config.BlockItem")){
+            config.addDefault("config.BlockItem", "storagemechanics:blocked_item");
             Bukkit.getScheduler().runTaskLater(core,() -> core.saveConfig(), 10);
         }
         if(!config.contains("config.NextPageItem")){
-            config.addDefault("config.NextPageItem", "mcicons:icon_next_orange");
+            config.addDefault("config.NextPageItem", "storagemechanics:next_page_filled");
             Bukkit.getScheduler().runTaskLater(core,() -> core.saveConfig(), 10);
         }
         if(!config.contains("config.BackPageItem")){
-            config.addDefault("config.BackPageItem", "mcicons:icon_back_orange");
+            config.addDefault("config.BackPageItem", "storagemechanics:back_page_filled");
             Bukkit.getScheduler().runTaskLater(core,() -> core.saveConfig(), 10);
         }
         if(!config.contains("config.ChestSortItem")){
-            config.addDefault("config.ChestSortItem", "mcicons:icon_arrow_chest");
+            config.addDefault("config.ChestSortItem", "storagemechanics:sort_item_filled");
             Bukkit.getScheduler().runTaskLater(core,() -> core.saveConfig(), 10);
         }
         if(!config.contains("config.SearchItem")){
-            config.addDefault("config.SearchItem", "mcicons:icon_search");
+            config.addDefault("config.SearchItem", "storagemechanics:search_item_filled");
             Bukkit.getScheduler().runTaskLater(core,() -> core.saveConfig(), 10);
         }
         if(!config.contains("messages.SearchSystemChat")){

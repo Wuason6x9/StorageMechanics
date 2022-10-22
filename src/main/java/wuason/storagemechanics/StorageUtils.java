@@ -339,10 +339,10 @@ public class StorageUtils {
 
     public ItemStack getBlockItem(){
 
-        ItemStack itemBlackPanel = new ItemStack(Material.BLACK_STAINED_GLASS_PANE);
+        ItemStack itemBlackPanel = CustomStack.getInstance(core.getConfig().getString("config.BlockItem")).getItemStack();
         ItemMeta itemBlackPanelMeta = itemBlackPanel.getItemMeta();
-        itemBlackPanelMeta.setDisplayName(" ");
-        itemBlackPanelMeta.setCustomModelData(core.getConfig().getInt("CustomModelDataBlackGlass"));
+
+
         itemBlackPanelMeta.getPersistentDataContainer().set(new NamespacedKey(core, "blockedItem"), PersistentDataType.STRING, "blocked");
         itemBlackPanelMeta.getPersistentDataContainer().set(new NamespacedKey(core, "itemBlocked"), PersistentDataType.STRING, "blocked");
         itemBlackPanel.setItemMeta(itemBlackPanelMeta);

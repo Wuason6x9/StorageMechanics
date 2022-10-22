@@ -28,8 +28,6 @@ public class OnClick implements Listener {
 
     @EventHandler(priority = EventPriority.NORMAL)
     public void OnCustomBlockClick(CustomBlockInteractEvent event) throws FileNotFoundException {
-
-
         Player player = event.getPlayer();
         String NamespacedID = event.getNamespacedID();
         if(event.getAction().equals(Action.RIGHT_CLICK_BLOCK)){
