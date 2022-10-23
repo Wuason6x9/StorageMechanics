@@ -1,43 +1,39 @@
-package wuason.storagemechanics.Events.itemsadder;
+package wuason.storagemechanics.Events.oraxen;
 
-import de.tr7zw.changeme.nbtapi.NBTContainer;
-import de.tr7zw.changeme.nbtapi.NBTItem;
-import dev.lone.itemsadder.api.CustomStack;
 import dev.lone.itemsadder.api.Events.FurniturePlaceSuccessEvent;
-import org.bukkit.Bukkit;
+import io.th0rgal.oraxen.events.OraxenFurniturePlaceEvent;
+import io.th0rgal.oraxen.events.OraxenNoteBlockPlaceEvent;
 import org.bukkit.Location;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.block.Action;
-import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
 import wuason.storagemechanics.Storage;
 
 import java.io.IOException;
-import java.util.ArrayList;
 
-public class OnFurniturePlace implements Listener {
+public class OnFurniturePlaceOraxen implements Listener {
 
-    private Storage core;
+    private final Storage core;
 
-    public OnFurniturePlace(Storage plugin){
+    public OnFurniturePlaceOraxen(Storage plugin){
         this.core = plugin;
     }
 
 
     @EventHandler(priority = EventPriority.NORMAL)
-    public void onPlace(FurniturePlaceSuccessEvent event) throws IOException {
+    public void onPlace(OraxenFurniturePlaceEvent event) throws IOException {
 
-        String NameSpaceID = event.getNamespacedID();
+        String NameSpaceID = event.getFurnitureMechanic().getItemID();
         Player player = event.getPlayer();
         ItemStack itemInHand = player.getInventory().getItemInMainHand();
 
         if(core.getBlockManager().existNameSpaceID(NameSpaceID)){
+
 
             ItemMeta itemMetaHand = itemInHand.getItemMeta();
             NamespacedKey key = new NamespacedKey(core, "storageid");
@@ -45,7 +41,7 @@ public class OnFurniturePlace implements Listener {
 
             if(uuid != null){
 
-                Location loc = event.getBukkitEntity().getLocation();
+                Location loc = event.getItemFrame().getLocation();
 
                 String id  = core.getStorageUtils().getLocationStorageID(loc);
 
@@ -57,5 +53,4 @@ public class OnFurniturePlace implements Listener {
 
 
     }
-
 }

@@ -3,9 +3,7 @@ package wuason.storagemechanics.Events;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.PluginManager;
 import wuason.storagemechanics.Events.itemsadder.*;
-import wuason.storagemechanics.Events.oraxen.OnBlockBreakOraxen;
-import wuason.storagemechanics.Events.oraxen.OnBlockInteractOraxen;
-import wuason.storagemechanics.Events.oraxen.OnBlockPlaceOraxen;
+import wuason.storagemechanics.Events.oraxen.*;
 import wuason.storagemechanics.Storage;
 import wuason.storagemechanics.adapters.PluginSelectorManager;
 import wuason.storagemechanics.panels.PanelClick;
@@ -40,6 +38,10 @@ public class EventsManager {
             pm.registerEvents(new OnBlockBreakOraxen(core),core);
             pm.registerEvents(new OnBlockInteractOraxen(core), core);
             pm.registerEvents(new OnBlockPlaceOraxen(core), core);
+
+            pm.registerEvents(new OnFurniturePlaceOraxen(core), core);
+            pm.registerEvents(new OnFurnitureBreakOraxen(core), core);
+            pm.registerEvents(new OnFurnitureInteractOraxen(core), core);
 
         }
 
