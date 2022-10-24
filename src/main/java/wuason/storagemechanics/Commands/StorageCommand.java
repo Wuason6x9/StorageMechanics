@@ -32,6 +32,10 @@ public class StorageCommand implements CommandExecutor {
         //argumentos
         if(args.length>0){
 
+            if(args.length != 2){
+                return false;
+            }
+
             switch (args[0]){
 
                 case "exit":
@@ -53,6 +57,7 @@ public class StorageCommand implements CommandExecutor {
 
                     }
                     switch (args[1]){
+
 
                         case "multipage":
 

@@ -7,7 +7,9 @@ softdepend:
   - Oraxen
   - WorldGuard
   - ChestSort
-authors: [ Wuason ]
+  - MythicMobs
+authors:
+  - Wuason
 description: Adds storage at blocks or furnitures
 website: techmc.es
 load: POSTWORLD

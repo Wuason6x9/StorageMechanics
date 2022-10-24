@@ -13,6 +13,7 @@ import wuason.storagemechanics.Storages.StorageManager;
 import wuason.storagemechanics.adapters.Adapter;
 import wuason.storagemechanics.adapters.PluginSelectorManager;
 import wuason.storagemechanics.info.InfoManager;
+import wuason.storagemechanics.mythic.MythicMobsManager;
 import wuason.storagemechanics.panels.PanelsManager;
 import wuason.storagemechanics.worldguard.RegionManagerStorage;
 
@@ -22,6 +23,7 @@ import java.io.IOException;
 public final class Storage extends JavaPlugin {
 
     private CommandManager commandManager;
+    private MythicMobsManager mythicMobsManager;
     private EventsManager eventsManager;
     private StorageManager storageManager;
     private BossBarManager bossBarManager;
@@ -63,6 +65,7 @@ public final class Storage extends JavaPlugin {
             throw new RuntimeException(e);
         }
         storageUtils = new StorageUtils(this);
+        mythicMobsManager = new MythicMobsManager(this);
         commandManager = new CommandManager(this);
         storageManager = new StorageManager(this);
         panelsManager = new PanelsManager(this);
@@ -189,5 +192,9 @@ public final class Storage extends JavaPlugin {
 
     public Adapter getAdapter() {
         return adapter;
+    }
+
+    public MythicMobsManager getMythicMobsManager() {
+        return mythicMobsManager;
     }
 }

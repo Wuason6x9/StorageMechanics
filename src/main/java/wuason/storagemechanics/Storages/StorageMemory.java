@@ -4,6 +4,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.entity.Item;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataType;
@@ -45,6 +46,73 @@ public class StorageMemory {
 
         }
 
+
+    }
+
+
+    public boolean addItemAll(ItemStack itemStack){
+
+        boolean succes = false;
+
+        for(int i=0;i<getPages();i++){
+
+            if(succes){
+                return true;
+            }
+
+            if(existInventory(i)){
+
+                Inventory inventory = getInventory(i);
+
+                succes = core.getStorageUtils().addItemInventory(inventory,itemStack);
+
+
+            }
+            else {
+
+                succes = addItem(i,itemStack);
+
+            }
+
+
+        }
+
+        return false;
+    }
+
+    public boolean addItem(int page,ItemStack itemStack){
+
+        ItemStack[] items = getItems(page);
+
+        for(int i=0;i<items.length;i++){
+
+            if(items[i] != null || items[i].equals(Material.AIR)){
+
+                setItem(page,i,items[i]);
+                return true;
+
+            }
+
+        }
+
+        return false;
+
+    }
+
+    public ItemStack getItem(int page, int slot){
+
+        ItemStack[] items = getItems(page);
+
+        return items[slot];
+
+    }
+    public boolean setItem(int page, int slot, ItemStack itemStack){
+
+        ItemStack[] items =  allItems.get(page) ;
+
+        items[slot] = itemStack;
+
+        return true;
 
     }
 

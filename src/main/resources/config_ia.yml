@@ -1,24 +1,3 @@
-messages:
-  EditorModeDesactivedMessage: '&8[&6StorageMechanics&8] -> &cEditor mode deactivated!'
-  message_editor_maxRows: '&8[&6StorageMechanics&8] -> &cError, max 6 rows!'
-  CorrectUsage: '&8[&6StorageMechanics&8] -> &cError command'
-  InEditorMode: '&8[&6StorageMechanics&8] -> &aEditor mode activated'
-  added: '&8[&6StorageMechanics&8] -> &9New block added!'
-  NotInList: '&8[&6StorageMechanics&8] -> &2This block not in list! &a'
-  AlreadyInList: '&8[&6StorageMechanics&8] -> &2This block already in list! &a'
-  loadAllCommand: '&8[&6StorageMechanics&8] -> &cConfig has been loaded!'
-  SearchSystemChat: '&8[&6StorageMechanics&8] -> &2Enter a valid page!'
-  storageNotExist: '&8[&6StorageMechanics&8] -> &cThe storage you are trying to open
-    does not exist!'
-  PageNotExist: '&8[&6StorageMechanics&8] -> &cThat page does not exist!'
-  NotItemInHand: '&8[&6StorageMechanics&8] -> &cYou don''t have any items in hand!'
-  MaxDistanceOpenStorage: '&8[&6StorageMechanics&8] -> &cYou can''t open the storage
-    at that distance, get a little closer and try again'
-  EnterAsound: '&8[&6StorageMechanics&8] -> &cEnter a sound, example: techmc:music.dakiti
-    or minecraft:music.end'
-  SoundEstablished: '&8[&6StorageMechanics&8] -> &aThe sound has been established:
-    &b'
-  ItemsInStorage: '&8[&6StorageMechanics&8] -> &cThere are still items in storage'
 config:
   BossbarText: Editor mode
   Bossbarpages: 'Pages: '
@@ -42,6 +21,27 @@ config:
   BackPageItem: storagemechanics:back_page_filled
   ChestSortItem: storagemechanics:sort_item_filled
   SearchItem: storagemechanics:search_item_filled
+messages:
+  EditorModeDesactivedMessage: '&8[&6StorageMechanics&8] -> &cEditor mode deactivated!'
+  message_editor_maxRows: '&8[&6StorageMechanics&8] -> &cError, max 6 rows!'
+  CorrectUsage: '&8[&6StorageMechanics&8] -> &cError command'
+  InEditorMode: '&8[&6StorageMechanics&8] -> &aEditor mode activated'
+  added: '&8[&6StorageMechanics&8] -> &9New block added!'
+  NotInList: '&8[&6StorageMechanics&8] -> &2This block not in list! &a'
+  AlreadyInList: '&8[&6StorageMechanics&8] -> &2This block already in list! &a'
+  loadAllCommand: '&8[&6StorageMechanics&8] -> &cConfig has been loaded!'
+  SearchSystemChat: '&8[&6StorageMechanics&8] -> &2Enter a valid page!'
+  storageNotExist: '&8[&6StorageMechanics&8] -> &cThe storage you are trying to open
+    does not exist!'
+  PageNotExist: '&8[&6StorageMechanics&8] -> &cThat page does not exist!'
+  NotItemInHand: '&8[&6StorageMechanics&8] -> &cYou don''t have any items in hand!'
+  MaxDistanceOpenStorage: '&8[&6StorageMechanics&8] -> &cYou can''t open the storage
+    at that distance, get a little closer and try again'
+  EnterAsound: '&8[&6StorageMechanics&8] -> &cEnter a sound, example: techmc:music.dakiti
+    or minecraft:music.end'
+  SoundEstablished: '&8[&6StorageMechanics&8] -> &aThe sound has been established:
+    &b'
+  ItemsInStorage: '&8[&6StorageMechanics&8] -> &cThere are still items in storage'
 items:
   InterfaceEditItem: '&6Edit interface'
   InterfaceEditLore: '&cIf you want to delete the interface just'

@@ -18,10 +18,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Base64;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 public class StorageUtils {
     private static Storage core;
@@ -51,6 +48,20 @@ public class StorageUtils {
             }
         }
         return false;
+    }
+
+    public boolean addItemInventory(Inventory inv, ItemStack itemStack){
+
+        HashMap<Integer,ItemStack> added = inv.addItem(itemStack);
+
+        if(added.isEmpty()){
+
+            return true;
+
+        }
+
+        return false;
+
     }
 
 
