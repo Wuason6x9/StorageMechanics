@@ -14,6 +14,8 @@ description: Adds storage at blocks or furnitures
 website: techmc.es
 load: POSTWORLD
 commands:
+  test:
+    permission: storage.admin
   storagemechanics:
     permission: storage.admin
     aliases:

@@ -563,70 +563,10 @@ public class StorageManager {
         return storages;
     }
 
-
-    public void TaskBlockMode(StorageMemory storageMemory){
-        if(IsInMemory(storageMemory)){
-
-            BukkitTask task = Bukkit.getScheduler().runTaskLater(core, new Runnable() {
-
-                @Override
-                public void run() {
-
-
-                    if(IsInMemory(storageMemory)){
-                        Inventory inventory;
-
-                        for(int i=0;i<storageMemory.getInventories().size();i++){
-
-                            inventory = storageMemory.getInventories().get(i);
-
-                            if(inventory == null){
-
-                                TaskBlockMode(storageMemory);
-                                return;
-
-                            }
-
-                            if(inventory.getViewers().size() >= 1){
-                                TaskBlockMode(storageMemory);
-                                return;
-
-                            }
-
-
-                            else {
-
-                                while (!inventory.getViewers().isEmpty()){
-                                    inventory.getViewers().get(0).closeInventory();
-                                }
-                                try {
-
-                                    saveStorage(storageMemory);
-
-                                } catch (IOException e) {
-                                    throw new RuntimeException(e);
-                                }
-
-
-                            }
-
-
-                        }
-
-                    }
-
-
-                }
-
-            }, 20L * (60L * core.getConfig().getLong("timetosavestorageinMINUTES")));
-        }
-    }
-
-
-
     public boolean saveStorage(StorageMemory storageMemory) throws IOException {
 
         closePlayersInvetory(storageMemory);
+
 
         File file = new File(core.getDataFolder().getPath() + "/storages/blockstatic/" + storageMemory.getId() + ".json");
 

@@ -62,6 +62,7 @@ public class StorageMemory {
 
             if(existInventory(i)){
 
+
                 Inventory inventory = getInventory(i);
 
                 succes = core.getStorageUtils().addItemInventory(inventory,itemStack);
@@ -86,9 +87,9 @@ public class StorageMemory {
 
         for(int i=0;i<items.length;i++){
 
-            if(items[i] != null || items[i].equals(Material.AIR)){
+            if(items[i] == null || items[i].equals(Material.AIR)){
 
-                setItem(page,i,items[i]);
+                setItem(page,i,itemStack);
                 return true;
 
             }
@@ -203,33 +204,20 @@ public class StorageMemory {
     }
     public boolean isEmpty(){
 
-        boolean succes = true;
-
         for(ItemStack[] items : allItems){
 
             for(ItemStack item : items){
 
                 if(item != null && !item.equals(Material.AIR) && !item.getItemMeta().getPersistentDataContainer().has(new NamespacedKey(core, "itemBlocked"), PersistentDataType.STRING)){
 
-                    succes = false;
+                    return false;
 
                 }
 
             }
 
         }
-
-        if(succes){
-
-            return true;
-
-        }
-
-        else {
-
-            return false;
-
-        }
+        return true;
 
     }
     public boolean existInventory(int page){

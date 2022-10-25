@@ -54,15 +54,7 @@ public class ConfigManager {
 
             core.saveConfig();
 
-            try {
-                config.load(inputStreamReader);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            } catch (InvalidConfigurationException e) {
-                throw new RuntimeException(e);
-            }
         }
-
         config.options().copyDefaults(true);
     }
 

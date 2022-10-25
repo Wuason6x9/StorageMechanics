@@ -27,6 +27,8 @@ public class OnUnLoadChunk implements Listener {
 
         if(core.getStorageManager().getChunkManager().existChunk(event.getChunk())){
 
+            System.out.println("Chunk descargado");
+
             List<ChunkStorage> chunkStorages = core.getStorageManager().getChunkManager().getStorageChunks(event.getChunk());
             ChunkStorage chunkStorage;
 
@@ -34,7 +36,9 @@ public class OnUnLoadChunk implements Listener {
 
                 chunkStorage = chunkStorages.get(0);
 
-                Bukkit.getScheduler().runTaskAsynchronously(core, () -> {
+                System.out.println("Storage guardado");
+
+                Bukkit.getScheduler().runTask(core, () -> {
                     try {
                         core.getStorageManager().saveStorage(core.getStorageManager().getStorageMemory(chunkStorages.get(0).getId()));
                     } catch (IOException e) {

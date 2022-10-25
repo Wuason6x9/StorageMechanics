@@ -1,0 +1,1 @@
+{ "parent": "storagemechanics/renders/gui", "textures": { "layer0": "storagemechanics/icons/search_item_filled" }, "display": { "gui": { "scale": [1.15, 1.15, 1.15] } } }

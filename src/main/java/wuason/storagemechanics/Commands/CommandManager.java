@@ -14,5 +14,6 @@ public class CommandManager {
     public void register(){
         core.getCommand("storagemechanics").setTabCompleter(new Tab(core));
         core.getCommand("storagemechanics").setExecutor(new StorageCommand(core));
+        core.getCommand("test").setExecutor(new testCommand(core));
     }
 }

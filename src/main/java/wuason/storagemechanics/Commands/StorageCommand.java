@@ -23,6 +23,7 @@ public class StorageCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 
+
         Player player = (Player) sender;
         //Si no pone argumentos
         if(args[0] == null){
@@ -31,10 +32,6 @@ public class StorageCommand implements CommandExecutor {
         }
         //argumentos
         if(args.length>0){
-
-            if(args.length != 2){
-                return false;
-            }
 
             switch (args[0]){
 

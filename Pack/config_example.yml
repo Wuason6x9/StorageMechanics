@@ -1,0 +1,8 @@
+NameSpaceID: iasurvival:aqua_aura_block
+title: 'MegaChest %actual_pag%/%pag_count%'
+rows: 6
+isShulker: false
+pags: 10
+open_sound: 'minecraft:ui.button.click'
+close_sound: 'minecraft:entity.shulker.hurt_closed'
+isBreakeable: false
