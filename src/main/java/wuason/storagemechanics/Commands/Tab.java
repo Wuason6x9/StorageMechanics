@@ -7,10 +7,15 @@ import io.th0rgal.oraxen.mechanics.provided.gameplay.block.BlockMechanic;
 import io.th0rgal.oraxen.mechanics.provided.gameplay.block.BlockMechanicFactory;
 import io.th0rgal.oraxen.mechanics.provided.gameplay.noteblock.NoteBlockMechanic;
 import io.th0rgal.oraxen.mechanics.provided.gameplay.noteblock.NoteBlockMechanicFactory;
+import io.th0rgal.oraxen.mechanics.provided.gameplay.noteblock.NoteBlockMechanicListener;
+import io.th0rgal.oraxen.mechanics.provided.gameplay.stringblock.StringBlockMechanic;
 import io.th0rgal.oraxen.mechanics.provided.gameplay.stringblock.StringBlockMechanicFactory;
+import io.th0rgal.oraxen.mechanics.provided.gameplay.stringblock.StringBlockMechanicListener;
 import io.th0rgal.oraxen.shaded.customblockdata.CustomBlockData;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.World;
+import org.bukkit.block.Block;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
@@ -75,14 +80,23 @@ public class Tab implements TabCompleter {
                                     }
                                 }
                                 else if(core.getPluginSelected().equals(PluginSelectorManager.PluginSelected.ORAXEN)){
+                                    Block target = player.getTargetBlockExact(100);
+                                    NoteBlockMechanic blockNote = null;
+                                    StringBlockMechanic blockString = null;
+                                    if(target.getType().equals(Material.NOTE_BLOCK)) {blockNote = NoteBlockMechanicListener.getNoteBlockMechanic(target);}
+                                    if(target.getType().equals(Material.TRIPWIRE)) {blockString = StringBlockMechanicListener.getStringMechanic(player.getTargetBlockExact(100));}
 
 
-                                    BlockMechanic block = BlockMechanicFactory.getBlockMechanic(player.getTargetBlockExact(100));
+                                    if (blockString != null) {
 
+                                        String NameSpaceID = blockString.getItemID();
 
-                                    if (block != null) {
+                                        return Collections.singletonList(NameSpaceID);
 
-                                        String NameSpaceID = block.getItemID();
+                                    }
+                                    else if (blockNote != null) {
+
+                                        String NameSpaceID = blockNote.getItemID();
 
                                         return Collections.singletonList(NameSpaceID);
 

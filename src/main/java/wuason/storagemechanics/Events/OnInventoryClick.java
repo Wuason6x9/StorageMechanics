@@ -12,6 +12,7 @@ import org.bukkit.inventory.ItemStack;
 import wuason.storagemechanics.Storage;
 import wuason.storagemechanics.Storages.StorageMemory;
 import wuason.storagemechanics.Storages.search.SearchSystem;
+import wuason.storagemechanics.api.Events.StorageInventoryClickEvent;
 
 import java.io.FileNotFoundException;
 
@@ -29,10 +30,27 @@ public class OnInventoryClick implements Listener {
 
     @EventHandler
     public void OnClick(InventoryClickEvent event){
+        HumanEntity player = event.getWhoClicked();
+
+        if(player.hasMetadata("storageinventorypag")){
+
+            Inventory inventory = (Inventory) player.getMetadata("storageinventory").get(0).value();
+            String id = player.getMetadata("storageid").get(0).asString();
+            if(event.getInventory().equals(inventory)){
+
+                StorageInventoryClickEvent inventoryClickEvent = new StorageInventoryClickEvent(event, id);
+                Bukkit.getPluginManager().callEvent(inventoryClickEvent);
+                if(inventoryClickEvent.isCancelled()){
+                    event.setCancelled(true);
+                    return;
+                }
+
+            }
+
+        }
 
 
         if(event.getCurrentItem() != null && !event.getCurrentItem().getType().equals(Material.AIR)) {
-            HumanEntity player = event.getWhoClicked();
             ItemStack slotItem = event.getCurrentItem();
 
             if (core.getStorageUtils().isBlockedItem(slotItem)) {

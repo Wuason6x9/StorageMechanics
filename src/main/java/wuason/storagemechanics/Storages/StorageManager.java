@@ -8,18 +8,16 @@ import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.metadata.FixedMetadataValue;
-import org.bukkit.persistence.PersistentDataType;
-import org.bukkit.scheduler.BukkitTask;
 import wuason.storagemechanics.Storage;
 import wuason.storagemechanics.StorageUtils;
+import wuason.storagemechanics.Storages.Mechanics.MechanicsManager;
 import wuason.storagemechanics.Storages.chunk.ChunkManager;
 import wuason.storagemechanics.Storages.chunk.ChunkStorage;
 import wuason.storagemechanics.Storages.itemmodify.ItemModifyManager;
 import wuason.storagemechanics.Storages.search.SearchSystem;
 import wuason.storagemechanics.Storages.utils.ChatInputManager;
-import wuason.storagemechanics.api.Events.InventoryOpenEvent;
+import wuason.storagemechanics.api.Events.StorageInventoryOpenEvent;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -33,6 +31,7 @@ public class StorageManager {
     private Gson gson;
     private Storage core;
     private StorageUtils storageUtils;
+    private MechanicsManager mechanicsManager;
 
     private ChunkManager chunkManager;
     private SearchSystem searchSystemManager;
@@ -49,6 +48,7 @@ public class StorageManager {
         this.itemModifyManager = new ItemModifyManager(plugin);
         this.interfacesManger = new Interfaces(plugin);
         this.chatInputManager = new ChatInputManager(plugin);
+        this.mechanicsManager = new MechanicsManager(plugin);
     }
 
     public boolean RemoveStorage(String id){
@@ -200,14 +200,16 @@ public class StorageManager {
             Inventory inv = memory.getInventory(pag);
 
             player.setMetadata("storageinventory", new FixedMetadataValue(core, inv));
+            StorageInventoryOpenEvent storageInventoryOpenEvent = new StorageInventoryOpenEvent(player,inv,pag,memory);
+            Bukkit.getPluginManager().callEvent(storageInventoryOpenEvent);
             player.openInventory(inv);
 
         }
         else {
 
             Inventory inv = Bukkit.createInventory(player,(int)memory.getSlots(),ChatColor.translateAlternateColorCodes('&',memory.getTitle().replaceAll("%actual_pag%", "" + (pag + 1))).replaceAll("%pag_count%", "" + memory.getPages()).replaceAll("%owner%","" + Bukkit.getOfflinePlayer(UUID.fromString(memory.getUuidOwner())).getName()));
-            InventoryOpenEvent inventoryOpenEvent = new InventoryOpenEvent(player,inv,pag,memory);
-            Bukkit.getPluginManager().callEvent(inventoryOpenEvent);
+            StorageInventoryOpenEvent storageInventoryOpenEvent = new StorageInventoryOpenEvent(player,inv,pag,memory);
+            Bukkit.getPluginManager().callEvent(storageInventoryOpenEvent);
 
 
             player.setMetadata("storageinventory", new FixedMetadataValue(core, inv));
@@ -715,5 +717,9 @@ public class StorageManager {
 
     public ChatInputManager getChatInputManager() {
         return chatInputManager;
+    }
+
+    public MechanicsManager getMechanicsManager() {
+        return mechanicsManager;
     }
 }

@@ -78,24 +78,30 @@ public final class Storage extends JavaPlugin {
         }
 
         //GESTION WORLD EDIT
+
+        Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&', "&8[&6StorageMechanics&8] -> &e(------------------------------)"));
         Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&', "&8[&6StorageMechanics&8] -> &bPlugin has been loaded!"));
+        if(pluginSelected.equals(PluginSelectorManager.PluginSelected.ITEMSADDER)){
 
-        Bukkit.getScheduler().runTaskLater(this,() -> {
+            Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&',"&8[&6StorageMechanics&8] -> &bPlugin selected &3ItemsAdder"));
 
-            if(Bukkit.getPluginManager().getPlugin("ChestSort") != null) {
+        } else if (pluginSelected.equals(PluginSelectorManager.PluginSelected.ORAXEN)) {
 
-                Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&', "&8[&6StorageMechanics&8] -> &eChestSort [ready]"));
+            Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&',"&8[&6StorageMechanics&8] -> &bPlugin selected &3Oraxen"));
 
-            }
-            if(Bukkit.getPluginManager().getPlugin("WorldGuard") != null){
+        }
+        if(Bukkit.getPluginManager().getPlugin("WorldGuard") != null){
+            this.helperManager = new Helper(this);
+            this.regionManagerStorage = new RegionManagerStorage(this);
+            Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&', "&8[&6StorageMechanics&8] -> &bWorldGuard [ready]"));
+        }
+        if(Bukkit.getPluginManager().getPlugin("ChestSort") != null) {
 
-                this.helperManager = new Helper(this);
-                this.regionManagerStorage = new RegionManagerStorage(this);
-                Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&', "&8[&6StorageMechanics&8] -> &eWorldGuard [ready]"));
-            }
+            Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&', "&8[&6StorageMechanics&8] -> &bChestSort [ready]"));
 
-        }, 1L);
-
+        }
+        Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&', "&8[&6StorageMechanics&8] -> &6Mechanics loaded: " + ChatColor.AQUA + storageManager.getMechanicsManager().getMechanicActiveList().size()));
+        Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&', "&8[&6StorageMechanics&8] -> &e(------------------------------)"));
         // Plugin startup logic
 
     }

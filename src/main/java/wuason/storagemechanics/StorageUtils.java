@@ -63,6 +63,13 @@ public class StorageUtils {
         return false;
 
     }
+    public boolean removeItemInventory(Inventory inv, ItemStack itemStack){
+
+        inv.remove(itemStack);
+
+        return true;
+
+    }
 
 
     public StorageUtils(Storage plugin){
@@ -432,6 +439,21 @@ public class StorageUtils {
 
             return true;
 
+        }
+        return false;
+
+    }
+    public boolean inStorageMechanicsItem(ItemStack item){
+
+        if(item != null) {
+
+            ItemMeta meta = item.getItemMeta();
+
+            if (meta.getPersistentDataContainer().has(new NamespacedKey(core, "itemBlocked"), PersistentDataType.STRING)) {
+
+                return true;
+
+            }
         }
         return false;
 

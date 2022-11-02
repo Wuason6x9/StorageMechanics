@@ -48,7 +48,50 @@ public class StorageMemory {
 
 
     }
+    public void removeItemAll(int page, int slot){
 
+        if(existInventory(page)){
+            Inventory inventory = getInventory(page);
+
+            inventory.clear(slot);
+        }
+        else {
+
+            removeItem(page,slot);
+
+        }
+
+    }
+    public boolean removeItemAll(ItemStack itemStack){
+
+        boolean succes = false;
+
+        for(int i=0;i<getPages();i++){
+
+            if(succes){
+                return true;
+            }
+
+            if(existInventory(i)){
+
+
+                Inventory inventory = getInventory(i);
+
+                succes = core.getStorageUtils().removeItemInventory(inventory,itemStack);
+
+
+            }
+            else {
+
+                succes = removeItem(i,itemStack);
+
+            }
+
+
+        }
+
+        return succes;
+    }
 
     public boolean addItemAll(ItemStack itemStack){
 
@@ -68,6 +111,8 @@ public class StorageMemory {
                 succes = core.getStorageUtils().addItemInventory(inventory,itemStack);
 
 
+
+
             }
             else {
 
@@ -78,16 +123,66 @@ public class StorageMemory {
 
         }
 
-        return false;
+        return succes;
     }
+    public boolean removeItem(int page,int slot){
 
-    public boolean addItem(int page,ItemStack itemStack){
+        setItem(page,slot,null);
+
+        return false;
+
+    }
+    public boolean removeItem(int page,ItemStack itemStack){
 
         ItemStack[] items = getItems(page);
 
         for(int i=0;i<items.length;i++){
 
-            if(items[i] == null || items[i].equals(Material.AIR)){
+            if(items[i].equals(itemStack)){
+
+                setItem(page,i,null);
+                return true;
+
+            }
+
+        }
+
+        return false;
+
+    }
+
+    public boolean addItem(int page,ItemStack itemStack){
+
+        ItemStack[] items = getItems(page);
+        ItemStack item;
+        int amount;
+        int dispo;
+        int amountStack = itemStack.getAmount();
+
+        for(int i=0;i<items.length;i++){
+
+            item = items[i];
+
+            if(item != null && !item.getType().equals(Material.AIR)) {
+                dispo = 64 - item.getAmount();
+                amount = item.getAmount();
+                if (item.getType().equals(itemStack.getType()) && item.getItemMeta().equals(itemStack.getItemMeta())) {
+                    if (amount < 64) {
+                        if (amountStack > dispo) {
+                            item.setAmount(amount + dispo);
+                            amountStack -= dispo;
+                            dispo = 0;
+                            itemStack.setAmount(amountStack);
+                        } else if (amountStack <= dispo) {
+                            dispo = dispo - amountStack;
+                            itemStack.setAmount(0);
+                            item.setAmount(amountStack + amount);
+                            return true;
+                        }
+                    }
+                }
+            }
+            else if(item == null || item.equals(Material.AIR)){
 
                 setItem(page,i,itemStack);
                 return true;
@@ -99,6 +194,26 @@ public class StorageMemory {
         return false;
 
     }
+
+    public ItemStack getItemAll(int page, int slot){
+
+        if(existInventory(page)){
+
+            if(!core.getStorageUtils().inStorageMechanicsItem(getInventory(page).getItem(slot))) {
+                return getInventory(page).getItem(slot);
+            }
+        }
+        else {
+
+            if(!core.getStorageUtils().inStorageMechanicsItem(getItem(page,slot))) {
+                return getItem(page,slot);
+            }
+
+        }
+
+        return null;
+    }
+
 
     public ItemStack getItem(int page, int slot){
 
@@ -204,19 +319,37 @@ public class StorageMemory {
     }
     public boolean isEmpty(){
 
-        for(ItemStack[] items : allItems){
+        for(int i=0;i<getPages();i++){
 
-            for(ItemStack item : items){
+            if(existInventory(i)){
 
-                if(item != null && !item.equals(Material.AIR) && !item.getItemMeta().getPersistentDataContainer().has(new NamespacedKey(core, "itemBlocked"), PersistentDataType.STRING)){
+                ItemStack[] itemStackList = getInventory(i).getContents();
 
-                    return false;
+                for(ItemStack item : itemStackList){
 
+                    if(item != null && !item.equals(Material.AIR) && !item.getItemMeta().getPersistentDataContainer().has(new NamespacedKey(core, "itemBlocked"), PersistentDataType.STRING)){
+
+                        return false;
+
+                    }
                 }
 
             }
+            else {
 
+                ItemStack[] itemStackList = allItems.get(i);
+
+                for(ItemStack item : itemStackList){
+
+                    if(item != null && !item.equals(Material.AIR) && !item.getItemMeta().getPersistentDataContainer().has(new NamespacedKey(core, "itemBlocked"), PersistentDataType.STRING)){
+
+                        return false;
+
+                    }
+                }
+            }
         }
+
         return true;
 
     }

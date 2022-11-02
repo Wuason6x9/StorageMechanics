@@ -29,13 +29,11 @@ public class PluginSelectorManager {
         if(ItemsAdder != null){
 
             pluginSelected = PluginSelected.ITEMSADDER;
-            Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&',"&8[&6StorageMechanics&8] -> &bPlugin selected ItemsAdder"));
             return pluginSelected;
 
         } else if (Oraxen != null) {
 
             pluginSelected = PluginSelected.ORAXEN;
-            Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&',"&8[&6StorageMechanics&8] -> &bPlugin selected Oraxen"));
             return pluginSelected;
 
         }

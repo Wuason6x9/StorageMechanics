@@ -1,6 +1,7 @@
 package wuason.storagemechanics.Events;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.world.ChunkUnloadEvent;
@@ -23,11 +24,10 @@ public class OnUnLoadChunk implements Listener {
 
 
     @EventHandler
-    public void OnUnLoad(ChunkUnloadEvent event){
+    public void event(ChunkUnloadEvent event){
 
         if(core.getStorageManager().getChunkManager().existChunk(event.getChunk())){
 
-            System.out.println("Chunk descargado");
 
             List<ChunkStorage> chunkStorages = core.getStorageManager().getChunkManager().getStorageChunks(event.getChunk());
             ChunkStorage chunkStorage;
@@ -36,15 +36,11 @@ public class OnUnLoadChunk implements Listener {
 
                 chunkStorage = chunkStorages.get(0);
 
-                System.out.println("Storage guardado");
-
-                Bukkit.getScheduler().runTask(core, () -> {
-                    try {
-                        core.getStorageManager().saveStorage(core.getStorageManager().getStorageMemory(chunkStorages.get(0).getId()));
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
-                    }
-                });
+                try {
+                    core.getStorageManager().saveStorage(core.getStorageManager().getStorageMemory(chunkStorage.getId()));
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
 
                 chunkStorages.remove(chunkStorage);
 
