@@ -274,7 +274,6 @@ public class HopperMechanic extends Mechanic implements Listener {
 
                         StorageMemory storageMemory = core.getStorageManager().getStorageMemory(core.getStorageUtils().getLocationStorageID(block.getLocation()));
 
-
                         if (core.getStorageManager().IsInMemory(storageMemory)) {
 
                             if (!storageMemory.isEmpty()) {
