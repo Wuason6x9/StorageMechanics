@@ -26,7 +26,7 @@ public class StorageCommand implements CommandExecutor {
 
         Player player = (Player) sender;
         //Si no pone argumentos
-        if(args[0] == null){
+        if(args == null){
             sendCorrectUsage(player);
             return false;
         }
@@ -34,6 +34,13 @@ public class StorageCommand implements CommandExecutor {
         if(args.length>0){
 
             switch (args[0]){
+
+                case "reload":
+
+                    core.getConfigManager().config();
+                    player.sendMessage("Reloaded!");
+
+                    break;
 
                 case "exit":
                     if(core.getEditorMode().isinEditorMode(player)){
@@ -282,7 +289,7 @@ public class StorageCommand implements CommandExecutor {
 
     private void sendCorrectUsage(Player player){
 
-        player.sendMessage(ChatColor.translateAlternateColorCodes('&',core.getConfig().getString("messages.CorrectUsage")));
+        player.sendMessage(ChatColor.translateAlternateColorCodes('&', core.getConfig().getString("messages.CorrectUsage")));
 
     }
 }
