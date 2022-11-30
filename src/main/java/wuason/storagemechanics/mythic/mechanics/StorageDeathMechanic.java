@@ -48,8 +48,6 @@ public class StorageDeathMechanic implements ITargetedEntitySkill {
 
         Entity entity = abstractEntity.getBukkitEntity();
 
-        Player player = (Player) skillMetadata.getTrigger().getBukkitEntity();
-
         PersistentDataContainer data = entity.getPersistentDataContainer();
 
         if(data.has(new NamespacedKey(core, "Storage"), PersistentDataType.STRING)){
