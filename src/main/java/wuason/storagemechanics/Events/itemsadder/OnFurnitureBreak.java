@@ -124,7 +124,7 @@ public class OnFurnitureBreak implements Listener {
                             }
                         }
 
-                        core.getStorageManager().RemoveStorage(id);
+                        core.getStorageManager().removeStorage(id);
 
                     }
 
@@ -185,7 +185,7 @@ public class OnFurnitureBreak implements Listener {
                                 }
                             }
 
-                            core.getStorageManager().RemoveStorage(id);
+                            core.getStorageManager().removeStorage(id);
 
                         }
                         //CODIGO

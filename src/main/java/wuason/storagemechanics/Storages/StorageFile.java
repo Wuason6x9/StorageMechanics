@@ -15,7 +15,7 @@ public class StorageFile {
     private String uuidOwner;
     private boolean shulker;
     private String NameSpaceID;
-    private String world;
+    private String world = null;
     private double x;
     private double y;
     private double z;
@@ -30,10 +30,13 @@ public class StorageFile {
         this.uuidOwner = uuidowner;
         this.shulker = isShulker;
         this.NameSpaceID = namespaceid;
-        this.x = loc.getX();
-        this.y = loc.getY();
-        this.z = loc.getZ();
-        this.world = loc.getWorld().getName();
+        if(loc != null){
+            this.x = loc.getX();
+            this.y = loc.getY();
+            this.z = loc.getZ();
+            this.world = loc.getWorld().getName();
+        }
+
     }
 
     public String getId() {

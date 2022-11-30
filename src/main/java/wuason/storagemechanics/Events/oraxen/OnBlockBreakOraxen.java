@@ -127,7 +127,7 @@ public class OnBlockBreakOraxen implements Listener {
                             }
                         }
 
-                        core.getStorageManager().RemoveStorage(id);
+                        core.getStorageManager().removeStorage(id);
 
                     }
 
@@ -189,7 +189,7 @@ public class OnBlockBreakOraxen implements Listener {
                                 }
                             }
 
-                            core.getStorageManager().RemoveStorage(id);
+                            core.getStorageManager().removeStorage(id);
 
                         }
                         //CODIGO
@@ -313,7 +313,7 @@ public class OnBlockBreakOraxen implements Listener {
                             }
                         }
 
-                        core.getStorageManager().RemoveStorage(id);
+                        core.getStorageManager().removeStorage(id);
 
                     }
 
@@ -375,7 +375,7 @@ public class OnBlockBreakOraxen implements Listener {
                                 }
                             }
 
-                            core.getStorageManager().RemoveStorage(id);
+                            core.getStorageManager().removeStorage(id);
 
                         }
                         //CODIGO

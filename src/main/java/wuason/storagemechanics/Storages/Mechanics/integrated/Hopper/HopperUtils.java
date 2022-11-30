@@ -52,13 +52,10 @@ public class HopperUtils {
     }
 
     public static boolean HopperHasSpace(Inventory inventory){
-
         for(int i=0;i<inventory.getSize();i++){
-
             if(inventory.getItem(i) == null || inventory.getItem(i).getType().equals(Material.AIR)){
                 return true;
             }
-
         }
         return false;
     }
@@ -139,7 +136,10 @@ public class HopperUtils {
 
     public static Block getBlockDirection(Inventory inventory){
 
+
         Hopper hopper = (Hopper) inventory.getHolder();
+
+        if(hopper == null) return null;
 
         Block block = hopper.getBlock();
 

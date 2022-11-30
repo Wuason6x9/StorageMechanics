@@ -37,12 +37,13 @@ public class OnInventoryClick implements Listener {
             Inventory inventory = (Inventory) player.getMetadata("storageinventory").get(0).value();
             String id = player.getMetadata("storageid").get(0).asString();
             if(event.getInventory().equals(inventory)){
-
-                StorageInventoryClickEvent inventoryClickEvent = new StorageInventoryClickEvent(event, id);
-                Bukkit.getPluginManager().callEvent(inventoryClickEvent);
-                if(inventoryClickEvent.isCancelled()){
-                    event.setCancelled(true);
-                    return;
+                if(core.getStorageManager().getStorageMemory(id).getChunkStorage() != null){
+                    StorageInventoryClickEvent inventoryClickEvent = new StorageInventoryClickEvent(event, id);
+                    Bukkit.getPluginManager().callEvent(inventoryClickEvent);
+                    if(inventoryClickEvent.isCancelled()){
+                        event.setCancelled(true);
+                        return;
+                    }
                 }
 
             }
@@ -66,7 +67,7 @@ public class OnInventoryClick implements Listener {
 
                     try {
 
-                        core.getStorageManager().OpenStorage((Player) player, id, (actualpag + 1));
+                        core.getStorageManager().openStorage((Player) player, id, (actualpag + 1));
                     } catch (FileNotFoundException e) {
                         throw new RuntimeException(e);
                     }
@@ -79,7 +80,7 @@ public class OnInventoryClick implements Listener {
                     StorageMemory memory = core.getStorageManager().getStorageMemory(id);
                     core.getStorageManager().closeInv(memory,(Player)player,actualpag);
                     try {
-                        core.getStorageManager().OpenStorage((Player) player, id, (actualpag - 1));
+                        core.getStorageManager().openStorage((Player) player, id, (actualpag - 1));
                     } catch (FileNotFoundException e) {
                         throw new RuntimeException(e);
                     }

@@ -122,7 +122,7 @@ public class OnFurnitureBreakOraxen implements Listener {
                             }
                         }
 
-                        core.getStorageManager().RemoveStorage(id);
+                        core.getStorageManager().removeStorage(id);
 
                     }
 
@@ -183,7 +183,7 @@ public class OnFurnitureBreakOraxen implements Listener {
                                 }
                             }
 
-                            core.getStorageManager().RemoveStorage(id);
+                            core.getStorageManager().removeStorage(id);
 
                         }
                         //CODIGO

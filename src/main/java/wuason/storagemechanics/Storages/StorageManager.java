@@ -27,7 +27,8 @@ import java.util.UUID;
 public class StorageManager {
 
     ArrayList<StorageMemory> storageMemories = new ArrayList<>();
-    ArrayList<StorageFile> storageFiles = new ArrayList<>();
+    ArrayList<String> customStoragesID = new ArrayList<>();
+
     private Gson gson;
     private Storage core;
     private StorageUtils storageUtils;
@@ -51,7 +52,7 @@ public class StorageManager {
         this.mechanicsManager = new MechanicsManager(plugin);
     }
 
-    public boolean RemoveStorage(String id){
+    public boolean removeStorage(String id){
 
         if(existStorageByID(id)){
 
@@ -87,8 +88,11 @@ public class StorageManager {
                 }
             }
 
-            getChunkManager().removeChunk(id);
+            if(storageMemory.getChunkStorage() != null){
+                getChunkManager().removeChunk(id);
+            }
 
+            customStoragesID.remove(id);
             storageMemories.remove(storageMemory);
 
         }
@@ -398,7 +402,7 @@ public class StorageManager {
     }
 
 
-    public void OpenStorage(Player player, String id, int pag) throws FileNotFoundException {
+    public void openStorage(Player player, String id, int pag) throws FileNotFoundException {
 
 
         if(existStorageByID(id)){
@@ -444,7 +448,7 @@ public class StorageManager {
 
 
 
-    public StorageMemory CreateStorage(Player player, String id, String title, byte slots, boolean isShulker, String namespaceid, int pag,Location loc) throws IllegalStateException{
+    public StorageMemory createStorage(Player player, String id, String title, byte slots, boolean isShulker, String namespaceid, int pag, Location loc) throws IllegalStateException{
 
         if(!existStorageJson(id)){
             if(existStorageByID(id)){
@@ -456,9 +460,14 @@ public class StorageManager {
 
                 StorageMemory storageMemory = new StorageMemory(id,title,slots,player.getUniqueId().toString(),isShulker,namespaceid, pag);
 
-                ChunkStorage chunkStorage = getChunkManager().addChunk(loc, id);
+                if(loc != null){
+                    ChunkStorage chunkStorage = getChunkManager().addChunk(loc, id);
 
-                storageMemory.setChunkStorage(chunkStorage);
+                    storageMemory.setChunkStorage(chunkStorage);
+                }
+                else {
+                    customStoragesID.add(id);
+                }
 
                 storageMemories.add(storageMemory);
 
@@ -608,9 +617,12 @@ public class StorageManager {
             items.add(itemsLocal);
 
         }
+        Location location = null;
+        if(storageMemory.getChunkStorage() != null){
+            location = storageMemory.getChunkStorage().getLocation();
+        }
 
-
-        StorageFile storageFile = new StorageFile(storageMemory.getId(),items,storageMemory.getSlots(),storageMemory.getTitle(),storageMemory.getUuidOwner(),storageMemory.isShulker(),storageMemory.getNameSpaceID(),storageMemory.getChunkStorage().getLocation());
+        StorageFile storageFile = new StorageFile(storageMemory.getId(),items,storageMemory.getSlots(),storageMemory.getTitle(),storageMemory.getUuidOwner(),storageMemory.isShulker(),storageMemory.getNameSpaceID(),location);
         gson.toJson(storageFile, writer);
         writer.flush();
         writer.close();
@@ -635,15 +647,17 @@ public class StorageManager {
                 StorageFile storageFile = gson.fromJson(reader, StorageFile.class);
                 StorageMemory storageMemory = new StorageMemory(id,storageFile.getTitle(),storageFile.getSlots(),storageFile.getUuidOwner(),storageFile.isShulker(),storageFile.getNameSpaceID(), storageFile.getPages());
 
-                Location location = new Location(Bukkit.getWorld(storageFile.getWorld()),storageFile.getX(),storageFile.getY(),storageFile.getZ());
-
                 UUID uuidOwner = UUID.fromString(storageFile.getUuidOwner());
                 OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(uuidOwner);
                 file.delete();
-
-
-                ChunkStorage chunkStorage = getChunkManager().addChunk(location, id);
-                storageMemory.setChunkStorage(chunkStorage);
+                if(storageFile.getWorld() != null){
+                    Location location = new Location(Bukkit.getWorld(storageFile.getWorld()),storageFile.getX(),storageFile.getY(),storageFile.getZ());
+                    ChunkStorage chunkStorage = getChunkManager().addChunk(location, id);
+                    storageMemory.setChunkStorage(chunkStorage);
+                }
+                else {
+                    customStoragesID.add(storageFile.getId());
+                }
 
                 String title = storageFile.getTitle();
                 int pag = storageFile.getPages();
@@ -721,5 +735,9 @@ public class StorageManager {
 
     public MechanicsManager getMechanicsManager() {
         return mechanicsManager;
+    }
+
+    public ArrayList<String> getCustomStoragesID() {
+        return customStoragesID;
     }
 }

@@ -6,7 +6,7 @@
 
     <groupId>wuason</groupId>
     <artifactId>storagemechanics</artifactId>
-    <version>1.1.5.1a</version>
+    <version>1.1.5.3</version>
     <packaging>jar</packaging>
 
     <name>StorageMechanics</name>
@@ -49,6 +49,29 @@
                         <relocation>
                             <pattern>de.tr7zw.changeme.nbtapi</pattern>
                             <shadedPattern>wuason.storagemechanics.nbtapi</shadedPattern>
+                        </relocation>
+                    </relocations>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>3.3.0</version>
+                <executions>
+                    <execution>
+                        <id>shade</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <minimizeJar>true</minimizeJar>
+                    <relocations>
+                        <relocation>
+                            <pattern>dev.jorel.commandapi</pattern>
+                            <shadedPattern>wuason.storagemechanics.commandapi</shadedPattern>
                         </relocation>
                     </relocations>
                 </configuration>
@@ -147,6 +170,11 @@
             <artifactId>oraxen</artifactId>
             <version>-fd24cac055-1</version>
             <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>dev.jorel</groupId>
+            <artifactId>commandapi-shade</artifactId>
+            <version>8.5.1</version>
         </dependency>
     </dependencies>
 </project>

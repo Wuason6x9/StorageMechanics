@@ -3,9 +3,6 @@ package wuason.storagemechanics.Storages.search;
         import org.bukkit.Bukkit;
         import org.bukkit.ChatColor;
         import org.bukkit.entity.Player;
-        import org.bukkit.event.EventHandler;
-        import org.bukkit.event.Listener;
-        import org.bukkit.event.player.AsyncPlayerChatEvent;
         import wuason.storagemechanics.Storage;
         import wuason.storagemechanics.Storages.StorageMemory;
 
@@ -38,7 +35,7 @@ public class SearchSystem {
                int page = Integer.parseInt(input);
                Bukkit.getScheduler().runTask(core,() ->{
                    try {
-                       core.getStorageManager().OpenStorage(player,memory.getId(),(page - 1));
+                       core.getStorageManager().openStorage(player,memory.getId(),(page - 1));
                    } catch (FileNotFoundException e) {
                        throw new RuntimeException(e);
                    }

@@ -121,6 +121,8 @@ public class HopperMechanic extends Mechanic implements Listener {
 
             Block block = HopperUtils.getBlockDirection(inventory);
 
+            if(block == null) return;
+
             Block storageUp = block.getLocation().getWorld().getBlockAt(block.getLocation().getBlockX(),block.getLocation().getBlockY() + 1,block.getLocation().getBlockZ());
 
             if(storageUp != null && !storageUp.getType().equals(Material.AIR)){

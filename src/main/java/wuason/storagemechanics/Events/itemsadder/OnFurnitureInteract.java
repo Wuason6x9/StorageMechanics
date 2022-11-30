@@ -48,7 +48,7 @@ public class OnFurnitureInteract implements Listener {
 
                     String id = core.getStorageUtils().getLocationStorageID(loc);
 
-                    core.getStorageManager().RemoveStorage(id);
+                    core.getStorageManager().removeStorage(id);
 
 
                 }
@@ -125,23 +125,23 @@ public class OnFurnitureInteract implements Listener {
 
                         if (core.getStorageManager().existStorageByID(id)) {  //SI existe el inventario
 
-                            core.getStorageManager().OpenStorage(player, id,0);
+                            core.getStorageManager().openStorage(player, id,0);
                             //abrir inventario
 
                         } else {
 
                             if (core.getStorageManager().existStorageJson(id)) {
 
-                                core.getStorageManager().OpenStorage(player, id,0);
+                                core.getStorageManager().openStorage(player, id,0);
 
                             } else {
 
 
-                                core.getStorageManager().CreateStorage(player, id, title, slots, isShulker, NamespacedID, pag, loc);
+                                core.getStorageManager().createStorage(player, id, title, slots, isShulker, NamespacedID, pag, loc);
                                 //Crear el inventario
                                 Bukkit.getScheduler().runTaskLater(core, () -> {
                                     try {
-                                        core.getStorageManager().OpenStorage(player, id,0);
+                                        core.getStorageManager().openStorage(player, id,0);
                                     } catch (FileNotFoundException e) {
                                         throw new RuntimeException(e);
                                     }

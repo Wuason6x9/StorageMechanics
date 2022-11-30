@@ -42,16 +42,19 @@ public class PlayerSendMessageEvent implements Listener {
 
                 if(core.getStorageUtils().isNumber(message)){
 
+                    if(searchPlayer.getStorageMemory().getChunkStorage() != null){
 
-                    int distance = (int) Math.round(player.getLocation().distance(searchPlayer.getStorageMemory().getChunkStorage().getLocation()));
+                        int distance = (int) Math.round(player.getLocation().distance(searchPlayer.getStorageMemory().getChunkStorage().getLocation()));
 
-                    int permitted = core.getConfig().getInt("config.MaxDistanceOpenStorage");
+                        int permitted = core.getConfig().getInt("config.MaxDistanceOpenStorage");
 
-                    if(distance > permitted){
+                        if(distance > permitted){
 
-                        player.sendMessage(ChatColor.translateAlternateColorCodes('&',core.getConfig().getString("messages.MaxDistanceOpenStorage")));
-                        searchManager.ChatInput(player,searchPlayer.getStorageMemory(),searchType, null);
-                        return;
+                            player.sendMessage(ChatColor.translateAlternateColorCodes('&',core.getConfig().getString("messages.MaxDistanceOpenStorage")));
+                            searchManager.ChatInput(player,searchPlayer.getStorageMemory(),searchType, null);
+                            return;
+
+                        }
 
                     }
 

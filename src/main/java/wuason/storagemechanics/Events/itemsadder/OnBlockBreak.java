@@ -121,7 +121,7 @@ public class OnBlockBreak implements Listener {
                             }
                         }
 
-                        core.getStorageManager().RemoveStorage(id);
+                        core.getStorageManager().removeStorage(id);
 
                     }
 
@@ -183,7 +183,7 @@ public class OnBlockBreak implements Listener {
                                 }
                             }
 
-                            core.getStorageManager().RemoveStorage(id);
+                            core.getStorageManager().removeStorage(id);
 
                         }
                         //CODIGO

@@ -1,5 +1,7 @@
 package wuason.storagemechanics;
 
+import dev.jorel.commandapi.CommandAPI;
+import dev.jorel.commandapi.CommandAPIConfig;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -46,11 +48,17 @@ public final class Storage extends JavaPlugin {
             Bukkit.getConsoleSender().sendMessage(ChatColor.YELLOW + "Instancia Cargada!");
         }
     }
+
+    @Override
+    public void onLoad() {
+        CommandAPI.onLoad(new CommandAPIConfig().silentLogs(true));
+    }
+
     @Override
     public void onEnable() {
 
         //GESTORES o MANAGERS
-
+        CommandAPI.onEnable(this);
         //Selector Plugin
         pluginSelectorManager = new PluginSelectorManager(this);
         pluginSelected = pluginSelectorManager.SelectPlugin();

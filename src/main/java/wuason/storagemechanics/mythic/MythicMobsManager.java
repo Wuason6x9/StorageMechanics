@@ -5,6 +5,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.plugin.PluginManager;
 import wuason.storagemechanics.Storage;
+import wuason.storagemechanics.mythic.events.Events;
 
 public class MythicMobsManager {
 
@@ -34,14 +35,14 @@ public class MythicMobsManager {
 
     }
 
-    public boolean loadEvents(){
+    public void loadEvents(){
 
         if(existMythicMobs()){
 
             PluginManager pm = Bukkit.getPluginManager();
-            return true;
+
+            pm.registerEvents(new Events(),core);
 
         }
-        return false;
     }
 }

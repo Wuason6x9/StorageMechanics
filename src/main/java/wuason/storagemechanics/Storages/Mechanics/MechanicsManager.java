@@ -23,7 +23,7 @@ public class MechanicsManager {
     public void registerMechanic(Mechanic mechanic){
 
         mechanicActiveList.add(mechanic);
-        Bukkit.getPluginManager().registerEvents((Listener) mechanic , core);
+        Bukkit.getPluginManager().registerEvents((Listener)mechanic , core);
 
     }
 

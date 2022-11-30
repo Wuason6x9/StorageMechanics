@@ -9,7 +9,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.block.Action;
 import wuason.storagemechanics.BlockManager.Manager;
 import wuason.storagemechanics.Editor.PlayerEditorMode;
 import wuason.storagemechanics.Storage;
@@ -45,7 +44,7 @@ public class OnBlockInteractOraxen implements Listener {
 
                     String id = core.getStorageUtils().getLocationStorageID(block.getLocation());
 
-                    core.getStorageManager().RemoveStorage(id);
+                    core.getStorageManager().removeStorage(id);
 
 
                 }
@@ -120,22 +119,22 @@ public class OnBlockInteractOraxen implements Listener {
                         int pag = blockManager.getPags(NamespacedID);
 
                         if (core.getStorageManager().existStorageByID(id)) {  //SI existe el inventario
-                            core.getStorageManager().OpenStorage(player, id, 0);
+                            core.getStorageManager().openStorage(player, id, 0);
                             //abrir inventario
 
                         } else {
 
                             if (core.getStorageManager().existStorageJson(id)) {
 
-                                core.getStorageManager().OpenStorage(player, id, 0);
+                                core.getStorageManager().openStorage(player, id, 0);
 
                             } else {
 
-                                core.getStorageManager().CreateStorage(player, id, title, slots, isShulker, NamespacedID, pag,block.getLocation());
+                                core.getStorageManager().createStorage(player, id, title, slots, isShulker, NamespacedID, pag,block.getLocation());
                                 //Crear el inventario
                                 Bukkit.getScheduler().runTaskLater(core, () -> {
                                     try {
-                                        core.getStorageManager().OpenStorage(player, id, 0);
+                                        core.getStorageManager().openStorage(player, id, 0);
                                     } catch (FileNotFoundException e) {
                                         throw new RuntimeException(e);
                                     }
@@ -169,7 +168,7 @@ public class OnBlockInteractOraxen implements Listener {
 
                     String id = core.getStorageUtils().getLocationStorageID(block.getLocation());
 
-                    core.getStorageManager().RemoveStorage(id);
+                    core.getStorageManager().removeStorage(id);
 
 
                 }
@@ -244,22 +243,22 @@ public class OnBlockInteractOraxen implements Listener {
                         int pag = blockManager.getPags(NamespacedID);
 
                         if (core.getStorageManager().existStorageByID(id)) {  //SI existe el inventario
-                            core.getStorageManager().OpenStorage(player, id, 0);
+                            core.getStorageManager().openStorage(player, id, 0);
                             //abrir inventario
 
                         } else {
 
                             if (core.getStorageManager().existStorageJson(id)) {
 
-                                core.getStorageManager().OpenStorage(player, id, 0);
+                                core.getStorageManager().openStorage(player, id, 0);
 
                             } else {
 
-                                core.getStorageManager().CreateStorage(player, id, title, slots, isShulker, NamespacedID, pag,block.getLocation());
+                                core.getStorageManager().createStorage(player, id, title, slots, isShulker, NamespacedID, pag,block.getLocation());
                                 //Crear el inventario
                                 Bukkit.getScheduler().runTaskLater(core, () -> {
                                     try {
-                                        core.getStorageManager().OpenStorage(player, id, 0);
+                                        core.getStorageManager().openStorage(player, id, 0);
                                     } catch (FileNotFoundException e) {
                                         throw new RuntimeException(e);
                                     }
