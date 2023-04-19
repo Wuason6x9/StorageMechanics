@@ -11,10 +11,11 @@ import org.bukkit.persistence.PersistentDataType;
 import wuason.storagemechanics.Storage;
 import wuason.storagemechanics.Storages.chunk.ChunkStorage;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.UUID;
 
-public class StorageMemory {
+public class StorageMemory implements Serializable {
     private String id;
     private String title;
     private ArrayList<ItemStack[]> allItems = new ArrayList<>();

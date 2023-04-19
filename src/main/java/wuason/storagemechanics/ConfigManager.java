@@ -24,7 +24,7 @@ public class ConfigManager {
     public void config() {
         FileConfiguration config = core.getConfig();
 
-        File file = new File(core.getDataFolder().getParentFile().getPath() + "/config.yml");
+        File file = new File(core.getDataFolder().getPath() + "/config.yml");
 
         if (!file.exists()) {
 

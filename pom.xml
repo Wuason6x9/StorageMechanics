@@ -6,7 +6,7 @@
 
     <groupId>wuason</groupId>
     <artifactId>storagemechanics</artifactId>
-    <version>1.1.5.3b</version>
+    <version>1.1.8.5</version>
     <packaging>jar</packaging>
 
     <name>StorageMechanics</name>
@@ -32,7 +32,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
-                <version>3.2.4</version>
+                <version>3.3.0</version>
                 <executions>
                     <execution>
                         <phase>package</phase>
@@ -47,7 +47,7 @@
                 <configuration>
                     <relocations>
                         <relocation>
-                            <pattern>de.tr7zw.changeme.nbtapi</pattern>
+                            <pattern>de.tr7zw.storagemechanics.nbtapi</pattern>
                             <shadedPattern>wuason.storagemechanics.nbtapi</shadedPattern>
                         </relocation>
                     </relocations>
@@ -120,9 +120,11 @@
             <name>Lumine Releases</name>
             <url>https://mvn.lumine.io/repository/maven-public/</url>
         </repository>
-
+        <repository>
+            <id>placeholderapi</id>
+            <url>https://repo.extendedclip.com/content/repositories/placeholderapi/</url>
+        </repository>
     </repositories>
-
     <dependencies>
         <dependency>
             <groupId>de.jeff_media</groupId>
@@ -151,7 +153,7 @@
         <dependency>
             <groupId>de.tr7zw</groupId>
             <artifactId>item-nbt-api</artifactId>
-            <version>2.10.0</version>
+            <version>2.11.1</version>
         </dependency>
         <dependency>
             <groupId>io.lumine</groupId>
@@ -168,13 +170,25 @@
         <dependency>
             <groupId>com.github.oraxen</groupId>
             <artifactId>oraxen</artifactId>
-            <version>-fd24cac055-1</version>
+            <version>-1596deeaae-1</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>dev.jorel</groupId>
             <artifactId>commandapi-shade</artifactId>
-            <version>8.5.1</version>
+            <version>8.8.0</version>
+        </dependency>
+        <dependency>
+            <groupId>me.filoghost.holographicdisplays</groupId>
+            <artifactId>holographicdisplays-api</artifactId>
+            <version>3.0.0</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>me.clip</groupId>
+            <artifactId>placeholderapi</artifactId>
+            <version>2.11.2</version>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 </project>

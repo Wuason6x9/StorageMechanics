@@ -1,7 +1,7 @@
 package wuason.storagemechanics.Events.oraxen;
 
-import io.th0rgal.oraxen.events.OraxenNoteBlockBreakEvent;
-import io.th0rgal.oraxen.events.OraxenStringBlockBreakEvent;
+import io.th0rgal.oraxen.api.events.OraxenNoteBlockBreakEvent;
+import io.th0rgal.oraxen.api.events.OraxenStringBlockBreakEvent;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -33,7 +33,7 @@ public class OnBlockBreakOraxen implements Listener {
     @EventHandler(priority = EventPriority.NORMAL)
     public void BlockBreak(OraxenNoteBlockBreakEvent event) throws IOException {
 
-        String NameSpaceID = event.getNoteBlockMechanic().getItemID();
+        String NameSpaceID = event.getMechanic().getItemID();
 
         if(core.getBlockManager().existNameSpaceID(NameSpaceID)) {
 
@@ -219,7 +219,7 @@ public class OnBlockBreakOraxen implements Listener {
     @EventHandler(priority = EventPriority.NORMAL)
     public void BlockBreak(OraxenStringBlockBreakEvent event) throws IOException {
 
-        String NameSpaceID = event.getStringBlockMechanic().getItemID();
+        String NameSpaceID = event.getMechanic().getItemID();
 
         if(core.getBlockManager().existNameSpaceID(NameSpaceID)) {
 

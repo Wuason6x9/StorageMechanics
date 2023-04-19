@@ -28,8 +28,6 @@ public class RegionManagerStorage {
 
     public boolean hasPermission(Location loc, Player player){
 
-        boolean perm;
-
         ApplicableRegionSet regions = getRegionManager(loc.getWorld()).getApplicableRegions(BukkitAdapter.asBlockVector(loc));
 
         if(regions.isMemberOfAll(WorldGuardPlugin.inst().wrapPlayer(player))){

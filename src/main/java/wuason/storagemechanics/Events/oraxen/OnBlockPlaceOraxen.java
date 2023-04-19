@@ -1,8 +1,7 @@
 package wuason.storagemechanics.Events.oraxen;
 
-import dev.lone.itemsadder.api.Events.CustomBlockPlaceEvent;
-import io.th0rgal.oraxen.events.OraxenNoteBlockPlaceEvent;
-import io.th0rgal.oraxen.events.OraxenStringBlockPlaceEvent;
+import io.th0rgal.oraxen.api.events.OraxenNoteBlockPlaceEvent;
+import io.th0rgal.oraxen.api.events.OraxenStringBlockPlaceEvent;
 import org.bukkit.Location;
 import org.bukkit.NamespacedKey;
 import org.bukkit.event.EventHandler;

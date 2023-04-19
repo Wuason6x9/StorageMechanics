@@ -13,6 +13,7 @@ import wuason.storagemechanics.BlockManager.Manager;
 import wuason.storagemechanics.Editor.PlayerEditorMode;
 import wuason.storagemechanics.Storage;
 import wuason.storagemechanics.Storages.StorageManager;
+import wuason.storagemechanics.api.Events.StorageClickEvent;
 
 import java.io.FileNotFoundException;
 
@@ -123,6 +124,8 @@ public class OnClick implements Listener {
 
                             if (core.getStorageManager().existStorageByID(id)) {  //SI existe el inventario
                                 core.getStorageManager().openStorage(player, id, 0);
+                                StorageClickEvent storageClickEvent = new StorageClickEvent(id, player, block);
+                                Bukkit.getPluginManager().callEvent(storageClickEvent);
                                 //abrir inventario
 
                             } else {
@@ -130,6 +133,8 @@ public class OnClick implements Listener {
                                 if (core.getStorageManager().existStorageJson(id)) {
 
                                     core.getStorageManager().openStorage(player, id, 0);
+                                    StorageClickEvent storageClickEvent = new StorageClickEvent(id, player, block);
+                                    Bukkit.getPluginManager().callEvent(storageClickEvent);
 
                                 } else {
 
@@ -138,6 +143,8 @@ public class OnClick implements Listener {
                                     Bukkit.getScheduler().runTaskLater(core, () -> {
                                         try {
                                             core.getStorageManager().openStorage(player, id, 0);
+                                            StorageClickEvent storageClickEvent = new StorageClickEvent(id, player, block);
+                                            Bukkit.getPluginManager().callEvent(storageClickEvent);
                                         } catch (FileNotFoundException e) {
                                             throw new RuntimeException(e);
                                         }

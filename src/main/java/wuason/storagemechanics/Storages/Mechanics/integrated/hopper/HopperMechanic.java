@@ -1,12 +1,9 @@
-package wuason.storagemechanics.Storages.Mechanics.integrated.Hopper;
+package wuason.storagemechanics.Storages.Mechanics.integrated.hopper;
 
-import dev.lone.itemsadder.api.CustomStack;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
-import org.bukkit.block.Hopper;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockPlaceEvent;

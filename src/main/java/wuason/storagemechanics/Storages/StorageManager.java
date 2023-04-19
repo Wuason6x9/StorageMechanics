@@ -3,6 +3,7 @@ package wuason.storagemechanics.Storages;
 import com.google.gson.Gson;
 import de.tr7zw.changeme.nbtapi.NBTContainer;
 import de.tr7zw.changeme.nbtapi.NBTItem;
+import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.*;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
@@ -21,6 +22,7 @@ import wuason.storagemechanics.api.Events.StorageInventoryOpenEvent;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 import java.util.UUID;
 
@@ -187,13 +189,15 @@ public class StorageManager {
     }
 
 
-    public void openInv(StorageMemory memory,Player player ,int pag){
+    public void openInv(StorageMemory memory, Player player, int pag){
 
-        if(core.getBlockManager().getOpenSound(memory.getNameSpaceID()) != null){
+        if(pag == 0){
+            if(core.getBlockManager().getOpenSound(memory.getNameSpaceID()) != null){
 
-            String sound = core.getBlockManager().getOpenSound(memory.getNameSpaceID());
-            player.playSound(player.getLocation(),sound,100f,1f);
+                String sound = core.getBlockManager().getOpenSound(memory.getNameSpaceID());
+                player.playSound(player.getLocation(),sound,100f,1f);
 
+            }
         }
 
         player.setMetadata("storageinventorypag", new FixedMetadataValue(core, pag));
@@ -211,10 +215,13 @@ public class StorageManager {
         }
         else {
 
-            Inventory inv = Bukkit.createInventory(player,(int)memory.getSlots(),ChatColor.translateAlternateColorCodes('&',memory.getTitle().replaceAll("%actual_pag%", "" + (pag + 1))).replaceAll("%pag_count%", "" + memory.getPages()).replaceAll("%owner%","" + Bukkit.getOfflinePlayer(UUID.fromString(memory.getUuidOwner())).getName()));
+            Inventory inv = Bukkit.createInventory(player,(int)memory.getSlots(),ChatColor.translateAlternateColorCodes('&', memory.getTitle().replaceAll("%actual_pag%", "" + (pag + 1))).replaceAll("%pag_count%", "" + memory.getPages()).replaceAll("%owner%","" + Bukkit.getOfflinePlayer(UUID.fromString(memory.getUuidOwner())).getName()));
+
+            if(core.isLoadedPlaceHolderApi()){
+                inv = Bukkit.createInventory(player,(int)memory.getSlots(),ChatColor.translateAlternateColorCodes('&', PlaceholderAPI.setPlaceholders(player, memory.getTitle().replaceAll("%actual_pag%", "" + (pag + 1))).replaceAll("%pag_count%", "" + memory.getPages()).replaceAll("%owner%","" + Bukkit.getOfflinePlayer(UUID.fromString(memory.getUuidOwner())).getName())));
+            }
             StorageInventoryOpenEvent storageInventoryOpenEvent = new StorageInventoryOpenEvent(player,inv,pag,memory);
             Bukkit.getPluginManager().callEvent(storageInventoryOpenEvent);
-
 
             player.setMetadata("storageinventory", new FixedMetadataValue(core, inv));
             inv.setContents(memory.getItems(pag));
@@ -265,7 +272,6 @@ public class StorageManager {
                         inv.setItem(memory.getSlots() - 1, core.getStorageUtils().getChestSortItem());
 
                     }
-                    //de.jeff_media.chestsort.api.ChestSortAPI.sortInventory(inv,0,45);
                 }
             }
             else {
@@ -581,7 +587,6 @@ public class StorageManager {
 
         File file = new File(core.getDataFolder().getPath() + "/storages/blockstatic/" + storageMemory.getId() + ".json");
 
-
         if(!file.exists()){
             file.getParentFile().mkdirs();
             file.createNewFile();
@@ -646,6 +651,11 @@ public class StorageManager {
 
                 StorageFile storageFile = gson.fromJson(reader, StorageFile.class);
                 StorageMemory storageMemory = new StorageMemory(id,storageFile.getTitle(),storageFile.getSlots(),storageFile.getUuidOwner(),storageFile.isShulker(),storageFile.getNameSpaceID(), storageFile.getPages());
+                try {
+                    reader.close();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
 
                 UUID uuidOwner = UUID.fromString(storageFile.getUuidOwner());
                 OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(uuidOwner);

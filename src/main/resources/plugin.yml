@@ -8,6 +8,8 @@ softdepend:
   - WorldGuard
   - ChestSort
   - MythicMobs
+  - HolographicDisplays
+  - PlaceholderAPI
 authors:
   - Wuason
 description: Adds storage at blocks or furnitures

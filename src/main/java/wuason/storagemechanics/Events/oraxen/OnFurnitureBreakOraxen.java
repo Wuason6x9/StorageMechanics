@@ -1,6 +1,6 @@
 package wuason.storagemechanics.Events.oraxen;
 
-import io.th0rgal.oraxen.events.OraxenFurnitureBreakEvent;
+import io.th0rgal.oraxen.api.events.OraxenFurnitureBreakEvent;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -29,7 +29,7 @@ public class OnFurnitureBreakOraxen implements Listener {
     @EventHandler(priority = EventPriority.NORMAL)
     public void onBreak(OraxenFurnitureBreakEvent event) throws IOException {
 
-        String NameSpaceID = event.getFurnitureMechanic().getItemID();
+        String NameSpaceID = event.getMechanic().getItemID();
 
         if(core.getBlockManager().existNameSpaceID(NameSpaceID)) {
 

@@ -1,8 +1,12 @@
 package wuason.storagemechanics.api;
 
+import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 import wuason.storagemechanics.Storage;
 import wuason.storagemechanics.Storages.StorageManager;
 import wuason.storagemechanics.Storages.StorageMemory;
+
+import javax.annotation.Nullable;
 
 public class StoragesApi {
 

@@ -6,6 +6,7 @@ import dev.lone.itemsadder.api.CustomStack;
 import dev.lone.itemsadder.api.Events.FurniturePlaceSuccessEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -39,17 +40,21 @@ public class OnFurniturePlace implements Listener {
 
         if(core.getBlockManager().existNameSpaceID(NameSpaceID)){
 
-            ItemMeta itemMetaHand = itemInHand.getItemMeta();
-            NamespacedKey key = new NamespacedKey(core, "storageid");
-            String uuid = itemMetaHand.getPersistentDataContainer().get(key, PersistentDataType.STRING);
+            if(itemInHand != null && !itemInHand.getType().equals(Material.AIR)) {
 
-            if(uuid != null){
+                ItemMeta itemMetaHand = itemInHand.getItemMeta();
+                NamespacedKey key = new NamespacedKey(core, "storageid");
+                String uuid = itemMetaHand.getPersistentDataContainer().get(key, PersistentDataType.STRING);
 
-                Location loc = event.getBukkitEntity().getLocation();
+                if (uuid != null) {
 
-                String id  = core.getStorageUtils().getLocationStorageID(loc);
+                    Location loc = event.getBukkitEntity().getLocation();
 
-                core.getStorageUtils().storageUUIDtoID(id, uuid);
+                    String id = core.getStorageUtils().getLocationStorageID(loc);
+
+                    core.getStorageUtils().storageUUIDtoID(id, uuid);
+
+                }
 
             }
 

@@ -1,9 +1,8 @@
 package wuason.storagemechanics.Events.oraxen;
 
-import dev.lone.itemsadder.api.Events.FurniturePlaceSuccessEvent;
-import io.th0rgal.oraxen.events.OraxenFurniturePlaceEvent;
-import io.th0rgal.oraxen.events.OraxenNoteBlockPlaceEvent;
+import io.th0rgal.oraxen.api.events.OraxenFurniturePlaceEvent;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -28,24 +27,27 @@ public class OnFurniturePlaceOraxen implements Listener {
     @EventHandler(priority = EventPriority.NORMAL)
     public void onPlace(OraxenFurniturePlaceEvent event) throws IOException {
 
-        String NameSpaceID = event.getFurnitureMechanic().getItemID();
+        String NameSpaceID = event.getMechanic().getItemID();
         Player player = event.getPlayer();
         ItemStack itemInHand = player.getInventory().getItemInMainHand();
 
         if(core.getBlockManager().existNameSpaceID(NameSpaceID)){
 
+            if(itemInHand != null && !itemInHand.getType().equals(Material.AIR)){
 
-            ItemMeta itemMetaHand = itemInHand.getItemMeta();
-            NamespacedKey key = new NamespacedKey(core, "storageid");
-            String uuid = itemMetaHand.getPersistentDataContainer().get(key, PersistentDataType.STRING);
+                ItemMeta itemMetaHand = itemInHand.getItemMeta();
+                NamespacedKey key = new NamespacedKey(core, "storageid");
+                String uuid = itemMetaHand.getPersistentDataContainer().get(key, PersistentDataType.STRING);
 
-            if(uuid != null){
+                if(uuid != null){
 
-                Location loc = event.getItemFrame().getLocation();
+                    Location loc = event.getItemFrame().getLocation();
 
-                String id  = core.getStorageUtils().getLocationStorageID(loc);
+                    String id  = core.getStorageUtils().getLocationStorageID(loc);
 
-                core.getStorageUtils().storageUUIDtoID(id, uuid);
+                    core.getStorageUtils().storageUUIDtoID(id, uuid);
+
+                }
 
             }
 

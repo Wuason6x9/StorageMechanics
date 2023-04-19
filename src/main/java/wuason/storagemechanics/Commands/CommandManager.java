@@ -31,6 +31,8 @@ public class CommandManager {
     }
     public void register(){
 
+        new CommandAPI
+
         new CommandAPICommand("storagemechanics")
                 .withAliases("sm","smechanics","storagem")
                 .withPermission("storage.admin")
@@ -184,37 +186,73 @@ public class CommandManager {
                         )
                 )
                 .withSubcommand(new CommandAPICommand("api")
+                        .withSubcommand(new CommandAPICommand("groups")
+                                .withSubcommand(new CommandAPICommand("create")
+
+                                        .withArguments(new TextArgument("GROUP"))
+                                        .withArguments(new IntegerArgument("rows").replaceSuggestions(ArgumentSuggestions.strings("1","2","3","4","5","6")))
+
+                                        .executes((sender, args) -> {
+
+                                            String group = (String) args[0];
+                                            int slots = (int)args[1]*9;
+
+                                            core.getBlockManager().addNameSpaceID(group,(byte)slots,"none",false,3);
+
+
+                                        })
+
+                                )
+                                .withSubcommand(new CommandAPICommand("remove")
+
+                                        .withArguments(new TextArgument("GROUP"))
+
+                                        .executes((sender, args) -> {
+
+                                            String group = (String) args[0];
+
+                                            core.getBlockManager().removeNameSpaceID(group);
+
+
+                                        })
+
+                                )
+                        )
                         .withSubcommand(new CommandAPICommand("create")
 
                                 .withSubcommand(new CommandAPICommand("multipage")
+                                        .withArguments(new TextArgument("GROUP"))
                                         .withArguments(new TextArgument("ID"))
                                         .withArguments(new IntegerArgument("pages"))
                                         .withArguments(new GreedyStringArgument("gui title"))
                                         .executes((sender, args) -> {
 
+                                            String group = (String)args[0];
                                             Player player = (Player) sender;
-                                            String guiTitle = (String)args[2];
-                                            int pages = (int)args[1];
+                                            String guiTitle = (String)args[3];
+                                            int pages = (int)args[2];
 
-                                            String id = (String)args[0];
+                                            String id = (String)args[1];
 
-                                            core.getStorageManager().createStorage(player,id,guiTitle,(byte)(6 * 9),false,id,pages, null);
+                                            core.getStorageManager().createStorage(player,id,guiTitle,(byte)(6 * 9),false,group,pages, null);
 
                                         })
 
                                 )
                                 .withSubcommand(new CommandAPICommand("normal")
+                                        .withArguments(new TextArgument("GROUP"))
                                         .withArguments(new TextArgument("ID"))
                                         .withArguments(new IntegerArgument("rows").replaceSuggestions(ArgumentSuggestions.strings("1","2","3","4","5","6")))
                                         .withArguments(new GreedyStringArgument("gui title"))
                                         .executes((sender, args) -> {
 
-                                            String id = (String)args[0];
+                                            String group = (String)args[0];
+                                            String id = (String)args[1];
                                             Player player = (Player) sender;
-                                            String guiTitle = (String)args[2];
-                                            int rows = (int)args[1];
+                                            String guiTitle = (String)args[3];
+                                            int rows = (int)args[2];
 
-                                            core.getStorageManager().createStorage(player,id,guiTitle,(byte)(rows * 9),false,id,1, null);
+                                            core.getStorageManager().createStorage(player,id,guiTitle,(byte)(rows * 9),false,group,1, null);
 
                                         })
                                 )

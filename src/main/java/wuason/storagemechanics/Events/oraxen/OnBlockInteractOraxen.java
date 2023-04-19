@@ -1,7 +1,7 @@
 package wuason.storagemechanics.Events.oraxen;
 
-import io.th0rgal.oraxen.events.OraxenNoteBlockInteractEvent;
-import io.th0rgal.oraxen.events.OraxenStringBlockInteractEvent;
+import io.th0rgal.oraxen.api.events.OraxenNoteBlockInteractEvent;
+import io.th0rgal.oraxen.api.events.OraxenStringBlockInteractEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.block.Block;
@@ -12,6 +12,7 @@ import org.bukkit.event.Listener;
 import wuason.storagemechanics.BlockManager.Manager;
 import wuason.storagemechanics.Editor.PlayerEditorMode;
 import wuason.storagemechanics.Storage;
+import wuason.storagemechanics.api.Events.StorageClickEvent;
 
 import java.io.FileNotFoundException;
 
@@ -27,7 +28,7 @@ public class OnBlockInteractOraxen implements Listener {
     @EventHandler(priority = EventPriority.NORMAL)
     public void OnCustomBlockClick(OraxenNoteBlockInteractEvent event) throws FileNotFoundException {
         Player player = event.getPlayer();
-        String NamespacedID = event.getNoteBlockMechanic().getItemID();
+        String NamespacedID = event.getMechanic().getItemID();
         if(core.getEditorMode().isinEditorMode(player)){
 
             event.setCancelled(true);
@@ -120,6 +121,8 @@ public class OnBlockInteractOraxen implements Listener {
 
                         if (core.getStorageManager().existStorageByID(id)) {  //SI existe el inventario
                             core.getStorageManager().openStorage(player, id, 0);
+                            StorageClickEvent storageClickEvent = new StorageClickEvent(id, player, block);
+                            Bukkit.getPluginManager().callEvent(storageClickEvent);
                             //abrir inventario
 
                         } else {
@@ -127,6 +130,8 @@ public class OnBlockInteractOraxen implements Listener {
                             if (core.getStorageManager().existStorageJson(id)) {
 
                                 core.getStorageManager().openStorage(player, id, 0);
+                                StorageClickEvent storageClickEvent = new StorageClickEvent(id, player, block);
+                                Bukkit.getPluginManager().callEvent(storageClickEvent);
 
                             } else {
 
@@ -135,6 +140,8 @@ public class OnBlockInteractOraxen implements Listener {
                                 Bukkit.getScheduler().runTaskLater(core, () -> {
                                     try {
                                         core.getStorageManager().openStorage(player, id, 0);
+                                        StorageClickEvent storageClickEvent = new StorageClickEvent(id, player, block);
+                                        Bukkit.getPluginManager().callEvent(storageClickEvent);
                                     } catch (FileNotFoundException e) {
                                         throw new RuntimeException(e);
                                     }
@@ -151,7 +158,7 @@ public class OnBlockInteractOraxen implements Listener {
     @EventHandler(priority = EventPriority.NORMAL)
     public void OnCustomBlockClick(OraxenStringBlockInteractEvent event) throws FileNotFoundException {
         Player player = event.getPlayer();
-        String NamespacedID = event.getStringBlockMechanic().getItemID();
+        String NamespacedID = event.getMechanic().getItemID();
         if(core.getEditorMode().isinEditorMode(player)){
 
             event.setCancelled(true);
@@ -244,6 +251,8 @@ public class OnBlockInteractOraxen implements Listener {
 
                         if (core.getStorageManager().existStorageByID(id)) {  //SI existe el inventario
                             core.getStorageManager().openStorage(player, id, 0);
+                            StorageClickEvent storageClickEvent = new StorageClickEvent(id, player, block);
+                            Bukkit.getPluginManager().callEvent(storageClickEvent);
                             //abrir inventario
 
                         } else {
@@ -251,6 +260,8 @@ public class OnBlockInteractOraxen implements Listener {
                             if (core.getStorageManager().existStorageJson(id)) {
 
                                 core.getStorageManager().openStorage(player, id, 0);
+                                StorageClickEvent storageClickEvent = new StorageClickEvent(id, player, block);
+                                Bukkit.getPluginManager().callEvent(storageClickEvent);
 
                             } else {
 
@@ -259,6 +270,8 @@ public class OnBlockInteractOraxen implements Listener {
                                 Bukkit.getScheduler().runTaskLater(core, () -> {
                                     try {
                                         core.getStorageManager().openStorage(player, id, 0);
+                                        StorageClickEvent storageClickEvent = new StorageClickEvent(id, player, block);
+                                        Bukkit.getPluginManager().callEvent(storageClickEvent);
                                     } catch (FileNotFoundException e) {
                                         throw new RuntimeException(e);
                                     }

@@ -38,12 +38,14 @@ public final class Storage extends JavaPlugin {
     private PanelsManager panelsManager;
     private PluginSelectorManager pluginSelectorManager;
     private PluginSelectorManager.PluginSelected pluginSelected;
+    private boolean placeHolderApi = false;
     private Adapter adapter;
     private ConfigManager configManager;
     private static Storage instance = null;
+    private int pluginId = 17896;
 
     public Storage(){
-        if(instance==null) {
+        if(instance == null) {
             instance = this;
             Bukkit.getConsoleSender().sendMessage(ChatColor.YELLOW + "Instancia Cargada!");
         }
@@ -56,6 +58,8 @@ public final class Storage extends JavaPlugin {
 
     @Override
     public void onEnable() {
+
+        Metrics metrics = new Metrics(this, pluginId);
 
         //GESTORES o MANAGERS
         CommandAPI.onEnable(this);
@@ -89,14 +93,11 @@ public final class Storage extends JavaPlugin {
 
         Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&', "&8[&6StorageMechanics&8] -> &e(------------------------------)"));
         Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&', "&8[&6StorageMechanics&8] -> &bPlugin has been loaded!"));
-        if(pluginSelected.equals(PluginSelectorManager.PluginSelected.ITEMSADDER)){
 
-            Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&',"&8[&6StorageMechanics&8] -> &bPlugin selected &3ItemsAdder"));
-
-        } else if (pluginSelected.equals(PluginSelectorManager.PluginSelected.ORAXEN)) {
-
-            Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&',"&8[&6StorageMechanics&8] -> &bPlugin selected &3Oraxen"));
-
+        Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&',"&8[&6StorageMechanics&8] -> &bPlugin selected: &3" + pluginSelected));
+        if(Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null){
+            this.placeHolderApi = true;
+            Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&', "&8[&6StorageMechanics&8] -> &bPlaceholderAPI [ready]"));
         }
         if(Bukkit.getPluginManager().getPlugin("WorldGuard") != null){
             this.helperManager = new Helper(this);
@@ -166,6 +167,10 @@ public final class Storage extends JavaPlugin {
 
     public Manager getBlockManager() {
         return blockManager;
+    }
+
+    public boolean isLoadedPlaceHolderApi() {
+        return placeHolderApi;
     }
 
     public StorageUtils getStorageUtils() {

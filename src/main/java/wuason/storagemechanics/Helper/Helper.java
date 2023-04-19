@@ -9,14 +9,10 @@ import wuason.storagemechanics.Storage;
 public class Helper {
 
     private Storage core;
-    private RegionContainer containerManager;
-    private WorldGuard worldGuard;
 
     public Helper(Storage plugin){
 
         this.core = plugin;
-        this.worldGuard = WorldGuard.getInstance();
-        this.containerManager = worldGuard.getPlatform().getRegionContainer();
 
 
     }
@@ -29,13 +25,13 @@ public class Helper {
 
     public RegionContainer getContainerManager() {
 
-        return containerManager;
+        return WorldGuard.getInstance().getPlatform().getRegionContainer();
 
     }
 
     public WorldGuard getWorldGuard() {
 
-        return worldGuard;
+        return WorldGuard.getInstance();
 
     }
 }

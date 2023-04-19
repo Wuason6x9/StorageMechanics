@@ -1,6 +1,6 @@
 package wuason.storagemechanics.Events.oraxen;
 
-import io.th0rgal.oraxen.events.OraxenFurnitureInteractEvent;
+import io.th0rgal.oraxen.api.events.OraxenFurnitureInteractEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -11,6 +11,7 @@ import org.bukkit.event.Listener;
 import wuason.storagemechanics.BlockManager.Manager;
 import wuason.storagemechanics.Editor.PlayerEditorMode;
 import wuason.storagemechanics.Storage;
+import wuason.storagemechanics.api.Events.StorageClickEvent;
 
 import java.io.FileNotFoundException;
 
@@ -25,7 +26,7 @@ public class OnFurnitureInteractOraxen implements Listener {
     public void onInteract(OraxenFurnitureInteractEvent event) throws FileNotFoundException {
 
         Player player = event.getPlayer();
-        String NamespacedID = event.getFurnitureMechanic().getItemID();
+        String NamespacedID = event.getMechanic().getItemID();
 
         if(core.getEditorMode().isinEditorMode(player)){
 
@@ -127,6 +128,8 @@ public class OnFurnitureInteractOraxen implements Listener {
                         if (core.getStorageManager().existStorageByID(id)) {  //SI existe el inventario
 
                             core.getStorageManager().openStorage(player, id,0);
+                            StorageClickEvent storageClickEvent = new StorageClickEvent(id, player, loc.getBlock());
+                            Bukkit.getPluginManager().callEvent(storageClickEvent);
                             //abrir inventario
 
                         } else {
@@ -134,6 +137,8 @@ public class OnFurnitureInteractOraxen implements Listener {
                             if (core.getStorageManager().existStorageJson(id)) {
 
                                 core.getStorageManager().openStorage(player, id,0);
+                                StorageClickEvent storageClickEvent = new StorageClickEvent(id, player, loc.getBlock());
+                                Bukkit.getPluginManager().callEvent(storageClickEvent);
 
                             } else {
 
@@ -143,6 +148,8 @@ public class OnFurnitureInteractOraxen implements Listener {
                                 Bukkit.getScheduler().runTaskLater(core, () -> {
                                     try {
                                         core.getStorageManager().openStorage(player, id,0);
+                                        StorageClickEvent storageClickEvent = new StorageClickEvent(id, player, loc.getBlock());
+                                        Bukkit.getPluginManager().callEvent(storageClickEvent);
                                     } catch (FileNotFoundException e) {
                                         throw new RuntimeException(e);
                                     }

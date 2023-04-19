@@ -58,6 +58,7 @@ public class Manager {
                 //0 OPEN SOUND
                 //1 CLOSE SOUND
                 //2 IS BREAKABLE
+                //3 HAS HOLOGRAM
 
             }
 
@@ -430,6 +431,35 @@ public class Manager {
                 if(k.get(1).get(2) != null){
 
                     return Boolean.parseBoolean(k.get(1).get(2));
+
+                }
+                else {
+                    return false;
+                }
+            }
+        }
+        return false;
+    }
+
+    public boolean setHasHologram(String id, boolean holo){
+
+        for(ArrayList<ArrayList<String>> k:list){
+            if(k.get(0).get(0).equals(id)){
+
+                k.get(1).set(3,"" + holo);
+
+            }
+        }
+        return holo;
+    }
+
+    public boolean hasHologram(String id){
+
+        for(ArrayList<ArrayList<String>> k:list){
+            if(k.get(0).get(0).equals(id)){
+                if(k.get(1).get(3) != null){
+
+                    return Boolean.parseBoolean(k.get(1).get(3));
 
                 }
                 else {
