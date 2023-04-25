@@ -2,8 +2,9 @@ package wuason.storagemechanics.adapters;
 
 import dev.lone.itemsadder.api.CustomBlock;
 import dev.lone.itemsadder.api.CustomStack;
+import io.th0rgal.oraxen.api.OraxenBlocks;
+import io.th0rgal.oraxen.api.OraxenItems;
 import io.th0rgal.oraxen.items.ItemBuilder;
-import io.th0rgal.oraxen.items.OraxenItems;
 import io.th0rgal.oraxen.mechanics.provided.gameplay.noteblock.NoteBlockMechanicListener;
 import io.th0rgal.oraxen.mechanics.provided.gameplay.stringblock.StringBlockMechanicListener;
 import org.bukkit.Location;
@@ -33,7 +34,7 @@ public class Adapter {
         else if (pluginSelected.equals(PluginSelectorManager.PluginSelected.ORAXEN)){
 
 
-            if(NoteBlockMechanicListener.getNoteBlockMechanic(block) != null || StringBlockMechanicListener.getStringMechanic(block) != null) return block;
+            if(OraxenBlocks.getNoteBlockMechanic(block) != null || OraxenBlocks.getStringMechanic(block) != null) return block;
 
         }
 
@@ -50,7 +51,7 @@ public class Adapter {
         else if (pluginSelected.equals(PluginSelectorManager.PluginSelected.ORAXEN)){
 
 
-            if(NoteBlockMechanicListener.getNoteBlockMechanic(block) != null || StringBlockMechanicListener.getStringMechanic(block) != null) return true;
+            if(OraxenBlocks.getNoteBlockMechanic(block) != null || OraxenBlocks.getStringMechanic(block) != null) return true;
 
         }
 
@@ -82,8 +83,8 @@ public class Adapter {
         }
         else if (pluginSelected.equals(PluginSelectorManager.PluginSelected.ORAXEN)){
 
-            if(NoteBlockMechanicListener.getNoteBlockMechanic(block) != null) return NoteBlockMechanicListener.getNoteBlockMechanic(block).getItemID();
-            if(StringBlockMechanicListener.getStringMechanic(block) != null) return StringBlockMechanicListener.getStringMechanic(block).getItemID();
+            if(OraxenBlocks.getNoteBlockMechanic(block) != null) return OraxenBlocks.getNoteBlockMechanic(block).getItemID();
+            if(OraxenBlocks.getStringMechanic(block) != null) return OraxenBlocks.getStringMechanic(block).getItemID();
 
         }
 

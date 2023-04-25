@@ -31,8 +31,6 @@ public class CommandManager {
     }
     public void register(){
 
-        new CommandAPI
-
         new CommandAPICommand("storagemechanics")
                 .withAliases("sm","smechanics","storagem")
                 .withPermission("storage.admin")

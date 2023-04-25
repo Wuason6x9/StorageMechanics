@@ -582,6 +582,8 @@ public class StorageManager {
 
     public boolean saveStorage(StorageMemory storageMemory) throws IOException {
 
+        if(storageMemory == null) return false;
+
         closePlayersInvetory(storageMemory);
 
 
